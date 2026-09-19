@@ -1,0 +1,175 @@
+body {
+  overflow-y: scroll;
+}
+
+.rowLogin {
+  height: 100vh;
+  margin: 0;
+}
+
+.col-Login-Form,
+.col-Imagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.col-vw-responsive {
+  width: 45vw;
+}
+
+@media (max-width: 992px) {
+  .col-Login-Form {
+    height: auto;
+    align-items: start !important;
+    margin-bottom: 2rem;
+  }
+
+  .col-Imagen {
+    height: 50vh;
+    width: 100vw;
+    margin-bottom: 10vh;
+  }
+
+  .Imagen {
+    height: 50%;
+  }
+
+  .rowLogin {
+    min-height: 100vh;
+    height: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .col-vw-responsive {
+    width: 70vw;
+  }
+
+  .col-Login-Form {
+    margin-top: 5rem;
+  }
+
+  .Imagen {
+    width: 70%;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 756px) {
+  .col-vw-responsive {
+    width: 75vw;
+  }
+
+  .col-Login-Form {
+    margin-top: 4rem;
+  }
+
+  .Imagen {
+    width: 80%;
+  }
+}
+
+@media (min-width: 757px) and (max-width: 992px) {
+  .col-vw-responsive {
+    width: 70vw;
+  }
+
+  .col-Login-Form {
+    margin-top: 4rem;
+  }
+
+  .Imagen {
+    width: 80%;
+  }
+}
+
+@media (min-width: 993px) {
+  .rowLogin{
+    align-items: center;
+  }
+  .col-vw-responsive {
+    width: 39vw;
+  }
+  .col-Login-Form {
+    height: 100%;
+    width: 50%;
+  }
+  .col-Imagen {
+    height: 60%;
+    width: 50%;
+  }
+  .Imagen {
+    height: 100%;
+    width: 100%;
+  }
+  body {
+    overflow-y: hidden;
+  }
+}
+
+.Login-Form {
+  background-color: #ecb8b8;
+  height: auto;
+  padding: 2rem;
+  padding-top: 1rem;
+  border-radius: 20px;
+  opacity: 0.7;
+  color: rgb(53, 15, 4);
+  box-shadow: 1.5rem 1.5rem 0 0 rgb(53, 15, 4);
+}
+
+.titulo {
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  font-family: var(--heading);
+  font-weight: 700;
+}
+
+.Button {
+  width: 60%;
+  padding: 0.2rem;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-family: var(--heading);
+  font-weight: 700;
+  border-radius: 20px;
+}
+
+.Button.LogIn {
+  margin-top: 2.5rem;
+  background-color: rgb(53, 15, 4);
+  color: #ecb8b8;
+  border: 2px solid transparent;
+}
+
+.Button.LogIn:disabled {
+  background-color: #b58f8f;
+  color: #ead6d6;
+  border-color: #b58f8f;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.Button.LogIn:hover:not(:disabled) {
+  background-color: #6b3f37;
+  border-color: #6b3f37;
+  color: #f2e8e0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 42, 37, 0.25);
+}
+
+.Button.Registro {
+  color: rgb(53, 15, 4);
+  background-color: transparent;
+  font-weight: 700;
+}
+
+.Button.Registro:hover:not(:disabled) {
+  background-color: #FFF5EB;
+  border-color: #FFF5EB;
+  color: rgb(53, 15, 4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 42, 37, 0.25);
+}
