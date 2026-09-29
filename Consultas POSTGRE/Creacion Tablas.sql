@@ -8,7 +8,7 @@ CREATE TABLE USUARIOS (
 
 CREATE TABLE CATEGORIA (
 	ID_CATEGORIA SERIAL PRIMARY KEY,
-	NOMBRE_CATEGORIA VARCHAR(100) NOT NULL,
+	NOMBRE_CATEGORIA_en VARCHAR(100) NOT NULL,
 	DESCRIPCION VARCHAR(100)
 );
 
@@ -52,18 +52,18 @@ CREATE TABLE DETALLEORDEN (
 SELECT*FROM Usuarios
 
 INSERT INTO Categoria
-(NOMBRE_CATEGORIA, DESCRIPCION)
+(NOMBRE_CATEGORIA_en, DESCRIPCION, nombre_categoria_es)
 VALUES
-('Fantasy', 'Libros de fantasía'),
-('Science Fiction', 'Libros de ciencia ficción'),
-('Mystery', 'Libros de misterio'),
-('Romance', 'Libros románticos'),
-('History', 'Libros de historia'),
-('Technology', 'Libros sobre tecnología'),
-('Education', 'Libros educativos'),
-('Horror', 'Libros de terror'),
-('Children', 'Libros infantiles'),
-('Fiction', 'Obras de ficción');
+('Fantasy', 'Libros de fantasía', 'Fantasía'),
+('Science Fiction', 'Libros de ciencia ficción', 'Ciencia Ficción'),
+('Mystery', 'Libros de misterio', 'Misterio'),
+('Romance', 'Libros románticos', 'Romance'),
+('History', 'Libros de historia', 'Historia'),
+('Technology', 'Libros sobre tecnología', 'Tecnología'),
+('Education', 'Libros educativos', 'Educación'),
+('Horror', 'Libros de terror', 'Horror'),
+('Children', 'Libros infantiles', 'Infantil'),
+('Fiction', 'Obras de ficción', 'Ficción');
 
 SELECT*FROM Categoria
 

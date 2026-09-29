@@ -16,10 +16,23 @@ class Categoria(Base):
     )
 
     id_categoria: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    nombre_categoria: Mapped[str] = mapped_column(String(100), nullable=False)
+    nombre_categoria_en: Mapped[str] = mapped_column(String(100), nullable=False)
+    nombre_categoria_es: Mapped[str] = mapped_column(String(100), nullable=False)
     descripcion: Mapped[Optional[str]] = mapped_column(String(100))
 
     libros: Mapped[list['Libros']] = relationship('Libros', back_populates='categoria')
+
+
+class Detallecarrito(Base):
+    __tablename__ = 'detallecarrito'
+    __table_args__ = (
+        PrimaryKeyConstraint('id_detalle', name='detallecarrito_pkey'),
+    )
+
+    id_detalle: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id_carrito: Mapped[int] = mapped_column(Integer, nullable=False)
+    id_book: Mapped[int] = mapped_column(Integer, nullable=False)
+    cantidad: Mapped[int] = mapped_column(Integer, nullable=False)
 
 
 class Usuarios(Base):
@@ -35,7 +48,22 @@ class Usuarios(Base):
     password: Mapped[str] = mapped_column(String(200), nullable=False)
     rol: Mapped[str] = mapped_column(String(20), nullable=False)
 
+    carrito: Mapped[list['Carrito']] = relationship('Carrito', back_populates='usuarios')
     orden: Mapped[list['Orden']] = relationship('Orden', back_populates='usuarios')
+
+
+class Carrito(Base):
+    __tablename__ = 'carrito'
+    __table_args__ = (
+        ForeignKeyConstraint(['id_user'], ['usuarios.id_user'], name='fk_carrito_user'),
+        PrimaryKeyConstraint('id_carrito', name='carrito_pkey')
+    )
+
+    id_carrito: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id_user: Mapped[int] = mapped_column(Integer, nullable=False)
+    fecha_creacion: Mapped[datetime.date] = mapped_column(Date, nullable=False)
+
+    usuarios: Mapped['Usuarios'] = relationship('Usuarios', back_populates='carrito')
 
 
 class Libros(Base):
