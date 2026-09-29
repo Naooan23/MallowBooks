@@ -10,8 +10,7 @@ import { useAuth } from './services/useAuth';
 
 function App() {
   const { user } = useAuth();
-
-  const esAdmin = user === null ? false : user?.rol === "admin";
+  const esAdmin = user?.rol === "admin";
 
   const rutasFiltradas = appRoutes.filter(route =>
     esAdmin
@@ -26,7 +25,7 @@ function App() {
 
           <Route
             path="/"
-            element={<Navigate to="/login" />}
+            element={<Navigate to="/login" replace />}
           />
 
           <Route
@@ -40,7 +39,7 @@ function App() {
                 key={route.path}
                 path={route.path}
                 element={
-                  <ProtectedRoute onlyAdmin={esAdmin}>
+                  <ProtectedRoute onlyAdmin={route.admin === true}>
                     {route.element}
                   </ProtectedRoute>
                 }

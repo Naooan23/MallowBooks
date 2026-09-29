@@ -24,7 +24,7 @@ def obtener_categorias(db):
     categoriasLista = [
         CategoriaDTO(
             id=c.id_categoria,
-            nombre=c.nombre_categoria
+            nombre=c.nombre_categoria_en
         )
         for c in categorias
     ]

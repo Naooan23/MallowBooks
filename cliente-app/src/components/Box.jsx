@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Col, Form } from "react-bootstrap";
 import Select from "react-select";
+import "./Box.css";
 
 const disable = {
   fontSize: "1.3rem",
@@ -98,56 +99,149 @@ const TextBox = ({ className, item, login, style, onValueChange, onErrorChange }
   );
 };
 
-const SelectBox = ({ item, dataSource, onValueChange }) => {
-  const [value, setValue] = useState(dataSource[0].rol);
-  return (
-    <>
-      <Form.Group style={{ display: "flex", alignItems: "center", margin: "1rem", marginBottom: 0 }}>
-        <Col xs={3} style={{ marginRight: "0.5rem" }}>
-          <Form.Label style={{ marginBottom: 0 }}>{item.nombre}:</Form.Label>
-        </Col>
+// const SelectBox = ({ item, dataSource, onValueChange }) => {
+//   const [value, setValue] = useState(dataSource[0].rol);
+//   return (
+//     <>
+//       <Form.Group style={{ display: "flex", alignItems: "center", margin: "1rem", marginBottom: 0 }}>
+//         <Col xs={3} style={{ marginRight: "0.5rem" }}>
+//           <Form.Label style={{ marginBottom: 0 }}>{item.nombre}:</Form.Label>
+//         </Col>
 
-        <Select
-          options={dataSource.map(opc => ({ value: opc.rol, label: opc.rol }))}
-          isSearchable={false}
-          styles={{
-            menu: (base) => ({
-              ...base,
-            }),
-            control: (base, state) => ({
-              ...base,
-              borderRadius: "10px",
-              width: "19.7rem",
-              borderColor: state.isFocused ? "#20c997" : "#ddd",
-              boxShadow: state.isFocused
-                ? "0 0 0 3px rgba(32, 201, 151, 0.1)"
-                : "none",
-              "&:hover": {
-                borderColor: state.isFocused ? "#20c997" : "#aaa"
-              }
-            }),
-            option: (base, state) => ({
-              ...base,
-              backgroundColor: state.isSelected ? "#b8e8a8d1f5c8" : "white",
-              color: "black",
-              paddingLeft: "1rem",
-              paddingRight: "1rem",
-              "&:hover": {
-                backgroundColor: "#d1f5c8"
-              }
-            }),
-          }
-          }
-          value={{ value, label: value }}
-          onChange={(selected) => {
-            setValue(selected.value);
-            onValueChange(selected.value);
-          }}
-        />
-      </Form.Group>
-    </>
+//         <Select
+//           options={dataSource.map(opc => ({ value: opc.rol, label: opc.rol }))}
+//           isSearchable={false}
+//           styles={{
+//             menu: (base) => ({
+//               ...base,
+//             }),
+//             control: (base, state) => ({
+//               ...base,
+//               borderRadius: "10px",
+//               width: "19.7rem",
+//               borderColor: state.isFocused ? "#20c997" : "#ddd",
+//               boxShadow: state.isFocused
+//                 ? "0 0 0 3px rgba(32, 201, 151, 0.1)"
+//                 : "none",
+//               "&:hover": {
+//                 borderColor: state.isFocused ? "#20c997" : "#aaa"
+//               }
+//             }),
+//             option: (base, state) => ({
+//               ...base,
+//               backgroundColor: state.isSelected ? "#b8e8a8d1f5c8" : "white",
+//               color: "black",
+//               paddingLeft: "1rem",
+//               paddingRight: "1rem",
+//               "&:hover": {
+//                 backgroundColor: "#d1f5c8"
+//               }
+//             }),
+//           }
+//           }
+//           value={{ value, label: value }}
+//           onChange={(selected) => {
+//             setValue(selected.value);
+//             onValueChange(selected.value);
+//           }}
+//         />
+//       </Form.Group>
+//     </>
+//   );
+// };
+const SelectBox = ({ item, dataSource, onValueChange }) => {
+  const [value, setValue] = useState(dataSource[0]?.value ?? "");
+
+  const options = dataSource.map((opc) => ({
+    value: opc.value,
+    label: opc.label,
+  }));
+
+  return (
+    <Form.Group
+      style={{
+        display: "flex",
+        alignItems: "center",
+        margin: "1rem",
+        marginBottom: 0,
+      }}
+    >
+      <Col xs={3} style={{ marginRight: "0.5rem" }}>
+        <Form.Label style={{ marginBottom: 0 }}>
+          {item}:
+        </Form.Label>
+      </Col>
+
+      <Select
+        options={options}
+        isSearchable={false}
+        styles={{
+          menu: (base) => ({
+            ...base,
+          }),
+
+          control: (base, state) => ({
+            ...base,
+            borderRadius: "10px",
+            width: "19.7rem",
+            borderColor: state.isFocused ? "#20c997" : "#ddd",
+            boxShadow: state.isFocused
+              ? "0 0 0 3px rgba(32, 201, 151, 0.1)"
+              : "none",
+            "&:hover": {
+              borderColor: state.isFocused ? "#20c997" : "#aaa",
+            },
+          }),
+
+          option: (base, state) => ({
+            ...base,
+            backgroundColor: state.isSelected
+              ? "#b8e8a8d1f5c8"
+              : "white",
+            color: "black",
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            "&:hover": {
+              backgroundColor: "#d1f5c8",
+            },
+          }),
+        }}
+        value={options.find((opc) => opc.value === value)}
+        onChange={(selected) => {
+          setValue(selected.value);
+          onValueChange(selected.value);
+        }}
+      />
+    </Form.Group>
   );
 };
 
-export { SelectBox, TextBox };
+const PopUp = ({ titulo, children, onClose }) => (
+  <div className="detalle-overlay" onClick={onClose}>
+    <div className="detalle-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-header">
+        <div style={{ width: "100%", textAlign: "center" }}>
+          <h2>{titulo}</h2>
+        </div>
+        <button className="no-print" onClick={onClose} aria-label="Cerrar">×</button>
+      </div>
+
+      <div className="detalle-content">
+        {children}
+      </div>
+    </div>
+  </div>
+);
+
+const Loading = () => (
+  <div className="loading-overlay">
+    <div className="loading-spinner" />
+  </div>
+);
+
+const LoadingSimple = () => (
+  <div className="loading-spinner" />
+);
+
+export { Loading, LoadingSimple, PopUp, SelectBox, TextBox };
 

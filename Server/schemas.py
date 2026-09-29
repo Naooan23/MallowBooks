@@ -6,6 +6,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class LibroBase(BaseModel):
+    id_book : int
     id_categoria: Optional[int] = None
     titulo: str
     autor: Optional[str] = None
@@ -15,11 +16,29 @@ class LibroBase(BaseModel):
     status: Optional[str] = None
     precio: Optional[Decimal] = None
     stock: Optional[int] = None
-
+    
 class LibroResponse(LibroBase):
     id_book: int
 
     model_config = ConfigDict(from_attributes=True)
+
+class CarritoResponse(BaseModel):
+    id_carrito: int
+    id_user: int
+    fecha_creacion: date
+
+    model_config = ConfigDict(from_attributes=True)
+    
+class CarritoDetalleResponse(BaseModel):
+    id_detalle: int
+    id_carrito: int
+    id_book: int
+    cantidad: int
+
+class CarritoDetalleBase(BaseModel):
+    id_carrito: int
+    id_book: int
+    cantidad: int
 
 class UsuarioBase(BaseModel):
     id_user: int

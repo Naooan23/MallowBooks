@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { AdminPage } from "../pages/Administrador/AdminPage";
-import Login from "../pages/Login/Login";
-import DashBoard from "../pages/User/DashBoard";
+import LoginPage from "../pages/Login/LoginPage";
+import DashBoard from "../pages/User/Dashboard/DashBoard";
 import Estadistica from "../pages/User/Estadistica";
 import Perfil from "../pages/User/Perfil";
 
@@ -28,7 +28,7 @@ export const appRoutes = [
   {
     path: "/login",
     label: "lOGIN",
-    element: withSuspense(<Login />),
+    element: withSuspense(<LoginPage />),
     menu: false,
   },
   {

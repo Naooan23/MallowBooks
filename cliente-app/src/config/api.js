@@ -20,8 +20,8 @@ export const post = async (endpoint, data = {}, config = {}) => {
   return response.data;
 };
 
-export const put = async (endpoint, id, data = {}, config = {}) => {
-  const response = await api.put(`/${endpoint}${id != null ? `/${id}` : ""}`, data, config);
+export const put = async (endpoint, data = {}, config = {}) => {
+  const response = await api.put(`/${endpoint}`, data, config);
   return response.data;
 };
 
@@ -48,12 +48,10 @@ export const authService = {
       return response.data;
 
     } catch (error) {
-
-      console.error("Register error:", error);
-
       return {
         success: false,
-        message: error.response?.data?.message ||
+        message:
+          error.response?.data?.detail ||
           "Error de conexión con el servidor"
       };
     }
@@ -61,7 +59,6 @@ export const authService = {
 
   async login(email, password) {
     try {
-      console.log(password);
       const response = await api.post("/auth/login", {
         email,
         password
@@ -70,12 +67,10 @@ export const authService = {
       return response.data;
 
     } catch (error) {
-
-      console.error("Login error:", error);
-
       return {
         success: false,
-        message: error.response?.data?.message ||
+        message:
+          error.response?.data?.detail ||
           "Error de conexión con el servidor"
       };
     }
