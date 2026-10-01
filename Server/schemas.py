@@ -47,12 +47,10 @@ class UsuarioBase(BaseModel):
     password: str
     rol: str
 
-
 class RegisterRequest(BaseModel):
     nombre_usuario: str
     email: str
     password: str
-
 
 class LoginRequest(BaseModel):
     email: str

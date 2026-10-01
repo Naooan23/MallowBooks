@@ -19,6 +19,7 @@ class Categoria(Base):
     nombre_categoria_en: Mapped[str] = mapped_column(String(100), nullable=False)
     nombre_categoria_es: Mapped[str] = mapped_column(String(100), nullable=False)
     descripcion: Mapped[Optional[str]] = mapped_column(String(100))
+    icono: Mapped[Optional[str]] = mapped_column(String(100))
 
     libros: Mapped[list['Libros']] = relationship('Libros', back_populates='categoria')
 
@@ -27,6 +28,7 @@ class Detallecarrito(Base):
     __tablename__ = 'detallecarrito'
     __table_args__ = (
         PrimaryKeyConstraint('id_detalle', name='detallecarrito_pkey'),
+        UniqueConstraint('id_book', name='detallecarrito_id_book_unique')
     )
 
     id_detalle: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)

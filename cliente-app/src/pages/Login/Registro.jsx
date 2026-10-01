@@ -50,7 +50,7 @@ export function Registro({ formData, setFormData, setRegistrar, hashPassword }) 
     if (response.success) {
       setUser(response.usuario);
       if (response.usuario) {
-        if (response.usuario.rol === "admin") navigate("/admin");
+        if (response.usuario.rol === "admin") navigate("/admin-dashboard");
         else navigate("/dashboard");
       }
     }

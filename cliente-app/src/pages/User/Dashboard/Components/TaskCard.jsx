@@ -3,6 +3,7 @@ import { Button, Col } from "react-bootstrap";
 import { LoadingSimple, PopUp } from "../../../../components/Box";
 import { get, put } from "../../../../config/api";
 import { useCart } from "../../../../services/CartContext";
+import "./TaskCard.css";
 
 export function CardLibro({ data, onClick }) {
   const { librosCarrito, agregarAlCarrito, eliminarDelCarrito } = useCart();
@@ -48,7 +49,7 @@ export function CardLibro({ data, onClick }) {
             }`}
         >
           <i
-            className="bi bi-cart4"
+            className="bi bi-plus"
             onClick={buttonClick}
           />
         </div>
@@ -86,7 +87,7 @@ export function CardLibroDetalle({ data, onClose }) {
   const botonClase = sinStock
     ? "button-disabled"
     : estaEnCarrito && cantidadValida
-      ? "button-added"
+      ? "button-delete"
       : "button-cart";
 
   const buttonClick = async () => {
@@ -169,10 +170,10 @@ export function CardLibroDetalle({ data, onClose }) {
 
   return (
     <PopUp titulo={data.titulo} onClose={onClose}>
-      <div style={{ width: "40%" }}>
+      <div className="data-book">
         <BookCover data={data} />
 
-        <p>
+        <p style={{ marginBottom: "0.1rem" }}>
           <strong>Precio:</strong> ${data.precio}
         </p>
 
@@ -202,6 +203,7 @@ export function CardLibroDetalle({ data, onClose }) {
             }}
           >
             <Button
+              className="botones"
               onClick={() => modificarCantidad(false)}
               disabled={cantidadActual <= 0}
             >
@@ -213,6 +215,7 @@ export function CardLibroDetalle({ data, onClose }) {
             </span>
 
             <Button
+              className="botones"
               onClick={() => modificarCantidad(true)}
               disabled={stock <= 0}
             >
@@ -221,13 +224,15 @@ export function CardLibroDetalle({ data, onClose }) {
           </Col>
         </div>
 
-        <Button
-          className={botonClase}
-          disabled={sinStock || !cantidadValida}
-          onClick={buttonClick}
-        >
-          <span>{botonTexto}</span>
-        </Button>
+        <div className="area-botones">
+          <Button
+            className={botonClase}
+            disabled={sinStock || !cantidadValida}
+            onClick={buttonClick}
+          >
+            <span>{botonTexto}</span>
+          </Button>
+        </div>
       </div>
 
       <div className="book-info">

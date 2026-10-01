@@ -14,7 +14,7 @@
 .box {
   width: min(90%, 450px);
 
-  background-color: #f5e8d5;
+  background-color: var(--color-beige-background);
   border-radius: 20px;
 
   text-align: center;
@@ -42,7 +42,7 @@
 }
 
 .title{
-  color: #F2E6D8;
+  color: var(--color-beige-texto);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   padding: 1rem;
@@ -55,21 +55,21 @@
 }
 
 .error {
-  background-color: #e95353;
-  color: #F2E6D8;
+  background-color: var(--color-rojo-rosa);
+  color: var(--color-beige-texto);
 }
 
 .info {
-  background-color: #875deb;
-  color: #F2E6D8;
+  background-color: var(--color-morado);
+  color: var(--color-beige-texto);
 }
 
 .error:hover {
-  background-color: #e98181;
+  background-color: var(--color-rosa-oscuro);
   opacity: 0.85;
 }
 
 .info:hover {
-  background-color: #bf81e9;
+  background-color: var(--color-lila);
   opacity: 0.85;
 }

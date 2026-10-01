@@ -43,7 +43,7 @@ export default function LoginPage() {
   return (
     <BackGroundImage
       image={Esquinas}
-      color={"#F5E8D5FF"}
+      color={"var(--color-beige-texto)"}
     >
       <Row className="rowLogin">
         <Col

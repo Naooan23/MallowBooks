@@ -5,7 +5,7 @@ import "./Box.css";
 
 const disable = {
   fontSize: "1.3rem",
-  backgroundColor: "#e5e5e5bd",
+  backgroundColor: 'var(--color-background)',
   pointerEvents: "none",
   borderRadius: "18px"
 }
@@ -184,25 +184,25 @@ const SelectBox = ({ item, dataSource, onValueChange }) => {
             ...base,
             borderRadius: "10px",
             width: "19.7rem",
-            borderColor: state.isFocused ? "#20c997" : "#ddd",
+            borderColor: state.isFocused ? 'var(--color-focus-box)' : 'var(--color-box)',
             boxShadow: state.isFocused
-              ? "0 0 0 3px rgba(32, 201, 151, 0.1)"
+              ? "0 0 0 3px 'var(--color-shadow-box)'"
               : "none",
             "&:hover": {
-              borderColor: state.isFocused ? "#20c997" : "#aaa",
+              borderColor: state.isFocused ? 'var(--color-focus-box)' : 'var(--color-box)',
             },
           }),
 
           option: (base, state) => ({
             ...base,
             backgroundColor: state.isSelected
-              ? "#b8e8a8d1f5c8"
+              ? "var(--color-selected-box)"
               : "white",
             color: "black",
             paddingLeft: "1rem",
             paddingRight: "1rem",
             "&:hover": {
-              backgroundColor: "#d1f5c8",
+              backgroundColor: "var(--color-selected-box-hover)",
             },
           }),
         }}

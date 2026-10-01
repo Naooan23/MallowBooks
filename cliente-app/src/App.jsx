@@ -1,6 +1,7 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import './DashboardModern.css';
 
 import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { appRoutes } from './config/menuConfig';
@@ -33,19 +34,27 @@ function App() {
             element={appRoutes.find(route => route.path === "/login")?.element}
           />
 
-          <Route element={<Content />}>
-            {rutasFiltradas.map((route) => (
+          {rutasFiltradas.map((route) => (
+            <Route
+              key={route.path}
+              element={<Content route={route} />}>
               <Route
-                key={route.path}
                 path={route.path}
                 element={
                   <ProtectedRoute onlyAdmin={route.admin === true}>
-                    {route.element}
+                    <div className="dashboard-modern">
+                      <main className="main-modern">
+                        <div className="dashboard-content">
+
+                          {route.element}
+                        </div>
+                      </main>
+                    </div>
                   </ProtectedRoute>
                 }
               />
-            ))}
-          </Route>
+            </Route>
+          ))}
 
         </Routes>
       </div>

@@ -4,13 +4,19 @@
     box-sizing: border-box;
 }
 
+#root {
+    overflow: hidden !important;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .App {
-    height: 100vh;
-    padding: 0rem;
+    height: 100% !important;
+    padding: 0rem; 
+    background-color: var(--color-beige-background);
+    overflow: hidden !important;
 }
 
 .loading {

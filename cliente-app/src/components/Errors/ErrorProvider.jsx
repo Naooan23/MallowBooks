@@ -38,7 +38,7 @@ export function ErrorProvider({ children }) {
         <div className="overlay">
           <div className="box">
 
-            <div className="title" style={{ backgroundColor: !success ? "#e62f2f" : "#842fe6" }}>
+            <div className="title" style={{ backgroundColor: !success ? "var(--color-rojo-brillante)" : "var(--color-morado)" }}>
               <h2 style={{ margin: "0rem" }}>{!success ? "Error" : "Info"}</h2>
             </div>
 

@@ -2,9 +2,9 @@ import { Col, Collapse, Nav, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { appRoutes, CerrarSesionRoute } from "../../config/menuConfig";
 import { useAuth } from "../../services/useAuth";
-import "./SideBar.css";
+import "./TopBar.css";
 
-export default function MenuMovil({ colSize, Logo, open, onClick }) {
+export default function MenuMovil({ hayLogo, colSize, Logo, open, onClick }) {
   const user = useAuth();
   const navigate = useNavigate();
 
@@ -28,9 +28,11 @@ export default function MenuMovil({ colSize, Logo, open, onClick }) {
               borderBottomLeftRadius: "20px",
             }}
           >
-            <div className="sidebar-logo">
-              <img src={Logo} alt="logo" width="120" />
-            </div>
+            {hayLogo && (
+              <div className="sidebar-logo">
+                <img src={Logo} alt="logo" width="120" />
+              </div>
+            )}
 
             <Nav className="flex-column" style={{ display: "flex" }}>
               <Row
