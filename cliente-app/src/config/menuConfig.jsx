@@ -1,8 +1,10 @@
 import { Suspense } from "react";
 import { AdminPage } from "../pages/Administrador/AdminPage";
 import LoginPage from "../pages/Login/LoginPage";
+import Carrito from "../pages/User/Carrito";
+import Catalogo from "../pages/User/Catalogo";
+import SearchFilter from "../pages/User/Dashboard/Components/SearchFilter";
 import DashBoard from "../pages/User/Dashboard/DashBoard";
-import Estadistica from "../pages/User/Estadistica";
 import Perfil from "../pages/User/Perfil";
 
 const withSuspense = (Component) => (
@@ -40,10 +42,19 @@ export const appRoutes = [
     admin: false,
   },
   {
-    icon: <i className="bi bi-bar-chart" />,
-    path: "/estadisticas",
-    label: "Estadisticas",
-    element: withSuspense(<Estadistica />),
+    icon: <i className="bi bi-collection" />,
+    path: "/catalogo",
+    label: "Catálogo",
+    element: withSuspense(<Catalogo />),
+    sidebar: SearchFilter,
+    menu: true,
+    admin: false,
+  },
+  {
+    icon: <i className="bi bi-cart4" />,
+    path: "/carrito",
+    label: "Carrito",
+    element: withSuspense(<Carrito />),
     menu: true,
     admin: false,
   },
@@ -57,7 +68,7 @@ export const appRoutes = [
   },
   {
     icon: <i className="bi bi-layout-wtf" />,
-    path: "/admin",
+    path: "/admin-dashboard",
     label: "Admin",
     element: withSuspense(<AdminPage />),
     menu: true,

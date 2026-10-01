@@ -1,58 +1,67 @@
-import { Nav } from "react-bootstrap";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Col, Nav } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
-import { appRoutes, CerrarSesionRoute } from "../../config/menuConfig";
+import { appRoutes } from "../../config/menuConfig";
 import { useAuth } from "../../services/useAuth";
-import "./SideBar.css";
+import "./TopBar.css";
 
-export default function MenuDesktop({ Logo }) {
+export default function MenuDesktop({ hayLogo, Logo }) {
   const { user } = useAuth();
-  const navigate = useNavigate();
 
   const esAdmin = user === null ? false : user?.rol === "admin";
 
-  const rutasFiltradas = appRoutes.filter(route =>
+  const rutasFiltradas = appRoutes.filter((route) =>
     esAdmin
       ? route.menu === true && route.admin === true
       : route.menu === true && route.admin !== true
   );
 
   return (
-    <>
-      <div className="sidebar d-none d-sm-flex flex-column p-3">
-        <div className="sidebar-logo">
-          <img src={Logo} alt="logo" width="150" />
-        </div>
+    <div className="sidebar">
+      {hayLogo && (
+        <Col xs={2} className="sidebar-logo" style={{ justifyContent: "left", width: "17.6vw" }}>
+          <img src={Logo} alt="logo" width="50" />
+        </Col>
+      )}
 
-        <Nav className="flex-column flex-grow-1" style={{ borderRadius: "1rem" }}>
-          {rutasFiltradas.map((route) => {
-            return (
-              <Nav.Link
-                as={NavLink}
-                to={route.path}
-                key={route.label}
-                className="sidebar-link"
-              >
-                <div className="d-flex align-items-center">
-                  <span className="me-2">{route.icon}</span>
-                  {route.label}
-                </div>
-              </Nav.Link>
-            )
-          })}
-
-          {/* Cerrar sesión al fondo */}
+      <Nav className="sidebar-nav">
+        {rutasFiltradas.map((route) => (
           <Nav.Link
-            className="sidebar-link-cerrarSesion mt-auto"
-            onClick={() => navigate('/login')}
+            as={NavLink}
+            to={route.path}
+            key={route.label}
+            className="sidebar-link"
           >
             <div className="d-flex align-items-center">
-              <span className="me-2" style={{ display: "flex", justifyContent: "center" }}>{CerrarSesionRoute.icon}</span>
-              {CerrarSesionRoute.label}
+              <span className="nav-link-icon me-2">{route.icon}</span>
+              <span className="nav-label">{route.label}</span>
             </div>
           </Nav.Link>
-        </Nav>
-      </div >
-    </>
+        ))}
+
+        {/* <Nav.Link
+          className="sidebar-link-cerrarSesion"
+          onClick={() => navigate("/login")}
+        >
+          <div className="d-flex align-items-center">
+            <span
+              className="me-2"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              {CerrarSesionRoute.icon}
+            </span>
+
+            {CerrarSesionRoute.label}
+          </div>
+        </Nav.Link> */}
+      </Nav>
+
+      <Col xs={1} className="sidebar-profile">
+        <i className="bi bi-person-circle" />
+      </Col>
+    </div >
   );
 }

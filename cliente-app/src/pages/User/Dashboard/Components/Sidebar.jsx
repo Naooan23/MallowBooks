@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { appRoutes } from "../../Routes";
 import Logo from "../../assets/Logo.png";
-import "./menu/AppSideBar.css";
 import MenuButtonMovil from "./menu/MenuButtonMovil.jsx";
 import MenuDesktop from "./menu/MenuDesktop.jsx";
 import MenuMovil from "./menu/MenuMovil.jsx";
@@ -20,6 +19,7 @@ export default function AppSidebar() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     DefinirRutas(appRoutes.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appRoutes, colSize]);
@@ -29,14 +29,14 @@ export default function AppSidebar() {
       <div
         style={{
           height: "100vh",
-          backgroundColor: !open ? "#f8f9fa" : "transparent",
+          backgroundColor: !open ? "var(--color-blanco)" : "transparent",
         }}
       >
         <Row
           style={{
             display: "flex",
             justifyContent: open ? "flex-end" : "flex-start",
-            backgroundColor: "#f8f9fa",
+            backgroundColor: "var(--color-blanco)",
             width: !open ? "50%" : "107vw",
           }}
         >

@@ -1,0 +1,282 @@
+.books-grid {
+    flex: 1;
+    min-width: 0;
+    height: 96%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1rem;
+    padding-top: 0rem;
+}
+
+.books-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.books-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.books-grid::-webkit-scrollbar-thumb {
+    background: var(--color-rosa-oscuro-claro);
+    border-radius: 10px;
+}
+
+.books-grid::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+.books-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  padding: 1rem;
+}
+
+.book-card {
+  width: 11rem;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.book-card:hover {
+  transform: scale(1.05);
+}
+
+.book-cover {
+  width: 11rem;
+  height: 17rem;
+  overflow: hidden;
+  border-radius: 0.4rem;
+  background-color: var(--color-blanco);
+}
+
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  /* object-fit: cover; */
+  display: block;
+}
+
+.book-info {
+  padding-top: 0.6rem;
+}
+
+.book-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-info p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-gris);
+  margin: 0px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-cover.detalle {
+    position: relative;
+
+    width: 11rem;
+    min-height: 15rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.book-cover.detalle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+
+    transition: opacity 0.2s ease;
+}
+
+.book-cover-container {
+    position: relative;
+}
+
+.button-cart {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: var(--color-cafe);
+    color: var(--color-rosa);
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+.button-cart:hover {
+  background-color: var(--color-cafe-claro) !important;
+  color: var(--color-rosa) !important;    
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px var(--color-morado-transparente);
+}
+
+.button-cart:active {
+    transform: translateY(0);
+}
+
+.button-delete {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: var(--color-rosa) !important;
+    color: var(--color-cafe) !important;
+    
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+    
+    transition: all 0.2s ease;
+  }
+  
+.button-delete:hover{
+  background-color: var(--color-cafe-claro) !important;
+  color: var(--color-rosa-coral) !important;
+}
+
+.cart-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    width: 2rem;
+    height: 2rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    border: 2px solid var(--color-rosa);
+    background-color: var(--color-cafe);
+    color: var(--color-rosa);
+    font-weight: 700;
+
+    z-index: 2;
+}
+
+.cart-button.added {
+    border: 2px solid var(--color-cafe);
+    background-color: var(--color-rosa);
+    color: var(--color-cafe);
+}
+
+.cart-button.disable {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.cart-button i {
+    font-size: 1.5rem;
+    margin-bottom: 0.1rem;
+}
+
+.book-info {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+}
+
+.book-info p{
+    margin: 0px;
+    padding: 0px;
+}
+
+.book-info textarea {
+    width: 100%;
+    height: 85%;
+    box-sizing: border-box;
+    resize: none;
+    background-color: transparent;
+    border: none;
+    padding: 8px 10px;
+}
+
+.book-info textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.book-info textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.book-info textarea::-webkit-scrollbar-thumb {
+    background: var(--color-rosa-oscuro-claro);
+    border-radius: 10px;
+}
+
+.book-info textarea::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+.botones {
+  background-color: var(--color-cafe);
+  color: var(--color-rosa);
+  padding-top: 0;
+  padding-bottom: 0.2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border: none;
+}
+
+.botones:hover {  
+  background-color: var(--color-rosa);
+  color: var(--color-cafe);
+}
+
+.botones:active {
+  background-color: var(--color-rosa) !important;
+  color: var(--color-cafe) !important;
+  box-shadow: none !important;
+}
+
+.botones:disabled, .button-cart:disabled {
+  opacity: 0.5;
+  background-color: var(--color-cafe);
+  color: var(--color-rosa);
+}
+
+.area-botones {
+  display: flex;
+  justify-content: center; 
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.data-book {
+  width: 40%;
+  justify-items: center;
+}

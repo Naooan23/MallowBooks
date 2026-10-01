@@ -2,6 +2,52 @@
 
 :root {
   --heading: 'Quicksand', sans-serif;
+
+  /* ===== Fondos ===== */
+  --color-background: #f8e9e9;
+  --color-background-light: #F9FAFB;
+  --color-filter-background: #ffe3f7;
+
+  /* ===== Rosa ===== */
+  --color-rosa-background:rgb(242, 216, 216);
+  --color-rosa-blanco-claro: #ead6d6;
+  --color-rosa-claro: #FACFCF;
+  --color-rosa: #ECB8B8;
+  --color-rosa-oscuro-claro-disable: #b58f8f;
+  --color-rosa-oscuro-claro: #D9958F;
+  --color-rosa-oscuro: #E98181;
+  --color-rosa-coral: #EB9999;
+
+  /* ===== Morado ===== */
+  --color-lila-blanco-claro: #E5D6E8;
+  --color-lila-claro: #C8A9C9;
+  --color-lila: #BF81E9;
+  --color-morado: #7D20C9;
+  --color-morado-oscuro: #4F3652;
+  --color-morado-transparente: rgba(125, 32, 201, 0.25);
+
+  /* ===== Verde ===== */
+  --color-selected-box: #B8E8A8;
+  --color-selected-box-hover: #D1F5C8;
+  --color-focus-box: #20C997;
+  --color-shadow-box: rgba(32, 201, 151, 0.1);
+
+  /* ===== Rojo ===== */
+  --color-rojo-rosa: #E95353;
+  --color-rojo-brillante: #E62F2F;
+  --color-rojo: #970C0C;
+
+  /* ===== Gris - Blanco ===== */
+  --color-box: #DDD;
+  --color-beige: #e9d7bf;
+  --color-gris: #777;
+  --color-blanco: #FFF;
+  --color-beige-texto: #F2E6D8;
+  --color-beige-background: #F2E9D8;
+
+  /* ===== Cafe ===== */
+  --color-cafe: #350F04;
+  --color-cafe-claro: #6B3F37;
 }
 
 body {

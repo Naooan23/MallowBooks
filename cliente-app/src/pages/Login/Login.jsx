@@ -42,7 +42,7 @@ export function Login({ formData, setFormData, formDataRegistro, setRegistrar, h
     if (response.success) {
       setUser(response.usuario);
       if (response.usuario) {
-        if (response.usuario.rol === "admin") navigate("/admin");
+        if (response.usuario.rol === "admin") navigate("/admin-dashboard");
         else navigate("/dashboard");
       }
     }
