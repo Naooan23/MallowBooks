@@ -20,14 +20,7 @@ export default function Content({ route }) {
           setFilter={setFilter}
         />
       )}
-      <div
-        className={tieneSideBar ? "page-content" : "total"}
-        style={
-          tieneSideBar
-            ? { marginLeft: "17.5vw" }
-            : { marginLeft: "0vw" }
-        }
-      >
+      <div className={tieneSideBar ? "page-content" : "total"}>
         <AppTopBar hayLogo={!tieneSideBar} />
 
         <main>

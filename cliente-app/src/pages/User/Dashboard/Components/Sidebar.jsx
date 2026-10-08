@@ -49,19 +49,16 @@ export default function AppSidebar() {
               marginLeft: open ? "1rem" : "0rem",
             }}
           >
-            {/* Botón visible solo en móvil */}
             <MenuButtonMovil props={{ open: open, setOpen: setOpen }} />
           </Col>
         </Row>
 
-        {/* Menú móvil desplegable */}
         <MenuMovil
           colSize={colSize}
           Logo={Logo}
           open={open}
           onClick={() => setOpen(!open)} />
 
-        {/* Sidebar fijo en desktop */}
         <MenuDesktop Logo={Logo} />
       </div>
     </>

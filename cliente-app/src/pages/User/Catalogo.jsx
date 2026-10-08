@@ -21,6 +21,7 @@ export default function Catalogo() {
         url: x.portada_url,
         titulo: x.titulo,
         autor: x.autor,
+        fecha: x.fecha_publicacion,
         sinopsis: x.sinopsis,
         precio: x.precio,
         stock: x.stock,

@@ -168,6 +168,8 @@ export function CardLibroDetalle({ data, onClose }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.id]);
 
+  console.log(data);
+
   return (
     <PopUp titulo={data.titulo} onClose={onClose}>
       <div className="data-book">
@@ -238,6 +240,10 @@ export function CardLibroDetalle({ data, onClose }) {
       <div className="book-info">
         <p>
           <strong>Autor:</strong> {data.autor}
+        </p>
+
+        <p>
+          <strong>Fecha de Publicación:</strong> {data.fecha}
         </p>
 
         <p>

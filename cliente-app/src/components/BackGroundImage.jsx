@@ -8,7 +8,6 @@ export const BackGroundImage = ({ image, color, children }) => {
         backgroundColor: color,
       }}
     >
-      {/* Imágenes al fondo */}
       <img
         src={image}
         style={{
@@ -38,7 +37,6 @@ export const BackGroundImage = ({ image, color, children }) => {
         }}
       />
 
-      {/* Contenido siempre encima */}
       <div style={{ position: "relative", zIndex: 1 }}>
         {children}
       </div>
