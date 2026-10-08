@@ -1,12 +1,14 @@
 import { Col, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
+import { useState } from "react";
 import { appRoutes } from "../../config/menuConfig";
 import { useAuth } from "../../services/useAuth";
-import "./TopBar.css";
+import "./MenuBars.css";
 
 export default function MenuDesktop({ hayLogo, Logo }) {
   const { user } = useAuth();
+  const [datosPerfil, setDatosPerfil] = useState();
 
   const esAdmin = user === null ? false : user?.rol === "admin";
 
@@ -38,30 +40,15 @@ export default function MenuDesktop({ hayLogo, Logo }) {
             </div>
           </Nav.Link>
         ))}
-
-        {/* <Nav.Link
-          className="sidebar-link-cerrarSesion"
-          onClick={() => navigate("/login")}
-        >
-          <div className="d-flex align-items-center">
-            <span
-              className="me-2"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              {CerrarSesionRoute.icon}
-            </span>
-
-            {CerrarSesionRoute.label}
-          </div>
-        </Nav.Link> */}
       </Nav>
 
       <Col xs={1} className="sidebar-profile">
-        <i className="bi bi-person-circle" />
+        <i className="bi bi-person-circle" onClick={(e) => { console.log(e); setDatosPerfil(e); }} />
       </Col>
+
+      {datosPerfil &&
+        (< div > HOLA</div>)
+      }
     </div >
   );
 }

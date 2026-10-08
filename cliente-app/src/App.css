@@ -13,10 +13,9 @@ body {
 }
 
 .App {
-    height: 100% !important;
-    padding: 0rem; 
-    background-color: var(--color-beige-background);
-    overflow: hidden !important;
+  height: 100vh;
+  padding: 0;
+  background-color: var(--color-beige-background);
 }
 
 .loading {

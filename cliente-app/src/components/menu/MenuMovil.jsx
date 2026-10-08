@@ -2,7 +2,7 @@ import { Col, Collapse, Nav, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { appRoutes, CerrarSesionRoute } from "../../config/menuConfig";
 import { useAuth } from "../../services/useAuth";
-import "./TopBar.css";
+import "./MenuBars.css";
 
 export default function MenuMovil({ hayLogo, colSize, Logo, open, onClick }) {
   const user = useAuth();
@@ -68,10 +68,7 @@ export default function MenuMovil({ hayLogo, colSize, Logo, open, onClick }) {
                       </Nav.Link>
                     </Col>
                   );
-                }
-                )}
-
-                {/* Cerrar sesión al final */}
+                })}
                 <Col xs={colSize}>
                   <Nav.Link
                     className="sidebar-link-cerrarSesion-movil w-100"
