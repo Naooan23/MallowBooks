@@ -1,17 +1,31 @@
 import { useEffect, useState } from "react";
 import { Col } from "react-bootstrap";
+import type { SearchFilterProps } from "../../../../components/menu/SideBar/TypesSideBar";
 import { get } from "../../../../config/api";
 import "./SearchFilter.css";
 
-const SearchFilter = ({ search, setSearch, filter, setFilter }) => {
-  const [categorias, setCategorias] = useState([]);
+interface Categorias {
+  id: number,
+  value: string,
+  label: string,
+  icon: string,
+}
+
+interface ResponseCategorias {
+  id_categoria: number,
+  nombre_categoria_es: string,
+  icono: string,
+}
+
+const SearchFilter = ({ search, setSearch, filter, setFilter }: SearchFilterProps) => {
+  const [categorias, setCategorias] = useState<Categorias[]>();
 
   const cargarCategorias = async () => {
     const response = await get("categorias", null);
 
     setCategorias([
       { id: 0, value: 0, label: "Todas", icon: "bi bi-bookmark-star" },
-      ...response.map((x) => ({
+      ...response.map((x: ResponseCategorias) => ({
         id: x.id_categoria,
         value: x.id_categoria,
         label: x.nombre_categoria_es,
@@ -50,7 +64,7 @@ const SearchFilter = ({ search, setSearch, filter, setFilter }) => {
 
         <div className="filter-group">
           <div className="filter-buttons">
-            {filter != null && setFilter != null && (categorias.map((x) => (
+            {filter != null && setFilter != null && (categorias?.map((x) => (
               <button
                 key={x.id}
                 style={{

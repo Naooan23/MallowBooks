@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import type { ChildrenProp } from "../../GeneralTypes";
 import { ErrorContext } from "../../services/useAuth";
 import "./ErrorProvider.css";
+import type { ErrorData } from "./TypesErrors";
 
-export function ErrorProvider({ children }) {
+export function ErrorProvider({ children }: ChildrenProp) {
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState();
+  const [success, setSuccess] = useState<boolean | undefined>();
 
-  const showError = (data) => {
+  const showError = (data: ErrorData) => {
     setError(data.message);
     setSuccess(data.success);
   };

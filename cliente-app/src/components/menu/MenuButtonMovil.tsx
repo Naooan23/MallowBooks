@@ -1,6 +1,7 @@
 import "./MenuBars.css";
+import type { MenuButtonMovilProps } from "./MenuTypes";
 
-export default function MenuButtonMovil({ props }) {
+export default function MenuButtonMovil(props: MenuButtonMovilProps) {
   return (
     <>
       <button

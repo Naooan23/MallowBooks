@@ -8,7 +8,7 @@ import { useAuth, useError } from "../../services/useAuth";
 export function Login({ formData, setFormData, formDataRegistro, setRegistrar, hashPassword }) {
   const [loginErrors, setLoginErrors] = useState({});
 
-  let buttonDisable = formData.some(
+  const buttonDisable = formData.some(
     x => !x.value?.trim()
   );
 
@@ -55,10 +55,8 @@ export function Login({ formData, setFormData, formDataRegistro, setRegistrar, h
       <TextBox
         key={x.key}
         item={x}
-        type={x.type}
-        touched={x.touched}
         login={true}
-        style={{
+        styleComponent={{
           fontFamily: "var(--heading)",
           fontWeight: 700
         }}

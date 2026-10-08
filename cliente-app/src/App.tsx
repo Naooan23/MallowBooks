@@ -1,11 +1,9 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import './DashboardModern.css';
-
-import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { appRoutes } from './config/menuConfig';
-import Content from "./Content";
+import Content from './Content';
 import ProtectedRoute from './services/ProtectedRoute';
 import { useAuth } from './services/useAuth';
 
@@ -20,7 +18,7 @@ function App() {
   );
 
   return (
-    <Router>
+    <BrowserRouter>
       <div className="App">
         <Routes>
 
@@ -58,7 +56,7 @@ function App() {
 
         </Routes>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 
