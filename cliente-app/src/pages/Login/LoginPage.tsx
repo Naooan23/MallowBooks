@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Esquinas from "../../assets/Esquinas Login.png";
 import MascotaLogin from "../../assets/MascotaLogin.jpg";
-import { BackGroundImage } from "../../components/BackGroundImage.jsx";
-import { useAuth } from "../../services/useAuth.jsx";
+import { BackGroundImage } from "../../components/BackGroundImage.js";
+import { useAuth } from "../../services/useAuth.js";
 import "./Login.css";
-import { Login } from "./Login.jsx";
-import { Registro } from "./Registro.jsx";
+import { Login } from "./Login.js";
+import type { LoginPageFormDataProps } from "./LoginTypes.js";
+import { Registro } from "./Registro.js";
 
 
 export default function LoginPage() {
-  const [formData, setFormData] = useState([
+  const [formData, setFormData] = useState<LoginPageFormDataProps[]>([
     { key: "email", nombre: "Correo", value: "", touched: false, type: "email" },
     { key: "password", nombre: "Contraseña", value: "", touched: false, type: "password" },
   ]);
@@ -23,7 +24,7 @@ export default function LoginPage() {
   const [registrar, setRegistrar] = useState(false);
   const { setUser } = useAuth();
 
-  async function hashPassword(password) {
+  async function hashPassword(password: string) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
 
@@ -36,8 +37,8 @@ export default function LoginPage() {
   }
 
   useEffect(() => {
-    setUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setUser(null);
+
   }, []);
 
   return (

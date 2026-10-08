@@ -1,4 +1,6 @@
-export const BackGroundImage = ({ image, color, children }) => {
+import type { BackGroundImageProps } from "./ComponentsTypes";
+
+export const BackGroundImage = ({ image, color, children }: BackGroundImageProps) => {
   return (
     <div
       style={{

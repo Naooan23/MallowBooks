@@ -5,10 +5,11 @@ import { useState } from "react";
 import { appRoutes } from "../../config/menuConfig";
 import { useAuth } from "../../services/useAuth";
 import "./MenuBars.css";
+import type { MenuDesktopProps } from "./MenuTypes";
 
-export default function MenuDesktop({ hayLogo, Logo }) {
+export default function MenuDesktop({ hayLogo, Logo }: MenuDesktopProps) {
   const { user } = useAuth();
-  const [datosPerfil, setDatosPerfil] = useState();
+  const [datosPerfil, setDatosPerfil] = useState(false);
 
   const esAdmin = user === null ? false : user?.rol === "admin";
 
@@ -43,7 +44,7 @@ export default function MenuDesktop({ hayLogo, Logo }) {
       </Nav>
 
       <Col xs={1} className="sidebar-profile">
-        <i className="bi bi-person-circle" onClick={(e) => { console.log(e); setDatosPerfil(e); }} />
+        <i className="bi bi-person-circle" onClick={() => setDatosPerfil(!datosPerfil)} />
       </Col>
 
       {datosPerfil &&

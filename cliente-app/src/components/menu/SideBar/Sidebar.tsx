@@ -1,8 +1,9 @@
 import { useState } from "react";
-import Logo from "../../assets/Logo.jpg";
-import "./DashboardSidebar.css";
+import Logo from "../../../assets/Logo.jpg";
+import "./Sidebar.css";
+import type { SideBarProps } from "./TypesSideBar";
 
-export default function DashboardSidebar({ sidebar: Sidebar, search, setSearch, filter, setFilter }) {
+export default function Sidebar<T extends object>({ sidebar: SidebarComponent, sidebarProps, }: SideBarProps<T>) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -29,11 +30,8 @@ export default function DashboardSidebar({ sidebar: Sidebar, search, setSearch, 
           <img src={Logo} className="logo" alt="Mallow Books" />
         </div>
 
-        <Sidebar
-          search={search}
-          setSearch={setSearch}
-          filter={filter}
-          setFilter={setFilter}
+        <SidebarComponent
+          {...sidebarProps}
         />
       </aside>
     </>

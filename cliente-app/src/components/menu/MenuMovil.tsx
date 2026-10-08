@@ -3,9 +3,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { appRoutes, CerrarSesionRoute } from "../../config/menuConfig";
 import { useAuth } from "../../services/useAuth";
 import "./MenuBars.css";
+import type { MenuMovilProps } from "./MenuTypes";
 
-export default function MenuMovil({ hayLogo, colSize, Logo, open, onClick }) {
-  const user = useAuth();
+export default function MenuMovil({ hayLogo, colSize, Logo, open, onClick }: MenuMovilProps) {
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const esAdmin = user === null ? false : user?.rol === "admin";

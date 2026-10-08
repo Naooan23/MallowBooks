@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import DashboardSidebar from "./components/menu/DashboardSidebar";
-import AppTopBar from "./components/menu/TopBar";
+import Sidebar from "./components/menu/SideBar/Sidebar";
+import TopBar from "./components/menu/TopBar";
+import type { AppRoute } from "./config/ConfigTypes";
 
-export default function Content({ route }) {
+interface ContentProps {
+  route: AppRoute,
+}
+
+export default function Content({ route }: ContentProps) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState(0);
 
@@ -11,17 +16,19 @@ export default function Content({ route }) {
 
   return (
     <>
-      {tieneSideBar && (
-        <DashboardSidebar
+      {route.sidebar && (
+        <Sidebar
           sidebar={route.sidebar}
-          search={search}
-          setSearch={setSearch}
-          filter={filter}
-          setFilter={setFilter}
+          sidebarProps={{
+            search,
+            setSearch,
+            filter,
+            setFilter,
+          }}
         />
       )}
       <div className={tieneSideBar ? "page-content" : "total"}>
-        <AppTopBar hayLogo={!tieneSideBar} />
+        <TopBar hayLogo={!tieneSideBar} />
 
         <main>
           <Outlet context={{

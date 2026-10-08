@@ -1,20 +1,8 @@
-// import { useState } from "react";
-// import { UserContext } from "./UserContext";
-
-// export const UserProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);
-
-//   return (
-//     <UserContext.Provider value={{ user, setUser }}>
-//       {children}
-//     </UserContext.Provider>
-//   );
-// };
-
 import { useEffect, useState } from "react";
+import type { ChildrenProp } from "../GeneralTypes";
 import { UserContext } from "./UserContext";
 
-export const UserProvider = ({ children }) => {
+export const UserProvider = ({ children }: ChildrenProp) => {
   const [user, setUser] = useState(() => {
     const savedUser = sessionStorage.getItem("user");
 
