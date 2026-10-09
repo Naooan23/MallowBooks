@@ -13,7 +13,6 @@ dist
 dist-ssr
 *.local
 *.config.js
-package*.json
 *_pycache*
 
 # Editor directories and files
