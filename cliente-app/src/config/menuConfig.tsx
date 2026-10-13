@@ -1,6 +1,7 @@
 import { Suspense, type ReactNode } from "react";
 import { AdminPage } from "../pages/Administrador/AdminPage";
 import LoginPage from "../pages/Login/LoginPage";
+import { MainPage } from "../pages/MainPage/MainPage";
 import Carrito from "../pages/User/Carrito";
 import Catalogo from "../pages/User/Catalogo";
 import SearchFilter from "../pages/User/Dashboard/Components/SearchFilter";
@@ -29,8 +30,14 @@ const withSuspense = (Component: ReactNode) => (
 
 export const appRoutes: AppRoute[] = [
   {
+    path: "/",
+    label: "MainPage",
+    element: withSuspense(<MainPage />),
+    menu: false,
+  },
+  {
     path: "/login",
-    label: "lOGIN",
+    label: "Login",
     element: withSuspense(<LoginPage />),
     menu: false,
   },
