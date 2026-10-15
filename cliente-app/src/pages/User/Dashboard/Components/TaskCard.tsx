@@ -57,13 +57,13 @@ export function CardLibro({ data, onClick }) {
       </div>
 
       <div className="book-info" onClick={onClick}>
+        <h3>{data.titulo}</h3>
+        <p>{data.autor}</p>
+        <hr style={{color: "grey"}}/>
         <h2 style={{ fontSize: "1.6rem" }}>
           ${data.precio}
         </h2>
 
-        <h3>{data.titulo}</h3>
-
-        <p>{data.autor}</p>
       </div>
     </div>
   );
