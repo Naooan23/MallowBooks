@@ -37,6 +37,11 @@
   justify-content: center;
   margin-bottom: 0;
 }
+/* .sidebar-logo img {
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+} */
 
 .sidebar-profile {
     margin-left: auto;
