@@ -1,0 +1,536 @@
+
+:root {
+  --mallow-cream: #FAF7F2;
+  --mallow-white: #FFFDF9;
+  --mallow-brown: #4A2E28;
+  --mallow-brown-light: #75554E;
+  --mallow-pink: #E8A5B2;
+  --mallow-pink-dark: #BF6A7C;
+  --mallow-muted: #9E7D76;
+  --mallow-border: #EFE4DA;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px;
+}
+
+body {
+  margin: 0;
+  background: var(--mallow-cream);
+  color: var(--mallow-brown);
+  font-family: Arial, sans-serif;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.mallow-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250, 247, 242, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--mallow-border);
+}
+
+.mallow-announcement {
+  min-height: 32px;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  background: var(--mallow-brown);
+  color: var(--mallow-white);
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+
+.announcement-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  background: var(--mallow-pink);
+  border-radius: 50%;
+}
+
+.mallow-navbar {
+  max-width: 1280px;
+  min-height: 86px;
+  padding: 12px 28px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.mallow-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--mallow-brown);
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.mallow-logo {
+  width: 49px;
+  height: 49px;
+  object-fit: cover;
+  border: 2px solid var(--mallow-pink);
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s;
+}
+
+.mallow-brand:hover .mallow-logo {
+  transform: scale(1.06);
+}
+
+.mallow-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.mallow-brand-text strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.mallow-brand-text small {
+  color: var(--mallow-muted);
+  font-size: 10px;
+  letter-spacing: 1.2px;
+}
+
+.mallow-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.mallow-nav-links button,
+.mobile-navigation > button {
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--mallow-brown);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.mallow-nav-links button:hover,
+.mobile-navigation > button:hover {
+  color: var(--mallow-pink-dark);
+}
+
+.mallow-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mallow-icon-button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--mallow-brown);
+  font-size: 27px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.mallow-icon-button:hover {
+  background: #FCECEF;
+  color: var(--mallow-pink-dark);
+}
+
+.cart-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 4px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background: var(--mallow-pink-dark);
+  color: white;
+  font-size: 10px;
+}
+
+.mallow-auth {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 12px;
+  border-left: 1px solid var(--mallow-border);
+}
+
+.login-link,
+.register-link {
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+
+.login-link {
+  color: var(--mallow-brown);
+}
+
+.login-link:hover {
+  color: var(--mallow-pink-dark);
+}
+
+.register-link {
+  background: var(--mallow-brown);
+  color: white;
+}
+
+.register-link:hover {
+  background: #5C3D35;
+}
+
+.user-menu-container {
+  position: relative;
+}
+
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  border: 1px solid #E8A5B266;
+  border-radius: 30px;
+  background: #FCECEF;
+  color: var(--mallow-brown);
+  font-size: 12px;
+}
+
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--mallow-pink-dark);
+  color: white;
+  font-weight: bold;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 110;
+  width: 240px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  border: 1px solid var(--mallow-border);
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 10px 30px #4A2E281A;
+}
+
+.user-dropdown > strong {
+  font-size: 13px;
+}
+
+.user-dropdown > small {
+  color: var(--mallow-muted);
+  overflow-wrap: anywhere;
+}
+
+.user-role {
+  padding: 4px 8px;
+  border-radius: 20px;
+  background: var(--mallow-cream);
+  color: var(--mallow-pink-dark);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.user-dropdown > button {
+  width: 100%;
+  padding: 9px 0;
+  border: 0;
+  background: transparent;
+  color: var(--mallow-brown);
+  text-align: left;
+  font-size: 12px;
+}
+
+.user-dropdown > button:hover {
+  color: var(--mallow-pink-dark);
+}
+
+.user-dropdown > .logout-button {
+  color: #C03945;
+}
+
+.mobile-menu-button,
+.mobile-navigation {
+  display: none;
+}
+
+/* Portada */
+
+.mallow-main {
+  max-width: 1280px;
+  margin: auto;
+  padding: 0 28px;
+}
+
+.mallow-hero {
+  min-height: 490px;
+  padding: 90px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.hero-label {
+  color: var(--mallow-pink-dark);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.mallow-hero h1 {
+  margin: 22px 0 18px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.15;
+  font-weight: normal;
+}
+
+.mallow-hero h1 span {
+  color: var(--mallow-pink-dark);
+  font-style: italic;
+}
+
+.mallow-hero p {
+  max-width: 510px;
+  color: var(--mallow-brown-light);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.hero-button {
+  margin-top: 18px;
+  padding: 14px 22px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: var(--mallow-brown);
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.hero-button:hover {
+  background: #5C3D35;
+  transform: translateY(-2px);
+}
+
+.placeholder-section {
+  min-height: 180px;
+  padding: 45px 30px;
+  border-top: 1px solid var(--mallow-border);
+  scroll-margin-top: 125px;
+}
+
+.placeholder-section h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+}
+
+.placeholder-section p {
+  color: var(--mallow-muted);
+  font-size: 14px;
+}
+
+/* Adaptación para móviles */
+
+@media (max-width: 1050px) {
+  .mallow-navbar {
+    gap: 12px;
+    padding: 12px 18px;
+  }
+
+  .mallow-brand-text strong {
+    font-size: 20px;
+  }
+
+  .mallow-nav-links {
+    gap: 14px;
+  }
+
+  .mallow-nav-links button {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 800px) {
+  .mallow-nav-links {
+    display: none;
+  }
+
+  .mallow-navbar {
+    min-height: 76px;
+  }
+
+  .mallow-auth {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--mallow-brown);
+    font-size: 23px;
+  }
+
+  .mobile-menu-button:hover {
+    background: #FCECEF;
+  }
+
+  .mobile-navigation {
+    padding: 14px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    border-top: 1px solid var(--mallow-border);
+    background: var(--mallow-cream);
+  }
+
+  .mobile-navigation > button {
+    padding: 12px;
+    text-align: left;
+    border-radius: 8px;
+  }
+
+  .mobile-navigation > button:hover {
+    background: #FCECEF;
+  }
+
+  .mobile-auth {
+    margin-top: 10px;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--mallow-border);
+  }
+
+  .mobile-auth a,
+  .mobile-auth button {
+    padding: 12px;
+    border: 1px solid var(--mallow-border);
+    border-radius: 8px;
+    background: white;
+    color: var(--mallow-brown);
+    text-decoration: none;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .mobile-auth a:last-child {
+    background: var(--mallow-brown);
+    color: white;
+  }
+
+  .mobile-auth small {
+    color: var(--mallow-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .mallow-hero {
+    min-height: 420px;
+    padding: 65px 8px;
+  }
+
+  .mallow-main {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 420px) {
+  .mallow-announcement {
+    font-size: 9px;
+  }
+
+  .mallow-navbar {
+    padding: 10px 12px;
+    gap: 5px;
+  }
+
+  .mallow-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .mallow-brand {
+    gap: 7px;
+  }
+
+  .mallow-brand-text strong {
+    font-size: 17px;
+  }
+
+  .mallow-brand-text small {
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .mallow-actions {
+    gap: 0;
+  }
+
+  .mallow-icon-button,
+  .mobile-menu-button {
+    width: 34px;
+    height: 38px;
+  }
+}
