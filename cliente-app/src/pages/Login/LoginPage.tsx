@@ -8,6 +8,7 @@ import "./Login.css";
 import { Login } from "./Login.js";
 import type { LoginPageFormDataProps } from "./LoginTypes.js";
 import { Registro } from "./Registro.js";
+import { useNavigate } from "react-router-dom";
 
 
 export default function LoginPage() {
@@ -23,7 +24,7 @@ export default function LoginPage() {
   ]);
   const [registrar, setRegistrar] = useState(false);
   const { setUser } = useAuth();
-
+const navigate = useNavigate();
   async function hashPassword(password: string) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -46,6 +47,7 @@ export default function LoginPage() {
       image={Esquinas}
       color={"var(--color-beige-texto)"}
     >
+       <button className="Volver" onClick={() => navigate("/")} >← Volver</button>
       <Row className="rowLogin">
         <Col
           className="col-Login-Form"
