@@ -208,13 +208,23 @@ body {
   border-radius: 20px;
 }
 
+
 .Button.LogIn {
   margin-top: 2.5rem;
   background-color: var(--color-cafe);
   color: var(--color-rosa);
   border: 2px solid transparent;
 }
-
+.Volver {
+  background-color: var(--color-rosa);
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-family: var(--heading);
+  border-radius: 20px;
+}
 .Button.LogIn:disabled {
   background-color: var(--color-rosa-oscuro-claro-disable);
   color: var(--color-rosa-blanco-claro);
