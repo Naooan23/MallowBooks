@@ -2,8 +2,11 @@ from datetime import date
 from decimal import Decimal
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+from sqlalchemy import null
 
+class CarritoBase(BaseModel):
+    id_user: int
 
 class LibroBase(BaseModel):
     id_book : int
@@ -36,7 +39,7 @@ class CarritoDetalleResponse(BaseModel):
     cantidad: int
 
 class CarritoDetalleBase(BaseModel):
-    id_carrito: int
+    id_carrito: Optional[int]
     id_book: int
     cantidad: int
 
@@ -55,3 +58,12 @@ class RegisterRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: str
     password: str
+
+class LibroOrdenCreate(BaseModel):
+    id_book: int
+    cantidad: int = Field(gt=0)
+
+
+class OrdenCreate(BaseModel):
+    id_user: int
+    libros: list[LibroOrdenCreate] = Field(min_length=1)

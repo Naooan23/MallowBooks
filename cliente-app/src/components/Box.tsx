@@ -66,7 +66,7 @@ const TextBox = ({ className, item, login, styleComponent, onValueChange, onErro
               fontSize: "1.3rem"
             }}
           >
-            {item.nombre}:
+            {item.label}:
           </Form.Label>
         </Col>
 
@@ -81,7 +81,7 @@ const TextBox = ({ className, item, login, styleComponent, onValueChange, onErro
                 }
             }
             type={item.type}
-            placeholder={item.nombre}
+            placeholder={item.label}
             value={item.value ?? ""}
             onChange={(e) => onValueChange(e.target.value)}
             onBlur={() => setTouched(true)}

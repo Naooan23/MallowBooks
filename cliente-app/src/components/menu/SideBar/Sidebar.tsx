@@ -30,9 +30,11 @@ export default function Sidebar<T extends object>({ sidebar: SidebarComponent, s
           <img src={Logo} className="logo" alt="Mallow Books" />
         </div>
 
-        <SidebarComponent
-          {...sidebarProps}
-        />
+        <div className="sidebar-modern">
+          <SidebarComponent
+            {...sidebarProps}
+          />
+        </div>
       </aside>
     </>
   );

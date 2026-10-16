@@ -12,14 +12,14 @@ import { Registro } from "./Registro.js";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState<LoginPageFormDataProps[]>([
-    { key: "email", nombre: "Correo", value: "", touched: false, type: "email" },
-    { key: "password", nombre: "Contraseña", value: "", touched: false, type: "password" },
+    { key: "email", label: "Correo", value: "", touched: false, type: "email" },
+    { key: "password", label: "Contraseña", value: "", touched: false, type: "password" },
   ]);
-  const [formDataRegistro, setFormDataRegistro] = useState([
-    { key: "nombre", nombre: "Nombre", value: "", touched: false, type: "text" },
-    { key: "email", nombre: "Correo", value: "", touched: false, type: "email" },
-    { key: "password", nombre: "Contraseña", value: "", touched: false, type: "password" },
-    { key: "confPassword", nombre: "Confirmar Contraseña", value: "", touched: false, type: "password" },
+  const [formDataRegistro, setFormDataRegistro] = useState<LoginPageFormDataProps[]>([
+    { key: "nombre", label: "Nombre", value: "", touched: false, type: "text" },
+    { key: "email", label: "Correo", value: "", touched: false, type: "email" },
+    { key: "password", label: "Contraseña", value: "", touched: false, type: "password" },
+    { key: "confPassword", label: "Confirmar Contraseña", value: "", touched: false, type: "password" },
   ]);
   const [registrar, setRegistrar] = useState(false);
   const { setUser } = useAuth();
@@ -39,6 +39,7 @@ export default function LoginPage() {
   useEffect(() => {
     setUser(null);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -55,7 +56,7 @@ export default function LoginPage() {
               <Login formData={formData} setFormData={setFormData} formDataRegistro={formDataRegistro} setRegistrar={setRegistrar} hashPassword={hashPassword} />
             )}
             {registrar && (
-              <Registro formData={formDataRegistro} setFormData={setFormDataRegistro} setRegistrar={setRegistrar} hashPassword={hashPassword} />
+              <Registro formData={formDataRegistro} setFormData={setFormDataRegistro} formDataRegistro={null} setRegistrar={setRegistrar} hashPassword={hashPassword} />
             )}
           </div>
         </Col>
