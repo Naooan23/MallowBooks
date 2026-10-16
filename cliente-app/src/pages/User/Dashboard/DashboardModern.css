@@ -1,10 +1,3 @@
-.dashboard-modern {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    background: #F8EEE9;
-}
-
 .header-modern {
     display: flex;
     justify-content: space-between;
@@ -26,9 +19,6 @@
     margin: 0px;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
 @media (max-width: 767px) {
     .main-modern {
         margin-left: 0;

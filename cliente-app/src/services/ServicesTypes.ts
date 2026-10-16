@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { ErrorData } from "../components/Errors/TypesErrors";
 
 export interface User {
-  id: number,
+  id_user: number,
   nombre: string,
   email: string,
   password: string,
@@ -18,17 +18,25 @@ export interface UserContextType {
   user: User | null;
   setUser: (x: User | null) => void,
 }
+export interface CarritoProps {
+  id_carrito: number;
+  id_user: number;
+  fecha_creacion: string;
+}
 
-export interface Carrito {
-  id_carrito: number,
-  id_user: number,
-  fecha_creacion: Date
+export interface LibroCarrito extends Libros {
+  id_book: number;
+  cantidad: number;
+}
+
+export interface CarritoCompleto extends CarritoProps {
+  libros: LibroCarrito[];
 }
 
 export interface Libros {
   id: number,
-  id_categoria: string,
-  url: string,
+  id_categoria: number,
+  portada_url: string,
   titulo: string,
   autor: string,
   fecha: Date,
@@ -39,25 +47,18 @@ export interface Libros {
 }
 
 export interface DetalleCarrito {
-  id_detalle: number,
-  id_carrito: number,
-  id_book: number | null,
-  cantidad: number,
-}
-
-export interface LibrosCarritoPost {
   id_carrito: number | null,
-  id_book: number,
-  cantidad: number
+  id_book: number | null,
+  cantidad: number | null,
 }
 
 export interface CartContextType {
-  carrito: Carrito | null | undefined;
-  librosCarrito: DetalleCarrito[] | undefined;
+  librosCarrito: LibroCarrito[] | undefined;
   agregarAlCarrito: (libro: Libros) => Promise<void>;
-  eliminarDelCarrito: (id_book: number) => Promise<void>;
-  cambiarCantidad: (libroActual: Libros) => Promise<void>;
+  eliminarDelCarrito: (id_book: number | null) => Promise<void>;
+  cambiarCantidad: (id_book: number, cantidad: number) => Promise<void>;
   vaciarCarrito: () => void;
+  actualizarStock: (id_book: number, stock: number) => void; // Changed from Promise<void> to void
   cantidadTotal: number | undefined;
 }
 

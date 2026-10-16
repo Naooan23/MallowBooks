@@ -36,10 +36,7 @@
   background-color: var(--color-beige-background);
 }
 
-/* ============================================
-   FILTERS
-   ============================================ */
-.filters-modern {
+.sidebar-modern {
   display: flex;
   flex-direction: column;
 
@@ -156,7 +153,7 @@
 }
 
 @media ((min-width:  799px)) {
-    .filters-modern {
+    .sidebar-modern {
         padding: 0.8rem;
     }
 }
@@ -178,11 +175,6 @@
         width: 80%;
     }
 }
-
-
-/* ============================================
-   MOBILE SIDEBAR
-   ============================================ */
 
 .sidebar-toggle {
     display: none;

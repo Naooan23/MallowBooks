@@ -41,8 +41,7 @@ const SearchFilter = ({ search, setSearch, filter, setFilter }: SearchFilterProp
   }, []);
 
   return (
-    <div className="filters-modern">
-
+    <>
       <div className="search-box">
         <span>🔍</span>
 
@@ -86,7 +85,7 @@ const SearchFilter = ({ search, setSearch, filter, setFilter }: SearchFilterProp
 
       </div>
 
-    </div >
+    </>
   );
 };
 

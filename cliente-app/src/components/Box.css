@@ -60,10 +60,11 @@
 .detalle-content {
     display: flex;
     gap: 1rem;
-
     width: 100%;
-    height: 90%;
+    height: 80vh !important;
     padding: 2rem;
+    box-sizing: border-box;
+    min-height: 0;
 }
 
 .loading-overlay {

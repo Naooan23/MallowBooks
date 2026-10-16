@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { TextBox } from "../../components/Box";
 import { post } from "../../config/api";
 import { useAuth, useError } from "../../services/useAuth";
+import type { ActualizarProps, LoginProps, RegisterResponse } from "./LoginTypes";
 
-export function Registro({ formData, setFormData, setRegistrar, hashPassword }) {
+export function Registro({ formData, setFormData, setRegistrar, hashPassword }: LoginProps) {
   const buttonRegisterDisable = formData.some(
     x => !x.value?.trim()
   );
@@ -17,7 +18,7 @@ export function Registro({ formData, setFormData, setRegistrar, hashPassword }) 
   const { setUser } = useAuth();
 
 
-  const ActualizarForm = (index, newValue) => {
+  const ActualizarForm = ({ index, newValue }: ActualizarProps) => {
     setFormData(prev => {
       const updated = [...prev];
 
@@ -31,47 +32,70 @@ export function Registro({ formData, setFormData, setRegistrar, hashPassword }) 
     });
   };
 
+
   const sendData = async () => {
-    let response = {};
+    const password = formData.find(
+      (x) => x.key === "password"
+    )?.value;
 
-    const password = formData.find(x => x.key === "password").value;
-    const confPassword = formData.find(x => x.key === "confPassword").value;
+    const confPassword = formData.find(
+      (x) => x.key === "confPassword"
+    )?.value;
 
-    if (password === confPassword) {
-      const usuario = {
-        nombre_usuario: formData.find(x => x.key === "nombre").value,
-        email: formData.find(x => x.key === "email").value,
-        password: await hashPassword(password)
-      };
-
-      response = await post("auth/register", usuario);
+    if (password !== confPassword) {
+      showError({
+        success: false,
+        message: "Las contraseñas no coinciden",
+      });
+      return;
     }
 
-    if (response.success) {
+    const usuario = {
+      nombre_usuario: formData.find((x) => x.key === "nombre")?.value ?? "",
+      email: formData.find((x) => x.key === "email")?.value ?? "",
+      password: await hashPassword(password ?? ""),
+    };
+
+    const response: RegisterResponse = await post(
+      "auth/register",
+      usuario
+    );
+    console.log(response);
+
+    if (response.success && response.usuario) {
       setUser(response.usuario);
-      if (response.usuario) {
-        if (response.usuario.rol === "admin") navigate("/admin-dashboard");
-        else navigate("/dashboard");
+
+      if (response.usuario.rol === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/dashboard");
       }
+
+      return;
     }
 
-    if (response.message !== "") showError(response);
+    if (response.message !== "") {
+      showError(response);
+    }
   };
 
   return (<>
     <h1 className="titulo" >REGISTRO</h1>
     {formData.map((x, index) =>
       <TextBox
+        className={""}
         key={x.key}
-        item={x}
-        type={x.type}
-        touched={x.touched}
+        item={{
+          value: x.value,
+          type: x.type,
+          label: x.label ?? "",
+        }}
         login={false}
-        style={{
+        styleComponent={{
           fontFamily: "var(--heading)",
           fontWeight: 700
         }}
-        onValueChange={(newValue) => ActualizarForm(index, newValue)}
+        onValueChange={(newValue) => ActualizarForm({ index, newValue })}
         onErrorChange={(hasError) => {
           setRegisterErrors(prev => ({
             ...prev,

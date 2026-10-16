@@ -1,4 +1,6 @@
-export function BasePage({ children }) {
+import type { ChildrenProp } from "../GeneralTypes";
+
+export function BasePage({ children }: ChildrenProp) {
   return (<div
     style={{
       display: "flex",

@@ -1,8 +1,8 @@
 import type { ComponentType, Dispatch, SetStateAction } from "react";
 
-export interface SideBarProps<T = object> {
+export interface SideBarProps<T extends object> {
   sidebar: ComponentType<T>;
-  sidebarProps?: T;
+  sidebarProps: T;
 }
 
 export interface SearchFilterProps {
