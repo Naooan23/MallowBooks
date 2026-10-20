@@ -15,6 +15,12 @@ export const get = async (endpoint: string, id: number | null) => {
   return response.data;
 };
 
+export const postList = async (endpoint: string, data: { lista: number[] | [] }, config = {}) => {
+  const response = await api.post(`/${endpoint}`, data, config);
+
+  return response.data;
+};
+
 export const post = async (endpoint: string, data = {}, config = {}) => {
   const response = await api.post(`/${endpoint}`, data, config);
   return response.data;

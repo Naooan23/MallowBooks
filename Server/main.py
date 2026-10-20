@@ -1,14 +1,14 @@
-from datetime import date
-from re import I
+from datetime import date, datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Depends
-from psycopg import Date
+from sqlalchemy import null
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
-
 from database import get_db
-from models import Carrito, Detallecarrito, Libros, Usuarios, Categoria
-from schemas import LibroBase, LibroResponse, LoginRequest, RegisterRequest, CarritoResponse, CarritoDetalleResponse, CarritoDetalleBase
+from models import Carrito, Detallecarrito, Detalleorden, Libros, Orden, Usuarios, Categoria
+from schemas import LibroBase, CarritoBase, LibroResponse, LoginRequest, RegisterRequest, CarritoResponse, CarritoDetalleResponse, CarritoDetalleBase, OrdenCreate
+from decimal import Decimal
 
 app = FastAPI()
 
@@ -40,7 +40,6 @@ def obtener_libro(id_book: int, db: Session = Depends(get_db)):
         )
 
     return libro
-
 
 @app.post("/libros", response_model=LibroResponse, status_code=201)
 def crear_libro(data: LibroBase, db: Session = Depends(get_db)):
@@ -121,24 +120,65 @@ def obtener_categorias(db: Session = Depends(get_db)):
 
     return categorias
 
-@app.get("/carrito/{id_user}", response_model=CarritoResponse)
-def obtener_carrito(id_user: int, db: Session = Depends(get_db)):
-
-    carrito = db.query(Carrito).filter(
-        Carrito.id_user == id_user
-    ).first()
-
-    if not carrito:
-        carrito = Carrito(
-            id_user=id_user,
-            fecha_creacion=date.today()
+@app.post("/carrito")
+def agregar_carrito(data: CarritoBase, db: Session = Depends(get_db)):
+    carrito = Carrito(
+            id_user=data.id_user,
+            fecha_creacion=datetime.now()
         )
-
-        db.add(carrito)
-        db.commit()
-        db.refresh(carrito)
+    
+    db.add(carrito)
+    db.commit()
+    db.refresh(carrito)
 
     return carrito
+
+@app.get("/carrito/{id_user}")
+def obtener_carrito_completo(id_user: int, db: Session = Depends(get_db)):
+    carrito = (
+        db.query(Carrito)
+        .filter(Carrito.id_user == id_user)
+        .first()
+    )
+
+    if not carrito:
+        return {
+            "id_carrito": None,
+            "id_user": id_user,
+            "fecha_creacion": None,
+            "libros": []
+        }
+
+    libros = (
+        db.query(
+            Libros,
+            Detallecarrito.cantidad
+        )
+        .join(
+            Detallecarrito,
+            Libros.id_book == Detallecarrito.id_book
+        )
+        .filter(
+            Detallecarrito.id_carrito == carrito.id_carrito
+        )
+        .all()
+    )
+
+    return {
+        "id_carrito": carrito.id_carrito,
+        "id_user": carrito.id_user,
+        "fecha_creacion": carrito.fecha_creacion,
+        "libros": [
+            {
+                **{
+                    columna.name: getattr(libro, columna.name)
+                    for columna in Libros.__table__.columns
+                },
+                "cantidad": cantidad
+            }
+            for libro, cantidad in libros
+        ]
+    }
 
 @app.get("/librosCarrito/{id_carrito}")
 def obtener_libros_carrito(id_carrito: int, db: Session = Depends(get_db)):
@@ -149,20 +189,41 @@ def obtener_libros_carrito(id_carrito: int, db: Session = Depends(get_db)):
 
     return libros
 
-@app.post("/librosCarrito", response_model=CarritoDetalleResponse, status_code=201)
+@app.post(
+    "/librosCarrito",
+    response_model=CarritoDetalleResponse,
+    status_code=201
+)
 def agregar_libro_carrito(data: CarritoDetalleBase, db: Session = Depends(get_db)):
+    try:
+        detalle = db.query(Detallecarrito).filter(
+            Detallecarrito.id_carrito == data.id_carrito,
+            Detallecarrito.id_book == data.id_book
+        ).first()
 
-    detalle = Detallecarrito(
-        id_carrito=data.id_carrito,
-        id_book=data.id_book,
-        cantidad=data.cantidad
-    )
+        if detalle:
+            detalle.cantidad += data.cantidad
+        else:
+            detalle = Detallecarrito(
+                id_carrito=data.id_carrito,
+                id_book=data.id_book,
+                cantidad=data.cantidad
+            )
+            db.add(detalle)
 
-    db.add(detalle)
-    db.commit()
-    db.refresh(detalle)
+        db.commit()
+        db.refresh(detalle)
 
-    return detalle
+        return detalle
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        print("Error de base de datos:", repr(e))
+
+        raise HTTPException(
+            status_code=500,
+            detail="Error al guardar el detalle del carrito"
+        )
 
 @app.delete("/librosCarrito/{id_book}")
 def eliminar_libro(id_book: int, db: Session = Depends(get_db)):
@@ -182,25 +243,49 @@ def eliminar_libro(id_book: int, db: Session = Depends(get_db)):
 
     return {"message": "Libro eliminado del carrito"}
 
-@app.put("/librosCarrito", response_model=CarritoDetalleBase)
-def actualizar_libro(data: CarritoDetalleBase, db: Session = Depends(get_db)):
-    libro = db.query(Detallecarrito).filter(
-        Detallecarrito.id_book == data.id_book,
-        Detallecarrito.id_carrito==data.id_carrito
-    ).first()
+@app.delete("/librosCarrito")
+def vaciar_carrito(id_carrito: int, db: Session = Depends(get_db)):
+    detalles = (
+        db.query(Detallecarrito)
+        .filter(Detallecarrito.id_carrito == id_carrito)
+        .all()
+    )
 
-    if not libro:
+    if not detalles:
         raise HTTPException(
             status_code=404,
-            detail="Libro no encontrado"
+            detail="El carrito no contiene libros"
         )
 
-    libro.cantidad = data.cantidad
+    for detalle in detalles:
+        db.delete(detalle)
 
     db.commit()
-    db.refresh(libro)
 
-    return libro
+    return {"message": "Carrito vaciado correctamente"}
+
+@app.put("/librosCarrito", response_model=CarritoDetalleBase)
+def actualizar_libro(data: CarritoDetalleBase, db: Session = Depends(get_db)):
+    if(data.id_carrito!=null):
+        libro = db.query(Detallecarrito).filter(
+            Detallecarrito.id_book == data.id_book,
+            Detallecarrito.id_carrito==data.id_carrito
+        ).first()
+
+        print("Libro: ", libro)
+
+        if not libro:
+            raise HTTPException(
+                status_code=404,
+                detail="Libro no encontrado"
+            )
+
+        libro.cantidad = data.cantidad
+
+        db.commit()
+        db.refresh(libro)
+
+        return libro
 
 @app.post("/auth/register") 
 def registrar_usuario( data: RegisterRequest, db: Session = Depends(get_db) ):
@@ -264,3 +349,77 @@ def iniciar_sesion(data: LoginRequest, db: Session = Depends(get_db)):
             "rol": usuario.rol
         }
     }
+
+@app.post("/ordenes")
+def crear_orden(data: OrdenCreate, db: Session = Depends(get_db)):
+    try:
+        usuario = db.query(Usuarios).filter(Usuarios.id_user == data.id_user).first()
+
+        if not usuario:
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+        ids = [item.id_book for item in data.libros]
+
+        if len(ids) != len(set(ids)):
+            raise HTTPException(status_code=400, detail="Hay libros duplicados en la orden")
+
+        detalles = []
+        total = Decimal("0.00")
+
+        for item in data.libros:
+            libro = db.query(Libros).filter(Libros.id_book == item.id_book).first()
+
+            if not libro:
+                raise HTTPException(status_code=404, detail=f"No existe el libro {item.id_book}")
+
+            precio = Decimal(str(libro.precio))
+            subtotal_libro = precio * item.cantidad
+            total += subtotal_libro
+
+            detalles.append({
+                "id_book": libro.id_book,
+                "cantidad": item.cantidad,
+                "precio_libro": precio,
+                "subtotal": subtotal_libro
+            })
+
+        orden = Orden(
+            id_user=data.id_user,
+            fecha=date.today(),
+            total=total,
+            status="Pendiente de pago"
+        )
+
+        db.add(orden)
+        db.flush()
+
+        for detalle in detalles:
+            db.add(Detalleorden(
+                id_orden=orden.id_orden,
+                id_book=detalle["id_book"],
+                cantidad=detalle["cantidad"],
+                precio_libro=detalle["precio_libro"],
+                subtotal=detalle["subtotal"]
+            ))
+
+        db.commit()
+        db.refresh(orden)
+
+        return {
+            "mensaje": "Orden de compra creada correctamente",
+            "id_orden": orden.id_orden,
+            "total": float(orden.total),
+            "status": orden.status
+        }
+
+    except HTTPException:
+        db.rollback()
+        raise
+
+    except Exception as e:
+        db.rollback()
+        print(f"ERROR REAL AL CREAR ORDEN: {repr(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )

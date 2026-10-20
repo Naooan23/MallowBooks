@@ -10,7 +10,6 @@ export interface BackGroundImageProps {
 export interface Item {
   value: string,
   type: string,
-  nombre: string,
   label: string,
 }
 

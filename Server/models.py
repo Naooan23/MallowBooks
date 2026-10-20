@@ -24,19 +24,6 @@ class Categoria(Base):
     libros: Mapped[list['Libros']] = relationship('Libros', back_populates='categoria')
 
 
-class Detallecarrito(Base):
-    __tablename__ = 'detallecarrito'
-    __table_args__ = (
-        PrimaryKeyConstraint('id_detalle', name='detallecarrito_pkey'),
-        UniqueConstraint('id_book', name='detallecarrito_id_book_unique')
-    )
-
-    id_detalle: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    id_carrito: Mapped[int] = mapped_column(Integer, nullable=False)
-    id_book: Mapped[int] = mapped_column(Integer, nullable=False)
-    cantidad: Mapped[int] = mapped_column(Integer, nullable=False)
-
-
 class Usuarios(Base):
     __tablename__ = 'usuarios'
     __table_args__ = (
@@ -66,6 +53,7 @@ class Carrito(Base):
     fecha_creacion: Mapped[datetime.date] = mapped_column(Date, nullable=False)
 
     usuarios: Mapped['Usuarios'] = relationship('Usuarios', back_populates='carrito')
+    detallecarrito: Mapped[list['Detallecarrito']] = relationship('Detallecarrito', back_populates='carrito')
 
 
 class Libros(Base):
@@ -105,6 +93,21 @@ class Orden(Base):
 
     usuarios: Mapped['Usuarios'] = relationship('Usuarios', back_populates='orden')
     detalleorden: Mapped[list['Detalleorden']] = relationship('Detalleorden', back_populates='orden')
+
+
+class Detallecarrito(Base):
+    __tablename__ = 'detallecarrito'
+    __table_args__ = (
+        ForeignKeyConstraint(['id_carrito'], ['carrito.id_carrito'], name='fk_detalle_carrito'),
+        PrimaryKeyConstraint('id_detalle', name='detallecarrito_pkey')
+    )
+
+    id_detalle: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id_carrito: Mapped[int] = mapped_column(Integer, nullable=False)
+    id_book: Mapped[int] = mapped_column(Integer, nullable=False)
+    cantidad: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    carrito: Mapped['Carrito'] = relationship('Carrito', back_populates='detallecarrito')
 
 
 class Detalleorden(Base):

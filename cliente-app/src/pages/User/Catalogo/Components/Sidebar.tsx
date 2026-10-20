@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { appRoutes } from "../../Routes";
+import MenuButtonMovil from "../../../../components/menu/MenuButtonMovil";
+import MenuDesktop from "../../../../components/menu/MenuDesktop";
+import MenuMovil from "../../../../components/menu/MenuMovil";
+import { appRoutes } from "../../../../config/menuConfig";
 import Logo from "../../assets/Logo.png";
-import MenuButtonMovil from "./menu/MenuButtonMovil.jsx";
-import MenuDesktop from "./menu/MenuDesktop.jsx";
-import MenuMovil from "./menu/MenuMovil.jsx";
 
 export default function AppSidebar() {
   const [open, setOpen] = useState(false);
   const [colSize, setColSize] = useState(0);
 
-  const DefinirRutas = (items) => {
+  const DefinirRutas = (items: number) => {
     if (items <= 4) {
       setColSize(3);
     } else {
@@ -49,17 +49,18 @@ export default function AppSidebar() {
               marginLeft: open ? "1rem" : "0rem",
             }}
           >
-            <MenuButtonMovil props={{ open: open, setOpen: setOpen }} />
+            <MenuButtonMovil open={open} setOpen={setOpen} />
           </Col>
         </Row>
 
         <MenuMovil
+          hayLogo={null}
           colSize={colSize}
           Logo={Logo}
           open={open}
           onClick={() => setOpen(!open)} />
 
-        <MenuDesktop Logo={Logo} />
+        <MenuDesktop hayLogo={null} Logo={Logo} />
       </div>
     </>
   );

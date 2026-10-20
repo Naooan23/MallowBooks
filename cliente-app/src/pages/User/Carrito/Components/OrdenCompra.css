@@ -1,0 +1,349 @@
+/* ==========================================
+   ACCIONES Y BOTONES DE LA MODAL
+   ========================================== */
+.Orden-Compra{
+  margin: 0;
+  padding: 0;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.Orden-Compra::-webkit-scrollbar {
+  width: 8px;
+}
+
+.Orden-Compra {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-lila-claro) var(--color-rosa-blanco-claro);
+}
+
+.orden-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.orden-acciones button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--color-morado-transparente);
+  border-radius: 10px;
+  padding: 10px 18px;
+  background-color: var(--color-rosa-blanco-claro);
+  color: var(--color-morado-oscuro);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px var(--color-morado-transparente);
+}
+
+.orden-acciones button:hover {
+  background-color: var(--color-rosa-blanco-claro);
+  color: var(--color-morado-oscuro);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px var(--color-morado-transparente);
+}
+
+.orden-acciones button:active {
+  transform: translateY(0);
+}
+
+.orden-acciones button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
+}
+
+.orden-exportando {
+  text-align: center;
+  color: var(--color-morado);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  animation: pulse 1.5s infinite;
+}
+
+.orden-documento {
+  padding: 40px;
+  background: var(--btn-white);
+  color: var(--color-rosa-blanco-claro);
+  border-radius: 16px;
+  border: 1px solid var(--color-rosa-background);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.orden-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  border-bottom: 2px dashed var(--color-rosa-blanco-claro);
+}
+
+.orden-marca {
+  margin: 0;
+  color: var(--rosa-oscuro);
+  font-family: "Georgia", serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.orden-eslogan {
+  margin: 4px 0 0;
+  color: var(--color-lila-claro);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.orden-folio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.orden-folio span {
+  color: var(--rosa-oscuro);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.orden-folio strong {
+  color: var(--color-morado-oscuro);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.orden-folio small {
+  color: var(--color-lila-claro);
+  font-size: 12px;
+}
+
+.orden-aviso {
+  margin: 24px 0;
+  padding: 10px 16px;
+  background: var(--color-rosa-claro-background);
+  border: 1px solid var(--color-rosa-background);
+  border-radius: 8px;
+  color: var(--color-rojo-rosa);
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Información del Cliente */
+.orden-cliente {
+  padding: 20px;
+  background: var(--color-rosa-blanco-claro);
+  border-radius: 12px;
+  border: 1px solid var(--color-lila-blanco-claro);
+}
+
+.orden-cliente h3, .orden-pago h3, .orden-titulo-detalle {
+  margin: 0 0 12px;
+  color: var(--morado-oscuro);
+  font-family: "Georgia", serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.orden-cliente p {
+  margin: 6px 0;
+  font-size: 13.5px;
+  color: var(--morado-oscuro);
+}
+
+.orden-estado {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  background-color: var(--color-rosa-blanco-claro);
+  color: var(--color-Dorado);
+  font-size: 12px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+/* Tabla de Productos */
+.orden-titulo-detalle {
+  margin-top: 28px;
+}
+
+.orden-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.orden-tabla th {
+  padding: 12px 10px;
+  background: var(--color-lila-blanco-claro);
+  color: var(--color-morado-oscuro);
+  font-weight: 600;
+  text-align: left;
+  border-radius: 6px 6px 0 0;
+}
+
+.orden-tabla td {
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--color-rosa-blanco-claro);
+  color: var(--rosa-oscuro);
+}
+
+.orden-tabla th:not(:first-child),
+.orden-tabla td:not(:first-child) {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.orden-tabla td:first-child strong {
+  display: block;
+  color: var(--rosa-oscuro);
+  font-size: 13.5px;
+}
+
+.orden-tabla td:first-child small {
+  display: block;
+  margin-top: 3px;
+  color: var(--color-lila-claro);
+  font-size: 12px;
+}
+
+/* Totales */
+.orden-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 20px 10px;
+  border-bottom: 2px dashed var(--color-rosa-blanco-claro);
+}
+
+.orden-total > span {
+  color: var(--morado-oscuro);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.orden-total > div {
+  text-align: right;
+}
+
+.orden-total small {
+  display: block;
+  color: var(--morado-oscuro);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.orden-total strong {
+  color: var(--fucsia-oscuro);
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.orden-pago {
+  margin-top: 24px;
+  padding: 18px 20px;
+  background: var(--color-rosa-blanco-claro);
+  border-left: 4px solid var(--color-morado);
+  border-radius: 0 10px 10px 0;
+}
+
+.orden-pago p {
+  margin: 6px 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--rosa-oscuro);
+}
+
+/* Pie de página */
+.orden-pie {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-rosa-blanco-claro);
+  text-align: center;
+}
+
+.orden-pie p {
+  margin: 0 0 4px;
+  color: var(--rosa-oscuro);
+  font-family: "Georgia", serif;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.orden-pie small {
+  color: var(--rosa-oscuro);
+  font-size: 11.5px;
+}
+
+.orden-listo {
+  width: 100%;
+  max-width: 200px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  background: var(--fucsia-oscuro-claro);
+  color: var(--btn-white);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px var(--color-morado-transparente);
+}
+
+.orden-listo:hover {
+  background: var(--morado-oscuro);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px var(--color-morado-transparente)
+}
+
+/* Animación pulse suave para 'Preparando...' */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .orden-documento {
+    padding: 24px 16px;
+  }
+
+  .orden-encabezado {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .orden-folio {
+    align-items: flex-start;
+  }
+
+  .orden-marca {
+    font-size: 26px;
+  }
+
+  .orden-acciones {
+    justify-content: center;
+  }
+
+  .orden-acciones button {
+    width: 100%;
+    justify-content: center;
+  }
+}

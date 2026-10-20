@@ -2,9 +2,10 @@ import { Suspense, type ReactNode } from "react";
 import { AdminPage } from "../pages/Administrador/AdminPage";
 import LoginPage from "../pages/Login/LoginPage";
 import { MainPage } from "../pages/MainPage/MainPage";
-import Carrito from "../pages/User/Carrito";
-import Catalogo from "../pages/User/Catalogo";
-import SearchFilter from "../pages/User/Dashboard/Components/SearchFilter";
+import Carrito from "../pages/User/Carrito/Carrito";
+import SideBarCarrito from "../pages/User/Carrito/SideBarCarrito";
+import Catalogo from "../pages/User/Catalogo/Catalogo.tsx";
+import SearchFilter from "../pages/User/Catalogo/Components/SearchFilter.tsx";
 import DashBoard from "../pages/User/Dashboard/DashBoard";
 import Perfil from "../pages/User/Perfil";
 import type { AppRoute } from "./ConfigTypes";
@@ -63,6 +64,7 @@ export const appRoutes: AppRoute[] = [
     path: "/carrito",
     label: "Carrito",
     element: withSuspense(<Carrito />),
+    sidebar: SideBarCarrito,
     menu: true,
     admin: false,
   },

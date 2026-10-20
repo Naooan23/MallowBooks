@@ -6,12 +6,12 @@ export interface MenuButtonMovilProps {
 }
 
 export interface MenuDesktopProps {
-  hayLogo: boolean,
+  hayLogo: boolean | null,
   Logo: string
 }
 
 export interface MenuMovilProps {
-  hayLogo: boolean;
+  hayLogo: boolean | null;
   colSize?: number | "auto";
   Logo: string;
   open: boolean;
