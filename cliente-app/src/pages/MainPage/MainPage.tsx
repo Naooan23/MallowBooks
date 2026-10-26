@@ -1,28 +1,101 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Logo from "./Logo_t.png";
 import "./MainPage.css";
 import { Footer } from "../../components/Footer";
+import { get } from "../../config/api";
+import { Navbar } from "./NavBar";
 
 interface UserProfile {
   name: string;
   email: string;
   role: string;
 }
+interface Categoria {
+  id: number;
+  value: number;
+  label: string;
+  icon: string;
+}
+
+interface ResponseCategorias {
+  id_categoria: number;
+  nombre_categoria_es: string;
+  icono: string;
+}
+// Encima del componente, junto a los otros tipos
+interface LibroMini {
+  id: number;
+  portada_url: string;
+  titulo: string;
+  autor: string;
+  precio: number;
+}
+
+interface LibroAPI {
+  id_book: number;
+  portada_url: string;
+  titulo: string;
+  autor: string;
+  precio: number;
+}
 
 export function MainPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  // Categorías del backend (misma lógica que SearchFilter)
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [loadingCategorias, setLoadingCategorias] = useState(true);
 
-  // Por ahora no hay ningún usuario autenticado.
-  // Después puedes conectar esto con tu sistema de login.
-  const [currentUser, setCurrentUser] =
-    useState<UserProfile | null>(null);
+  // Mini catálogo
+  const [librosMini, setLibrosMini] = useState<LibroMini[]>([]);
+  const [loadingLibros, setLoadingLibros] = useState(true);
 
-  const [cartCount] = useState(0);
+  useEffect(() => {
+    let mounted = true;
+    const cargarLibros = async () => {
+      try {
+        const response = (await get("libros", null)) as LibroAPI[];
+        if (!mounted) return;
+
+        // Toma los primeros 5 (o filtra con stock > 0 si quieres)
+        const primeros5 = response.slice(0, 5).map((x) => ({
+          id: x.id_book,
+          portada_url: x.portada_url,
+          titulo: x.titulo,
+          autor: x.autor,
+          precio: x.precio,
+        }));
+
+        setLibrosMini(primeros5);
+      } finally {
+        if (mounted) setLoadingLibros(false);
+      }
+    };
+    const cargarCategorias = async () => {
+      try {
+        const response: ResponseCategorias[] = await get("categorias", null);
+        if (!mounted) return;
+
+        setCategorias([
+          ...response.map((x) => ({
+            id: x.id_categoria,
+            value: x.id_categoria,
+            label: x.nombre_categoria_es,
+            icon: x.icono,
+          })),
+        ]);
+      } finally {
+        if (mounted) setLoadingCategorias(false);
+      }
+    };
+
+    cargarLibros();
+    cargarCategorias();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const navigateTo = (sectionId: string) => {
-    setMobileMenuOpen(false);
+    //setMobileMenuOpen(false);
 
     if (sectionId === "login") {
       window.location.href = "/login";
@@ -42,215 +115,14 @@ export function MainPage() {
     });
   };
 
-  const logout = () => {
-    setCurrentUser(null);
-    setUserMenuOpen(false);
-  };
-
   return (
     <>
-      <header className="mallow-header">
-
-        {/* Barra informativa */}
-        <div className="mallow-announcement">
-          <span className="announcement-dot"></span>
-          <span>
-            Librería física y catálogo digital ·
-            Genera tu orden online y paga al retirar en mostrador
-          </span>
-        </div>
-
-        {/* Navegación principal */}
-        <div className="mallow-navbar">
-
-          {/* Logo */}
-          <button
-            className="mallow-brand"
-            onClick={() => navigateTo("inicio")}
-            aria-label="Ir al inicio"
-          >
-            <img
-              src={Logo}
-              alt="Logo de Mallow Books"
-              className="mallow-logo"
-            />
-
-            <span className="mallow-brand-text">
-              <strong>Mallow Books</strong>
-              <small>LIBRERÍA & BIBLIOTECA</small>
-            </span>
-          </button>
-
-          {/* Menú de escritorio */}
-          <nav className="mallow-nav-links">
-            <button onClick={() => navigateTo("inicio")}>
-              Inicio
-            </button>
-
-            <button onClick={() => navigateTo("catalogo")}>
-              Catálogo
-            </button>
-
-            <button onClick={() => navigateTo("categorias")}>
-              Categorías
-            </button>
-
-            <button onClick={() => navigateTo("sobre-nosotros")}>
-              Sobre nosotros
-            </button>
-          </nav>
-
-          {/* Acciones */}
-          <div className="mallow-actions">
-
-            <button
-              className="mallow-icon-button"
-              aria-label="Buscar libros"
-              title="Buscar libros"
-              onClick={() => navigateTo("buscador")}
-            >
-              ⌕
-            </button>
-
-            {/* <button
-              className="mallow-icon-button cart-button"
-              aria-label={`Carrito con ${cartCount} artículos`}
-              title="Ver orden de compra"
-              onClick={() => navigateTo("carrito")}
-            >
-              ♡
-              {cartCount > 0 && (
-                <span className="cart-count">
-                  {cartCount}
-                </span>
-              )}
-            </button> */}
-
-            {/* Usuario */}
-            <div className="mallow-auth">
-
-              {currentUser ? (
-                <div className="user-menu-container">
-
-                  <button
-                    className="user-menu-trigger"
-                    onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  >
-                    <span className="user-avatar">
-                      {currentUser.name.charAt(0).toUpperCase()}
-                    </span>
-
-                    <span>{currentUser.name}</span>
-                    <span>⌄</span>
-                  </button>
-
-                  {userMenuOpen && (
-                    <div className="user-dropdown">
-                      <strong>{currentUser.name}</strong>
-                      <small>{currentUser.email}</small>
-
-                      <span className="user-role">
-                        {currentUser.role}
-                      </span>
-
-                      <button
-                        onClick={() => {
-                          setUserMenuOpen(false);
-                          navigateTo("catalogo");
-                        }}
-                      >
-                        Mis préstamos y órdenes
-                      </button>
-
-                      <button
-                        className="logout-button"
-                        onClick={logout}
-                      >
-                        Cerrar sesión
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <>
-                  <a
-                    href="/login"
-                    className="login-link"
-                  >
-                    Iniciar sesión
-                  </a>
-
-                  <a
-                    href="/register"
-                    className="register-link"
-                  >
-                    Registrarse
-                  </a>
-                </>
-              )}
-
-            </div>
-
-            {/* Botón móvil */}
-            <button
-              className="mobile-menu-button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={
-                mobileMenuOpen ? "Cerrar menú" : "Abrir menú"
-              }
-            >
-              {mobileMenuOpen ? "✕" : "☰"}
-            </button>
-          </div>
-        </div>
-
-        {/* Menú móvil */}
-        {mobileMenuOpen && (
-          <nav className="mobile-navigation">
-
-            <button onClick={() => navigateTo("inicio")}>
-              Inicio
-            </button>
-
-            <button onClick={() => navigateTo("catalogo")}>
-              Catálogo
-            </button>
-
-            <button onClick={() => navigateTo("categorias")}>
-              Categorías
-            </button>
-
-            <button onClick={() => navigateTo("sobre-nosotros")}>
-              Sobre nosotros
-            </button>
-
-            <div className="mobile-auth">
-              {currentUser ? (
-                <>
-                  <strong>{currentUser.name}</strong>
-                  <small>{currentUser.email}</small>
-
-                  <button onClick={logout}>
-                    Cerrar sesión
-                  </button>
-                </>
-              ) : (
-                <>
-                  <a href="/login">Iniciar sesión</a>
-                  <a href="/register">Registrarse</a>
-                </>
-              )}
-            </div>
-          </nav>
-        )}
-      </header>
+      <Navbar />
 
       {/* Contenido de ejemplo */}
       <main id="inicio" className="mallow-main">
         <section className="mallow-hero">
-          <span className="hero-label">
-            TU PRÓXIMA HISTORIA COMIENZA AQUÍ
-          </span>
+          <span className="hero-label">TU PRÓXIMA HISTORIA COMIENZA AQUÍ</span>
 
           <h1>
             Un mundo de historias,
@@ -259,38 +131,117 @@ export function MainPage() {
           </h1>
 
           <p>
-            Explora nuestro catálogo, descubre nuevos autores
-            y encuentra tu próxima lectura favorita.
+            Explora nuestro catálogo, descubre nuevos autores y encuentra tu
+            próxima lectura favorita.
           </p>
-
-          <button
-            className="hero-button"
-            onClick={() => navigateTo("catalogo")}
-          >
-            Explorar catálogo <span>→</span>
-          </button>
         </section>
 
-        <section id="catalogo" className="placeholder-section">
-          <h2>Nuestro catálogo</h2>
-          <p>Aquí podrás mostrar los libros disponibles.</p>
+        <section id="catalogo" className="mini-catalog">
+          <div className="mini-catalog-header">
+            <span className="section-label">NUESTRO CATÁLOGO</span>
+            <h2>Libros que te pueden gustar</h2>
+            <p>Una pequeña muestra de lo que encontrarás en Mallow Books.</p>
+          </div>
+
+          {loadingLibros ? (
+            <p className="mini-catalog-status">Cargando libros…</p>
+          ) : librosMini.length === 0 ? (
+            <p className="mini-catalog-status">
+              Aún no hay libros disponibles.
+            </p>
+          ) : (
+            <>
+              <div className="mini-catalog-grid">
+                {librosMini.map((libro) => (
+                  <div key={libro.id} className="mini-book-card">
+                    <div className="mini-book-cover">
+                      <img
+                        src={libro.portada_url}
+                        alt={`Portada de ${libro.titulo}`}
+                        loading="lazy"
+                      />
+                    </div>
+
+                    <div className="mini-book-info">
+                      <h3 title={libro.titulo}>{libro.titulo}</h3>
+                      <p>{libro.autor}</p>
+                      <span className="mini-book-price">
+                        ${libro.precio}
+                        <small> MXN</small>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mini-catalog-cta">
+                <button
+                  className="hero-button"
+                  onClick={() => navigateTo("login")}
+                >
+                  Ver catálogo completo <span>→</span>
+                </button>
+              </div>
+            </>
+          )}
         </section>
 
-        <section id="categorias" className="placeholder-section">
-          <h2>Explora por categorías</h2>
-          <p>Encuentra libros según tus intereses.</p>
-          
+        <section id="categorias" className="mallow-categories">
+          <div className="categories-header">
+            <span className="section-label">CATEGORÍAS</span>
+            <h2>Explora por categorías</h2>
+            <p>Encuentra libros según tus intereses.</p>
+          </div>
+
+          {loadingCategorias ? (
+            <p className="categories-status">Cargando categorías…</p>
+          ) : (
+            <div className="categories-grid">
+              {categorias.map((cat) => (
+                <button key={cat.id} className={`category-card`}>
+                  <span className="category-icon">
+                    <i className={cat.icon} />
+                  </span>
+                  <span className="category-label">{cat.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </section>
 
-        <section
-          id="sobre-nosotros"
-          className="placeholder-section"
-        >
-          <h2>Sobre Mallow Books</h2>
-          <p>Conoce nuestra librería y nuestros servicios.</p>
+        <section id="sobre-nosotros" className="about-section">
+          <div className="about-text">
+            <span className="section-label">SOBRE NOSOTROS</span>
+            <h2>Sobre Mallow Books</h2>
+
+            <p>
+              En Mallow Books creemos que cada libro tiene el poder de abrir
+              nuevas puertas, despertar la imaginación y transformar vidas.
+              Nacimos como un punto de encuentro para lectores, mentes curiosas
+              y amantes de las buenas historias, ofreciendo un catálogo diverso
+              y cuidadosamente seleccionado para todos los gustos y edades.
+            </p>
+
+            <p>
+              Nuestro compromiso es brindar una experiencia cercana y ágil,
+              combinando la calidez de la librería tradicional con la
+              practicidad de herramientas digitales modernas. Queremos que
+              explorar nuestro catálogo, encontrar tu próxima lectura o
+              gestionar tus pedidos sea un proceso sencillo, cómodo y
+              disfrutable.
+            </p>
+          </div>
+
+          <div className="about-image">
+            <img
+              src={Logo}
+              alt="Logo de Mallow Books"
+              className="mallow-logo-about"
+            />
+          </div>
         </section>
       </main>
-      
+
       <Footer
         onNavigate={navigateTo}
         onOpenPrivacy={() => {
