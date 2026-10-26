@@ -12,7 +12,7 @@
   padding: 2rem;
   min-height: 100vh;
   font-family: 'Quicksand', sans-serif;
-  color: var(--text-dark);
+  color: var(--cafe-oscuro);
   max-height: fit-content;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .cart-item-card {
-  background-color: var(--card-bg);
+  background-color: var(--color-blanco);
   border-radius: 12px;
   padding: 1rem 1.2rem;
   display: flex;
@@ -93,7 +93,7 @@
 
 .book-author {
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--color-gris-beige);
   margin: 2px 0 0 0;
 }
 
@@ -132,8 +132,7 @@
 }
 
 .qty-btn:disabled {
-  color: var(--btn-white);
-  /* background-color: var(--color-rosa); */
+  color: var(--color-blanco);
   opacity: 0.7;
 }
 
@@ -156,11 +155,11 @@
 
 .item-unit-price {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--color-gris-beige);
 }
 
 .cart-summary-card {
-  background-color: var(--card-bg);
+  background-color: var(--color-blanco);
   border-radius: 12px;
   padding: 1rem;
   padding-left: 1.5rem;
@@ -211,13 +210,13 @@
   justify-content: space-between;
   margin-bottom: 0.8rem;
   font-size: 0.95rem;
-  color: var(--text-muted);
+  color: var(--color-gris-beige);
   gap: 0.5rem;
 }
 
 .summary-divider {
   border: none;
-  border-top: 3px solid var(--border-color);
+  border-top: 3px solid var(--color-beige);
   margin: 0.5rem 0;
 }
 
@@ -246,7 +245,7 @@
 .selected-count-text {
   text-align: center;
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--color-gris-beige);
   margin-top: 0.8rem;
   margin-bottom: 0;
 }

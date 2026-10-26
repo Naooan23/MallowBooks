@@ -1,46 +1,33 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { TextBox } from "../../components/Box";
 import { post } from "../../config/api";
 import { useAuth, useError } from "../../services/useAuth";
-import type { ActualizarProps, LoginProps, RegisterResponse } from "./LoginTypes";
+import type { LoginProps, RegisterResponse } from "./LoginTypes";
 
-export function Registro({ formData, setFormData, setRegistrar, hashPassword }: LoginProps) {
-  const buttonRegisterDisable = formData.some(
-    x => !x.value?.trim()
-  );
-  const [registerErrors, setRegisterErrors] = useState({});
-  const hayRegisterErrores = Object.values(registerErrors).some(error => error);
-
+export function Registro({ formData, setFormData, setRegistrar, hashPassword, }: LoginProps) {
+  const [registerErrors, setRegisterErrors] = useState<Record<string, boolean>>({});
   const navigate = useNavigate();
   const { showError } = useError();
   const { setUser } = useAuth();
 
+  const buttonRegisterDisable = formData.some((x) => !x.value?.trim()) || Object.values(registerErrors).some(Boolean);
 
-  const ActualizarForm = ({ index, newValue }: ActualizarProps) => {
-    setFormData(prev => {
-      const updated = [...prev];
-
-      updated[index] = {
-        ...updated[index],
-        value: newValue,
-        touched: true
-      };
-
-      return updated;
-    });
+  const actualizarForm = (index: number, newValue: string) => {
+    setFormData((prev) =>
+      prev.map((item, i) =>
+        i === index
+          ? { ...item, value: newValue, touched: true }
+          : item
+      )
+    );
   };
 
-
   const sendData = async () => {
-    const password = formData.find(
-      (x) => x.key === "password"
-    )?.value;
+    const password = formData.find((x) => x.key === "password")?.value ?? "";
 
-    const confPassword = formData.find(
-      (x) => x.key === "confPassword"
-    )?.value;
+    const confPassword = formData.find((x) => x.key === "confPassword")?.value ?? "";
 
     if (password !== confPassword) {
       showError({
@@ -50,67 +37,105 @@ export function Registro({ formData, setFormData, setRegistrar, hashPassword }: 
       return;
     }
 
-    const usuario = {
-      nombre_usuario: formData.find((x) => x.key === "nombre")?.value ?? "",
-      email: formData.find((x) => x.key === "email")?.value ?? "",
-      password: await hashPassword(password ?? ""),
-    };
+    try {
+      const usuario = {
+        nombre: formData.find((x) => x.key === "nombre")?.value ?? "",
+        email: formData.find((x) => x.key === "email")?.value ?? "",
+        password: await hashPassword(password),
+      };
 
-    const response: RegisterResponse = await post(
-      "auth/register",
-      usuario
-    );
-    console.log(response);
+      const response: RegisterResponse = await post("auth/register", usuario);
 
-    if (response.success && response.usuario) {
-      setUser(response.usuario);
+      if (response.success && response.usuario) {
+        setUser(response.usuario);
 
-      if (response.usuario.rol === "admin") {
-        navigate("/admin-dashboard");
-      } else {
-        navigate("/dashboard");
+        navigate(response.usuario.rol === "admin" ? "/admin-dashboard" : "/dashboard");
+
+        return;
       }
 
-      return;
-    }
+      if (response.message) {
+        showError(response);
+      }
+    } catch (error) {
+      console.error("Error al registrar usuario:", error);
 
-    if (response.message !== "") {
-      showError(response);
+      showError({
+        success: false,
+        message: "No se pudo completar el registro. Inténtalo de nuevo.",
+      });
     }
   };
 
-  return (<>
-    <h1 className="titulo" >REGISTRO</h1>
-    {formData.map((x, index) =>
+  const cambiarAInicioSesion = () => {
+    setFormData((prev) =>
+      prev.map((item) => ({
+        ...item,
+        value: "",
+        touched: false,
+      }))
+    );
+
+    setRegisterErrors({});
+    setRegistrar(false);
+  };
+
+  const handleErrorChange = useCallback((hasError: boolean) => {
+    setRegisterErrors((prev) => {
+      if (prev.general === hasError) {
+        return prev;
+      }
+
+      return { general: hasError };
+    });
+  }, []);
+
+  return (
+    <>
+      <h1 className="titulo">REGISTRO</h1>
+
       <TextBox
-        className={""}
-        key={x.key}
-        item={{
-          value: x.value,
-          type: x.type,
-          label: x.label ?? "",
-        }}
+        items={formData.map((item, index) => ({
+          key: item.key,
+          value: item.value,
+          type: item.type,
+          label: item.label ?? "",
+          touched: item.touched,
+          disabled: item.disabled ?? false,
+          onValueChange: (newValue: string) =>
+            actualizarForm(index, newValue),
+        }))}
         login={false}
         styleComponent={{
           fontFamily: "var(--heading)",
-          fontWeight: 700
+          fontWeight: 700,
         }}
-        onValueChange={(newValue) => ActualizarForm({ index, newValue })}
-        onErrorChange={(hasError) => {
-          setRegisterErrors(prev => ({
-            ...prev,
-            [x.key]: hasError
-          }));
-        }}
+        onErrorChange={handleErrorChange}
       />
-    )}
-    <Row style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
-      <button className="Button LogIn" onClick={sendData} disabled={buttonRegisterDisable || hayRegisterErrores} >Registrar</button>
-      <a className="Button Registro" onClick={(e) => {
-        setRegistrar(!e);
-        formData.map(x => { x.value = ""; });
-        formData.map(x => { x.value = ""; });
-      }} >Iniciar Sesión</a>
-    </Row>
-  </>);
+
+      <Row
+        style={{
+          display: "flex",
+          textAlign: "center",
+          justifyContent: "center",
+        }}
+      >
+        <button
+          className="Button LogIn"
+          onClick={sendData}
+          disabled={buttonRegisterDisable}
+        >
+          Registrar
+        </button>
+
+        <button
+          type="button"
+          className="Button Registro"
+          onClick={cambiarAInicioSesion}
+        >
+          Iniciar Sesión
+        </button>
+      </Row>
+    </>
+  );
 }

@@ -2,11 +2,10 @@ import { Suspense, type ReactNode } from "react";
 import { AdminPage } from "../pages/Administrador/AdminPage";
 import LoginPage from "../pages/Login/LoginPage";
 import Carrito from "../pages/User/Carrito/Carrito";
-import SideBarCarrito from "../pages/User/Carrito/SideBarCarrito";
 import Catalogo from "../pages/User/Catalogo/Catalogo.tsx";
 import SearchFilter from "../pages/User/Catalogo/Components/SearchFilter.tsx";
 import DashBoard from "../pages/User/Dashboard/DashBoard";
-import Perfil from "../pages/User/Perfil";
+import Perfil from "../pages/User/Perfil/Perfil.tsx";
 import type { AppRoute } from "./ConfigTypes";
 
 const withSuspense = (Component: ReactNode) => (
@@ -38,7 +37,7 @@ export const appRoutes: AppRoute[] = [
   {
     icon: <i className="bi bi-layout-wtf" />,
     path: "/dashboard",
-    label: "Dashboard",
+    label: "Inicio",
     element: withSuspense(<DashBoard />),
     menu: true,
     admin: false,
@@ -57,7 +56,6 @@ export const appRoutes: AppRoute[] = [
     path: "/carrito",
     label: "Carrito",
     element: withSuspense(<Carrito />),
-    sidebar: SideBarCarrito,
     menu: true,
     admin: false,
   },

@@ -1,102 +1,102 @@
-import { useEffect, useState, type CSSProperties } from "react";
-import { Col, Form } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
 import Select from "react-select";
 import "./Box.css";
-import type { PopUpProps, SelectBoxProps, TextBoxProps } from "./ComponentsTypes";
+import type { PopUpProps, SelectBoxProps, TextBoxItem, TextBoxProps } from "./ComponentsTypes";
 
-const disable: CSSProperties = {
-  fontSize: "1.3rem",
-  backgroundColor: "var(--color-background)",
-  pointerEvents: "none",
-  borderRadius: "18px"
-};
+const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey, }: TextBoxProps) => {
+  const [touched, setTouched] = useState<boolean[]>([]);
 
-const TextBox = ({ className, item, login, styleComponent, onValueChange, onErrorChange }: TextBoxProps) => {
-  const [touched, setTouched] = useState(false);
+  const validatePassword = (password: string): string => {
+    if (password.length < 6) return "La contraseña debe tener al menos 6 caracteres";
+    if (!/[A-Z]/.test(password)) return "La contraseña debe contener al menos una mayúscula";
+    if (!/[0-9]/.test(password)) return "La contraseña debe contener al menos un número";
 
-  const validatePassword = (password: string) => {
-    const hasMinLength = password.length >= 6;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    if (!hasMinLength) return 'La contraseña debe tener al menos 6 caracteres';
-    if (!hasUpperCase) return 'La contraseña debe contener al menos una mayúscula';
-    if (!hasNumber) return 'La contraseña debe contener al menos un número';
-    return '';
+    return "";
   };
 
-  const esEmailValido = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const esEmailValido = (email: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const showError = () => {
-    let response = "";
+  const getError = (item: TextBoxItem): string => {
+    if (!item.value?.trim()) return "¡El campo no puede estar vacío!";
+    if (item.type === "email" && !esEmailValido(item.value)) return "Ingresa un correo válido";
+    if (item.type === "password" && !login) return validatePassword(item.value);
 
-    if (!item.value?.trim()) response = "¡El campo no puede estar vacío!";
-    else if (item.type === "email" && !esEmailValido(item.value)) response = "Ingresa un correo válido";
-    else if (item.type === "password" && !login) response = validatePassword(item.value);
-
-    return touched ? response : "";
+    return "";
   };
 
-  const error = showError();
+  const errors = items.map(item => getError(item));
 
   useEffect(() => {
-    onErrorChange(error !== "");
-  }, [error, onErrorChange]);
+    onErrorChange(errors.some(error => error !== ""));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items, onErrorChange]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTouched(items.map(() => false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetKey]);
+
+  const handleBlur = (index: number) => {
+    setTouched(prev => {
+      const next = [...prev];
+      next[index] = true;
+      return next;
+    });
+  };
 
   return (
-    <>
-      <Form.Group
-        className="d-flex flex-column flex-md-row"
+    <Form>
+      <div
+        className="textbox-grid"
         style={{
+          display: "grid",
+          gridTemplateColumns: "auto minmax(0, 1fr)",
+          columnGap: "0.5rem",
+          rowGap: "0.35rem",
           alignItems: "center",
-          margin: "0rem",
+          width: "100%",
           marginTop: "1rem",
-          ...styleComponent
+          ...styleComponent,
         }}
       >
-        <Col
-          xs={12}
-          md={3}
-          style={{
-            marginRight: "0.5rem"
-          }}
-        >
-          <Form.Label
-            style={{
-              marginBottom: 0,
-              fontSize: "1.3rem"
-            }}
-          >
-            {item.label}:
-          </Form.Label>
-        </Col>
+        {items.map((item, index) => (
+          <React.Fragment key={item.key ?? index}>
+            <Form.Label className="textbox-label">
+              {item.label}:
+            </Form.Label>
 
-        <Col xs={12} md={9}>
-          <Form.Control
-            style={
-              className === "disable"
-                ? disable
-                : {
-                  fontSize: "1.3rem",
-                  borderRadius: "18px"
-                }
-            }
-            type={item.type}
-            placeholder={item.label}
-            value={item.value ?? ""}
-            onChange={(e) => onValueChange(e.target.value)}
-            onBlur={() => setTouched(true)}
-          />
-        </Col>
-      </Form.Group>
+            <Form.Control
+              className="textbox-control"
+              type={item.type}
+              placeholder={item.label}
+              value={item.value ?? ""}
+              onChange={e => item.onValueChange(e.target.value)}
+              onBlur={() => handleBlur(index)}
+              isInvalid={!!touched[index] && errors[index] !== ""}
+              disabled={item.disabled}
+              style={{
+                width: "100%",
+                minWidth: 0,
+                fontSize: "1.3rem",
+                borderRadius: "18px",
+              }}
+            />
 
-      {error != "" && (
-        <Col xs={12} style={{ color: "red", textAlign: "right", paddingRight: "1rem" }}>
-          <Form.Text style={{ color: "red" }} >
-            {error}
-          </Form.Text>
-        </Col>
-      )}
-    </>
+            <div style={{ minWidth: 0 }} />
+
+            <div>
+              {touched[index] && errors[index] !== "" && (
+                <Form.Text className="text-danger">
+                  {errors[index]}
+                </Form.Text>
+              )}
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
+    </Form>
   );
 };
 
@@ -109,41 +109,35 @@ const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
   }));
 
   return (
-    <Form.Group
-      style={{
-        display: "flex",
-        alignItems: "center",
-        margin: "1rem",
-        marginBottom: 0,
-      }}
-    >
-      <Col xs={3} style={{ marginRight: "0.5rem" }}>
-        <Form.Label style={{ marginBottom: 0 }}>
-          {item}:
-        </Form.Label>
-      </Col>
+    <Form.Group className="selectbox-group">
+      <Form.Label className="selectbox-label">
+        {item}:
+      </Form.Label>
 
       <Select
+        className="selectbox-control"
         options={options}
         isSearchable={false}
         styles={{
-          menu: (base) => ({
+          menu: base => ({
             ...base,
           }),
-
           control: (base, state) => ({
             ...base,
             borderRadius: "10px",
-            width: "19.7rem",
-            borderColor: state.isFocused ? 'var(--color-focus-box)' : 'var(--color-box)',
+            width: "100%",
+            borderColor: state.isFocused
+              ? "var(--color-focus-box)"
+              : "var(--color-box)",
             boxShadow: state.isFocused
-              ? "0 0 0 3px 'var(--color-shadow-box)'"
+              ? "0 0 0 3px var(--color-shadow-box)"
               : "none",
             "&:hover": {
-              borderColor: state.isFocused ? 'var(--color-focus-box)' : 'var(--color-box)',
+              borderColor: state.isFocused
+                ? "var(--color-focus-box)"
+                : "var(--color-box)",
             },
           }),
-
           option: (base, state) => ({
             ...base,
             backgroundColor: state.isSelected
@@ -157,8 +151,8 @@ const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
             },
           }),
         }}
-        value={options.find((opc) => opc.value === value)}
-        onChange={(selected) => {
+        value={options.find(opc => opc.value === value)}
+        onChange={selected => {
           if (!selected) return;
 
           setValue(selected.value);
@@ -174,7 +168,7 @@ const PopUp = ({ titulo, children, onClose }: PopUpProps) => (
     <div className="detalle-modal" onClick={(e) => e.stopPropagation()}>
       <div className="modal-header">
         <div style={{ width: "100%", textAlign: "center" }}>
-          <h2>{titulo}</h2>
+          <h2><strong>{titulo}</strong></h2>
         </div>
         <button className="no-print" onClick={onClose} aria-label="Cerrar">×</button>
       </div>
