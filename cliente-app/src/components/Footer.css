@@ -15,8 +15,8 @@
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2.2fr 1fr 1.2fr 1.2fr;
-  gap: 40px;
+  grid-template-columns: 2.2fr 2.2fr;
+  gap: 250px;
   padding-bottom: 44px;
   border-bottom: 1px solid #5c3d35;
 }
@@ -182,7 +182,7 @@
 .footer-bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
   padding-top: 28px;
   color: #bfa69c;
