@@ -1,5 +1,6 @@
 from datetime import date
 from decimal import Decimal
+import string
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -51,7 +52,7 @@ class UsuarioBase(BaseModel):
     rol: str
 
 class RegisterRequest(BaseModel):
-    nombre_usuario: str
+    nombre: str
     email: str
     password: str
 
@@ -67,3 +68,12 @@ class LibroOrdenCreate(BaseModel):
 class OrdenCreate(BaseModel):
     id_user: int
     libros: list[LibroOrdenCreate] = Field(min_length=1)
+
+class PasswordData(BaseModel):
+    id_user: int
+    new_Password: str
+
+class UserData(BaseModel):
+    id_user:int
+    nombre:str
+    email:str

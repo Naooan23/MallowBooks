@@ -89,12 +89,10 @@ export default function OrdenCompra({ orden, libros, cliente, email, fecha, onCl
           </button>
         </div>
 
-        {exportando && <Loading />}
-
         <div className="orden-documento" ref={documentoRef}>
           <header className="orden-encabezado">
             <div>
-              <p className="orden-marca">mallow books</p>
+              <p className="orden-marca">Mallow Books</p>
               <p className="orden-eslogan">A little world between pages</p>
             </div>
 
@@ -180,11 +178,11 @@ export default function OrdenCompra({ orden, libros, cliente, email, fecha, onCl
           </footer>
         </div>
 
-        <div style={{ marginTop: "1rem", textAlign: "right" }}>
-          <button type="button" className="orden-listo" onClick={onClose}>
-            Listo
-          </button>
+        <div style={{ display: "flex", marginTop: "1rem", textAlign: "right", justifyContent: "center" }}>
+          <button type="button" className="orden-listo" onClick={onClose}>Listo</button>
         </div>
+
+        {exportando && <Loading />}
       </div>
     </PopUp>
   );

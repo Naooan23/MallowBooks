@@ -49,23 +49,22 @@
   --color-box: #DDD;
   --color-beige: #e9d7bf;
   --color-gris: #777;
+  --color-gris-oscuro:#666666;
   --color-blanco: #FFF;
   --color-beige-texto: #F2E6D8;
   --color-beige-background: #F2E9D8;
-  --bg-soft: #f7f1eb;
-  --card-bg: #ffffff;
-  --text-dark: #3a2e2b;
-  --text-muted: #7c6f6c;
-  --border-color: #e0d5c9;
-  --btn-light: #f3e9e0;
-  --btn-white: white;
+  --color-gris-beige: #7c6f6c;
 
   /* ===== Cafe ===== */
   --color-cafe: #350F04;
+  --cafe-oscuro: #3a2e2b;
   --color-cafe-claro: #6B3F37;
 
   /* ===== Dorado ===== */
   --color-Dorado: #b47820;
+
+  /* ===== Negro ===== */
+  --color-negro: #222;
 }
 
 body {

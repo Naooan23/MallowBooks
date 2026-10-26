@@ -9,7 +9,7 @@ const api = axios.create({
   }
 });
 
-export const get = async (endpoint: string, id: number | null) => {
+export const get = async (endpoint: string, id: number | undefined) => {
   const response = await api.get(`/${endpoint}${id != null ? `/${id}` : ""}`);
 
   return response.data;
@@ -42,11 +42,11 @@ export const del = async (endpoint: string, id: number | null, config = {}) => {
 };
 
 export const authService = {
-  async register(nombre_usuario: string, email: string, password: string) {
+  async register(nombre: string, email: string, password: string) {
     try {
 
       const response = await api.post("/auth/register", {
-        nombre_usuario,
+        nombre,
         email,
         password
       });

@@ -43,7 +43,6 @@ function App() {
                     <div className="dashboard-modern">
                       <main className="main-modern">
                         <div className="dashboard-content">
-
                           {route.element}
                         </div>
                       </main>

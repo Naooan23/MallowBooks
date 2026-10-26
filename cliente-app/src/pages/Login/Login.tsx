@@ -53,27 +53,27 @@ export function Login({ formData, setFormData, formDataRegistro, setRegistrar, h
   };
   return (<>
     <h1 className="titulo" >BIENVENIDO AL INICIO DE SESIÓN</h1>
-    {formData.map((x, index) =>
-      <TextBox
-        className={""}
-        key={x.key}
-        item={{
-          value: x.value,
-          type: x.type,
-          label: x.label ?? "",
-        }} login={true}
-        styleComponent={{
-          fontFamily: "var(--heading)",
-          fontWeight: 700
-        }}
-        onValueChange={(newValue) => ActualizarForm({ index, newValue })}
-        onErrorChange={(hasError) => {
-          setLoginErrors(prev => ({
-            ...prev,
-            [x.key]: hasError
-          }));
-        }} />
-    )}
+    <TextBox
+      className=""
+      items={formData.map((x, index) => ({
+        ...x,
+        label: x.label ?? "",
+        onValueChange: (newValue: string) =>
+          ActualizarForm({ index, newValue }),
+      }))}
+      login={true}
+      styleComponent={{
+        fontFamily: "var(--heading)",
+        fontWeight: 700,
+      }}
+      resetKey={null}
+      onErrorChange={(hasError) => {
+        setLoginErrors((prev) => ({
+          ...prev,
+          general: hasError,
+        }));
+      }}
+    />
     <Row style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
       <button className="Button LogIn" onClick={sendData} disabled={buttonDisable || hayLoginErrores} >Iniciar Sesión</button>
       <a className="Button Registro" onClick={(e) => {

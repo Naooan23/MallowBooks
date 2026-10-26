@@ -2,12 +2,13 @@ from datetime import date, datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Depends
+from requests import session
 from sqlalchemy import null
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Carrito, Detallecarrito, Detalleorden, Libros, Orden, Usuarios, Categoria
-from schemas import LibroBase, CarritoBase, LibroResponse, LoginRequest, RegisterRequest, CarritoResponse, CarritoDetalleResponse, CarritoDetalleBase, OrdenCreate
+from schemas import LibroBase, CarritoBase, LibroResponse, LoginRequest, RegisterRequest, CarritoResponse, CarritoDetalleResponse, CarritoDetalleBase, OrdenCreate, PasswordData, UserData
 from decimal import Decimal
 
 app = FastAPI()
@@ -113,6 +114,52 @@ def obtener_usuarios(db: Session = Depends(get_db)):
     usuarios = db.query(Usuarios).all()
 
     return usuarios
+
+
+@app.get("/usuarios/{id_user}")
+def obtener_usuarios(id_user: int, db: Session = Depends(get_db)):
+    usuario = (
+            db.query(Usuarios)
+            .filter(Usuarios.id_user == id_user)
+            .first()
+        )
+
+    return {
+                "id_user": usuario.id_user,
+                "nombre": usuario.nombre_user,
+                "email": usuario.email,
+                "password": usuario.password,
+                "rol": usuario.rol
+            }
+
+@app.put("/password")
+def cambiar_password(data: PasswordData, db: Session = Depends(get_db)):
+    user=db.query(Usuarios).filter(Usuarios.id_user==data.id_user).first()
+
+    user.password=data.new_Password
+
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+@app.put("/user")
+def cambiar_User(data:UserData, db:Session=Depends(get_db)):
+    user=db.query(Usuarios).filter(Usuarios.id_user==data.id_user).first()
+
+    user.nombre_user=data.nombre
+    user.email=data.email
+
+    db.commit()
+    db.refresh(user)
+
+    return {
+        "id_user": user.id_user,
+        "nombre": user.nombre_user,
+        "email": user.email,
+        "rol": user.rol
+    }
+    
 
 @app.get("/categorias")
 def obtener_categorias(db: Session = Depends(get_db)):
@@ -289,7 +336,7 @@ def actualizar_libro(data: CarritoDetalleBase, db: Session = Depends(get_db)):
 
 @app.post("/auth/register") 
 def registrar_usuario( data: RegisterRequest, db: Session = Depends(get_db) ):
-    if not data.nombre_usuario or not data.email or not data.password: 
+    if not data.nombre or not data.email or not data.password: 
         raise HTTPException( status_code=400, detail="Todos los campos son obligatorios" ) 
     
     usuario_existente = db.query(Usuarios).filter( Usuarios.email == data.email ).first() 
@@ -297,7 +344,7 @@ def registrar_usuario( data: RegisterRequest, db: Session = Depends(get_db) ):
         raise HTTPException( status_code=400, detail="El correo ya está registrado" ) 
     
     usuario = Usuarios( 
-        nombre_user=data.nombre_usuario, 
+        nombre_user=data.nombre, 
         email=data.email, 
         password=data.password, 
         rol="user" 
@@ -312,7 +359,7 @@ def registrar_usuario( data: RegisterRequest, db: Session = Depends(get_db) ):
             "message": "Usuario registrado correctamente",
             "usuario": {
                 "id_user": usuario.id_user,
-                "nombre_usuario": usuario.nombre_user,
+                "nombre": usuario.nombre_user,
                 "email": usuario.email,
                 "rol": usuario.rol
             }
@@ -344,7 +391,7 @@ def iniciar_sesion(data: LoginRequest, db: Session = Depends(get_db)):
         "message": "Inicio de sesión correcto",
         "usuario": {
             "id_user": usuario.id_user,
-            "nombre_usuario": usuario.nombre_user,
+            "nombre": usuario.nombre_user,
             "email": usuario.email,
             "rol": usuario.rol
         }

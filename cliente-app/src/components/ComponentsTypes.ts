@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { User } from "../services/ServicesTypes";
 
 export interface BackGroundImageProps {
@@ -13,13 +13,23 @@ export interface Item {
   label: string,
 }
 
+export interface TextBoxItem {
+  key: string;
+  label: string;
+  type: string;
+  value: string;
+  touched: boolean;
+  disabled: boolean;
+  onValueChange: (newValue: string) => void;
+}
+
 export interface TextBoxProps {
-  className: string | null,
-  item: Item,
-  login: boolean,
-  styleComponent: CSSProperties,
-  onValueChange: (x: string) => void,
-  onErrorChange: (x: boolean) => void,
+  className?: string;
+  items: TextBoxItem[];
+  login?: boolean;
+  styleComponent?: React.CSSProperties;
+  resetKey: number | undefined | null;
+  onErrorChange: (hasError: boolean) => void;
 }
 
 export interface SelectBoxProps {

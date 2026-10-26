@@ -97,3 +97,48 @@
         transform: rotate(360deg);
     }
 }
+
+.textbox-label {
+  margin: 0;
+  font-size: 1.3rem;
+  white-space: nowrap;
+}
+
+.selectbox-group {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 0.5rem;
+  margin: 1rem;
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+.selectbox-label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.selectbox-control {
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .selectbox-group {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.35rem;
+  }
+
+  .selectbox-label {
+    white-space: normal;
+  }
+  
+  .textbox-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    row-gap: 0.35rem !important;
+  }
+
+  .textbox-label {
+    white-space: normal;
+  }
+}
