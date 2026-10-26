@@ -11,10 +11,10 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({
-  onNavigate,
-  onOpenPrivacy,
-  onOpenFaq,
-  onOpenContact,
+  // onNavigate,
+  // onOpenPrivacy,
+  // onOpenFaq,
+  // onOpenContact,
 }) => {
   return (
     <footer className="mallow-footer">
@@ -42,8 +42,7 @@ export const Footer: React.FC<FooterProps> = ({
             <p className="footer-description">
               Librería independiente dedicada a cultivar el amor por la lectura
               mediante un catálogo selecto, control digital de inventarios y
-              servicios de consulta para estudiantes, docentes y el público
-              general.
+              servicios de consulta para el público general.
             </p>
 
             <div className="footer-project">
@@ -51,66 +50,14 @@ export const Footer: React.FC<FooterProps> = ({
               <p className="footer-project-name">
                 Sistema Integrado para la Optimización del Control de
                 Inventarios, Prestación de Servicios Bibliotecarios y
-                Automatización de Procesos de Préstamos en Entornos Educativos.
+                Automatización de Procesos de Préstamos en Entornos de librerias.
               </p>
             </div>
           </div>
 
-          {/* Columna 2: Navegación */}
-          <div className="footer-column">
-            <h3 className="footer-heading">Navegación</h3>
 
-            <ul className="footer-links">
-              <li>
-                <button onClick={() => onNavigate("inicio")}>
-                  Inicio
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate("catalogo")}>
-                  Catálogo completo
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate("categorias")}>
-                  Categorías de lectura
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate("sobre-nosotros")}>
-                  Sobre nosotros
-                </button>
-              </li>
-            </ul>
-          </div>
 
-          {/* Columna 3: Ayuda y legal */}
-          <div className="footer-column">
-            <h3 className="footer-heading">Ayuda y legal</h3>
-
-            <ul className="footer-links footer-icon-links">
-              <li>
-                <button onClick={onOpenFaq}>
-                  <span className="footer-icon" aria-hidden="true">ⓘ</span>
-                  Preguntas frecuentes
-                </button>
-              </li>
-              <li>
-                <button onClick={onOpenPrivacy}>
-                  <span className="footer-icon" aria-hidden="true">◆</span>
-                  Políticas de privacidad
-                </button>
-              </li>
-              <li>
-                <button onClick={onOpenContact}>
-                  <span className="footer-icon" aria-hidden="true">▤</span>
-                  Términos de compra
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Columna 4: Contacto */}
+          {/* Columna 2: Contacto */}
           <div className="footer-column">
             <h3 className="footer-heading">Contacto</h3>
 
