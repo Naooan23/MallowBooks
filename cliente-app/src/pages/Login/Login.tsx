@@ -52,7 +52,7 @@ export function Login({ formData, setFormData, formDataRegistro, setRegistrar, h
     if (response.message !== "") showError(response);
   };
   return (<>
-    <h1 className="titulo" >BIENVENIDO AL INICIO DE SESIÓN</h1>
+    <h2 className="titulo" >BIENVENIDO AL INICIO DE SESIÓN</h2>
     {formData.map((x, index) =>
       <TextBox
         className={""}
