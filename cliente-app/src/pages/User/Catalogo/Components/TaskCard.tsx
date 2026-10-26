@@ -70,6 +70,7 @@ export function CardLibro({ data, onClick }: CardLibroProps) {
       <div className="book-info">
         <h2 style={{ fontSize: "1.6rem" }}>
           ${data.precio}
+          <small> MXN</small>
         </h2>
 
         <h3>{data.titulo}</h3>

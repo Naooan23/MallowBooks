@@ -184,7 +184,12 @@
   letter-spacing: -.01em;
   text-align: right;
 }
-
+.book-info small{
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-ink-3, #9E7D76);
+  margin-left: 0.15rem;
+}
 /* Título — Libre Caslon, serif */
 .book-info h3 {
   margin: .35rem 0 0;
