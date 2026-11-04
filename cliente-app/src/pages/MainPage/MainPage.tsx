@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
-import Logo from "./Logo_t.png";
-import "./MainPage.css";
+import { useEffect, useState } from "react";
 import { Footer } from "../../components/Footer";
 import { get } from "../../config/api";
+import Logo from "./Logo_t.png";
+import "./MainPage.css";
 import { Navbar } from "./NavBar";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 650d06ffe8a0cb012fe9c363362b88da204eb1cc
 interface Categoria {
   id: number;
   value: number;
@@ -102,8 +105,6 @@ export function MainPage() {
   }, []);
 
   const navigateTo = (sectionId: string) => {
-    //setMobileMenuOpen(false);
-
     if (sectionId === "login") {
       window.location.href = "/login";
       return;
@@ -248,19 +249,7 @@ export function MainPage() {
           </div>
         </section>
       </main>
-
-      <Footer
-        onNavigate={navigateTo}
-        onOpenPrivacy={() => {
-          console.log("Abrir políticas de privacidad");
-        }}
-        onOpenFaq={() => {
-          console.log("Abrir preguntas frecuentes");
-        }}
-        onOpenContact={() => {
-          console.log("Abrir términos de compra");
-        }}
-      />
+      <Footer />
     </>
   );
 }
