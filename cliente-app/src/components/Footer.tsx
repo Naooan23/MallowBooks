@@ -1,21 +1,8 @@
 
-import React from "react";
-import "./Footer.css";
 import Logo from "../pages/MainPage/Logo_t.png";
+import "./Footer.css";
 
-interface FooterProps {
-  onNavigate: (sectionId: string) => void;
-  onOpenPrivacy: () => void;
-  onOpenFaq: () => void;
-  onOpenContact: () => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({
-  // onNavigate,
-  // onOpenPrivacy,
-  // onOpenFaq,
-  // onOpenContact,
-}) => {
+export const Footer = () => {
   return (
     <footer className="mallow-footer">
       <div className="footer-container">
