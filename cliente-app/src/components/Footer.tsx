@@ -1,10 +1,7 @@
-
 import Logo from "../pages/MainPage/Logo_t.png";
-<<<<<<< HEAD
 import { FaInstagram, FaTiktok, FaFacebook } from "react-icons/fa";
-=======
 import "./Footer.css";
->>>>>>> 650d06ffe8a0cb012fe9c363362b88da204eb1cc
+
 
 export const Footer = () => {
   return (

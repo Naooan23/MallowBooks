@@ -5,10 +5,6 @@ import Logo from "./Logo_t.png";
 import "./MainPage.css";
 import { Navbar } from "./NavBar";
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 650d06ffe8a0cb012fe9c363362b88da204eb1cc
 interface Categoria {
   id: number;
   value: number;
