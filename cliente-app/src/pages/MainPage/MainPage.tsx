@@ -5,11 +5,7 @@ import { Footer } from "../../components/Footer";
 import { get } from "../../config/api";
 import { Navbar } from "./NavBar";
 
-interface UserProfile {
-  name: string;
-  email: string;
-  role: string;
-}
+
 interface Categoria {
   id: number;
   value: number;
@@ -51,24 +47,35 @@ export function MainPage() {
   useEffect(() => {
     let mounted = true;
     const cargarLibros = async () => {
-      try {
-        const response = (await get("libros", null)) as LibroAPI[];
-        if (!mounted) return;
+  try {
+    const response = (await get("libros", null)) as LibroAPI[];
+    if (!mounted) return;
 
-        // Toma los primeros 5 (o filtra con stock > 0 si quieres)
-        const primeros5 = response.slice(0, 5).map((x) => ({
-          id: x.id_book,
-          portada_url: x.portada_url,
-          titulo: x.titulo,
-          autor: x.autor,
-          precio: x.precio,
-        }));
+    // Copiar y mezclar aleatoriamente los libros
+    const librosAleatorios = [...response];
 
-        setLibrosMini(primeros5);
-      } finally {
-        if (mounted) setLoadingLibros(false);
-      }
-    };
+    for (let i = librosAleatorios.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+
+      [librosAleatorios[i], librosAleatorios[j]] =
+        [librosAleatorios[j], librosAleatorios[i]];
+    }
+
+    // Tomar únicamente 5 libros aleatorios
+    const primeros5 = librosAleatorios.slice(0, 5).map((x) => ({
+      id: x.id_book,
+      portada_url: x.portada_url,
+      titulo: x.titulo,
+      autor: x.autor,
+      precio: x.precio,
+    }));
+
+    setLibrosMini(primeros5);
+
+  } finally {
+    if (mounted) setLoadingLibros(false);
+  }
+};
     const cargarCategorias = async () => {
       try {
         const response: ResponseCategorias[] = await get("categorias", null);

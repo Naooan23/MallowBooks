@@ -2,6 +2,7 @@
 import React from "react";
 import "./Footer.css";
 import Logo from "../pages/MainPage/Logo_t.png";
+import { FaInstagram, FaTiktok, FaFacebook } from "react-icons/fa";
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
@@ -55,7 +56,29 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
           </div>
 
-
+          <div className="footer-column">
+            <h3 className="footer-heading">Redes Sociales</h3>
+            <div className="footer-contact">
+            <div className="footer-contact-item">
+                <FaInstagram className="footer-icon" />
+                <p>
+                  Instagram
+                </p>
+              </div>
+            <div className="footer-contact-item">
+                <FaTiktok className="footer-icon" />
+                <p>
+                  TikTok
+                </p>
+              </div>
+              <div className="footer-contact-item">
+                <FaFacebook className="footer-icon" />
+                <p>
+                  Facebook
+                </p>
+              </div>
+              </div>
+          </div>
 
           {/* Columna 2: Contacto */}
           <div className="footer-column">
@@ -66,9 +89,6 @@ export const Footer: React.FC<FooterProps> = ({
                 <span className="footer-icon" aria-hidden="true">⌖</span>
                 <p>
                   Librería Central, Sucursal 1
-                  <span className="footer-contact-note">
-                    [Ubicación provisional]
-                  </span>
                 </p>
               </div>
 
@@ -76,19 +96,13 @@ export const Footer: React.FC<FooterProps> = ({
                 <span className="footer-icon" aria-hidden="true">✉</span>
                 <p>
                   contacto@mallowbooks.com
-                  <span className="footer-contact-note">
-                    [Correo provisional]
-                  </span>
                 </p>
               </div>
 
               <div className="footer-contact-item">
                 <span className="footer-icon" aria-hidden="true">☎</span>
                 <p>
-                  +52 (55) 0000-0000
-                  <span className="footer-contact-note">
-                    [Teléfono provisional]
-                  </span>
+                  +52 (55) 1234-56789
                 </p>
               </div>
             </div>
