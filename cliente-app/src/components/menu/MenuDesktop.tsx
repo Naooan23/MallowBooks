@@ -23,8 +23,16 @@ export default function MenuDesktop({ hayLogo, Logo }: MenuDesktopProps) {
   return (
     <div className="sidebar">
       {(hayLogo || hayLogo == null) && (
-        <Col xs={2} className="sidebar-logo" style={{ justifyContent: "left", width: "17.6vw" }}>
-          <img src={Logo} alt="logo" width="50" />
+        <Col
+          className="sidebar-logo"
+          style={{
+            flex: "0 0 auto",
+            width: "auto",
+            margin: 0,
+            padding: 0
+          }}
+        >
+          <img src={Logo} alt="logo" width="69" />
         </Col>
       )}
 

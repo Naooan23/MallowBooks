@@ -118,7 +118,6 @@ export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
 
     if (nuevaCantidad < 0) return;
 
-    // Si NO está en el carrito, solo modificar la cantidad local.
     if (!libroActual) {
       if (sumar && nuevaCantidad > stock) return;
 
@@ -133,13 +132,9 @@ export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
     try {
       const cantidadAnterior = libroActual.cantidad;
 
-      if (nuevaCantidad === 0) {
-        await eliminarDelCarrito(libroActual.id_book);
-      } else {
-        await cambiarCantidad(data.id, nuevaCantidad);
-      }
+      if (nuevaCantidad === 0) await eliminarDelCarrito(libroActual.id_book);
+      else await cambiarCantidad(data.id, nuevaCantidad);
 
-      // Aumentar cantidad consume stock; disminuirlo lo devuelve.
       const diferenciaStock = cantidadAnterior - nuevaCantidad;
 
       await cambiarStock(diferenciaStock);

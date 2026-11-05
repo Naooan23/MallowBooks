@@ -1,5 +1,5 @@
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 import Logo from "../pages/MainPage/Logo_t.png";
-import { FaInstagram, FaTiktok, FaFacebook } from "react-icons/fa";
 import "./Footer.css";
 
 
@@ -46,13 +46,13 @@ export const Footer = () => {
           <div className="footer-column">
             <h3 className="footer-heading">Redes Sociales</h3>
             <div className="footer-contact">
-            <div className="footer-contact-item">
+              <div className="footer-contact-item">
                 <FaInstagram className="footer-icon" />
                 <p>
                   Instagram
                 </p>
               </div>
-            <div className="footer-contact-item">
+              <div className="footer-contact-item">
                 <FaTiktok className="footer-icon" />
                 <p>
                   TikTok
@@ -64,7 +64,7 @@ export const Footer = () => {
                   Facebook
                 </p>
               </div>
-              </div>
+            </div>
           </div>
 
           {/* Columna 2: Contacto */}

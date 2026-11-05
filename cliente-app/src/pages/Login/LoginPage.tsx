@@ -5,39 +5,19 @@ import { useAuth } from "../../services/useAuth.js";
 import { Navbar } from "../MainPage/NavBar.js";
 import "./Login.css";
 import { Login } from "./Login.js";
-import type { LoginPageFormDataProps } from "./LoginTypes.js";
+import { type LoginPageFormDataProps } from "./LoginTypes.js";
 import { Registro } from "./Registro.js";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState<LoginPageFormDataProps[]>([
-    { key: "email", label: "Correo", value: "", touched: false, type: "email" },
-    {
-      key: "password",
-      label: "Contraseña",
-      value: "",
-      touched: false,
-      type: "password",
-    },
+    { key: "email", label: "Correo", value: "", touched: false, type: "email", disabled: false },
+    { key: "password", label: "Contraseña", value: "", touched: false, type: "password", disabled: false },
   ]);
-  const [formDataRegistro, setFormDataRegistro] = useState<
-    LoginPageFormDataProps[]
-  >([
-    { key: "nombre", label: "Nombre", value: "", touched: false, type: "text" },
-    { key: "email", label: "Correo", value: "", touched: false, type: "email" },
-    {
-      key: "password",
-      label: "Contraseña",
-      value: "",
-      touched: false,
-      type: "password",
-    },
-    {
-      key: "confPassword",
-      label: "Confirmar Contraseña",
-      value: "",
-      touched: false,
-      type: "password",
-    },
+  const [formDataRegistro, setFormDataRegistro] = useState<LoginPageFormDataProps[]>([
+    { key: "nombre", label: "Nombre", value: "", touched: false, type: "text", disabled: false },
+    { key: "email", label: "Correo", value: "", touched: false, type: "email", disabled: false },
+    { key: "password", label: "Contraseña", value: "", touched: false, type: "password", disabled: false },
+    { key: "confPassword", label: "Confirmar Contraseña", value: "", touched: false, type: "password", disabled: false },
   ]);
   const [registrar, setRegistrar] = useState(false);
   const { setUser } = useAuth();
