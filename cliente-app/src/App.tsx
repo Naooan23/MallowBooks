@@ -10,11 +10,14 @@ import { useAuth } from './services/useAuth';
 function App() {
   const { user } = useAuth();
   const esAdmin = user?.rol === "admin";
+  const esEmpleado = user?.rol === "empleado";
 
   const rutasFiltradas = appRoutes.filter(route =>
-    esAdmin
-      ? route.menu === true && route.admin === true
-      : route.menu === true && route.admin !== true
+    route.menu === true &&
+    (
+      (esAdmin && route.admin === true) ||
+      (esEmpleado && route.empleado === true)
+    )
   );
 
   return (
@@ -39,7 +42,10 @@ function App() {
               <Route
                 path={route.path}
                 element={
-                  <ProtectedRoute onlyAdmin={route.admin === true}>
+                  <ProtectedRoute
+                    onlyAdmin={route.admin === true}
+                    onlyEmpleado={route.empleado === true}
+                  >
                     <div className="dashboard-modern">
                       <main className="main-modern">
                         <div className="dashboard-content">

@@ -82,6 +82,25 @@ export const appRoutes: AppRoute[] = [
     menu: true,
     admin: true,
   },
+  {
+    icon: <i className="bi bi-layout-wtf" />,
+    path: "/empleado-dashboard",
+    label: "Inicio",
+    element: withSuspense(<DashBoard />),
+    menu: true,
+    admin: false,
+    empleado: true,
+  },
+  {
+    icon: <i className="bi bi-collection" />,
+    path: "/empleado-catalogo",
+    label: "Catálogo",
+    element: withSuspense(<Catalogo />),
+    sidebar: SearchFilter,
+    menu: true,
+    admin: false,
+    empleado: true,
+  },
 ];
 
 export const CerrarSesionRoute = {
