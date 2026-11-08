@@ -10,11 +10,14 @@ export default function MenuMovil({ hayLogo, colSize, Logo, open, onClick }: Men
   const navigate = useNavigate();
 
   const esAdmin = user === null ? false : user?.rol === "admin";
+  const esEmpleado = user === null ? false : user?.rol === "empleado";
 
-  const rutasFiltradas = appRoutes.filter(route =>
-    esAdmin
-      ? route.menu === true && route.admin === true
-      : route.menu === true && route.admin !== true
+  const rutasFiltradas = appRoutes.filter((route) =>
+    route.menu === true &&
+    (
+      (esAdmin && route.admin === true) ||
+      (esEmpleado && route.empleado === true)
+    )
   );
 
   return (
