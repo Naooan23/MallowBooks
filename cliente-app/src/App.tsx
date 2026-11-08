@@ -12,13 +12,19 @@ function App() {
   const esAdmin = user?.rol === "admin";
   const esEmpleado = user?.rol === "empleado";
 
-  const rutasFiltradas = appRoutes.filter(route =>
-    route.menu === true &&
-    (
-      (esAdmin && route.admin === true) ||
-      (esEmpleado && route.empleado === true)
-    )
-  );
+  const rutasFiltradas = appRoutes.filter(route => {
+    if (!route.menu) return false;
+
+    if (esAdmin) return route.admin === true;
+
+    if (esEmpleado) return route.empleado === true;
+
+    return route.menu === true && route.admin === false && route.empleado === false;
+  });
+
+  console.log(rutasFiltradas);
+  console.log(user?.rol);
+  console.log(appRoutes.filter(x => x.empleado === true));
 
   return (
     <BrowserRouter>

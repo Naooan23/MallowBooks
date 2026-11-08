@@ -2,13 +2,15 @@ from datetime import date, datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Depends
+from httpx import get
+from numpy import number
 from requests import session
-from sqlalchemy import null
+from sqlalchemy import desc, null
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Carrito, Detallecarrito, Detalleorden, Libros, Orden, Usuarios, Categoria
-from schemas import LibroBase, CarritoBase, LibroResponse, LoginRequest, RegisterRequest, CarritoResponse, CarritoDetalleResponse, CarritoDetalleBase, OrdenCreate, PasswordData, UserData
+from schemas import LibroBase, CarritoBase, LibroResponse, LoginRequest, RegisterRequest, CarritoResponse, CarritoDetalleResponse, CarritoDetalleBase, OrdenCreate, PasswordData, UserData, UsuarioBase
 from decimal import Decimal
 
 app = FastAPI()
@@ -105,16 +107,15 @@ def eliminar_libro(id_book: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {
+        "success": True,
         "message": "Libro eliminado correctamente"
     }
-
 
 @app.get("/usuarios")
 def obtener_usuarios(db: Session = Depends(get_db)):
     usuarios = db.query(Usuarios).all()
 
     return usuarios
-
 
 @app.get("/usuarios/{id_user}")
 def obtener_usuarios(id_user: int, db: Session = Depends(get_db)):
@@ -160,6 +161,72 @@ def cambiar_User(data:UserData, db:Session=Depends(get_db)):
         "rol": user.rol
     }
     
+@app.get("/ultOrden")
+def obtener_Ultima_Orden(db: Session = Depends(get_db)):
+    orden = db.query(Orden).order_by(desc(Orden.id_orden)).first()
+
+    if not orden:
+        return None
+
+    detalles = (
+        db.query(Detalleorden)
+        .filter(Detalleorden.id_orden == orden.id_orden)
+        .all()
+    )
+
+    usuario=db.query(Usuarios).filter(Usuarios.id_user==orden.id_user).first()
+
+    libros_response = []
+
+    for detalle in detalles:
+        libro = (
+            db.query(Libros)
+            .filter(Libros.id_book == detalle.id_book)
+            .first()
+        )
+
+        if libro:
+            libros_response.append({
+                "id_book": libro.id_book,
+                "titulo": libro.titulo,
+                "autor": libro.autor,
+                "precio": libro.precio,
+                "cantidad": detalle.cantidad,
+                "subtotal": libro.precio * detalle.cantidad
+            })
+
+    return {
+        "orden": {
+            "id_orden": orden.id_orden,
+            "total": orden.total,
+            "status": orden.status
+        },
+        "libros": libros_response,
+        "cliente": usuario.nombre_user,
+        "email": usuario.email,
+        "fecha": orden.fecha.isoformat()
+    }
+
+@app.get("/sistRecomendaciones/{id_user}")
+def sistema_recomendacion(id_user: int, db: Session = Depends(get_db)):
+    ordenes = db.query(Orden).filter(Orden.id_user == id_user).all()
+
+    ids_orden = [o.id_orden for o in ordenes]
+
+    detalles = db.query(Detalleorden).filter(Detalleorden.id_orden.in_(ids_orden)).all()
+
+    libros_comprados = [d.id_book for d in detalles]
+
+    if not libros_comprados:
+        return []
+
+    categorias = db.query(Libros.id_categoria).filter(Libros.id_book.in_(libros_comprados)).distinct().all()
+
+    categorias = [c[0] for c in categorias]
+
+    recomendaciones = db.query(Libros).filter(Libros.id_categoria.in_(categorias),~Libros.id_book.in_(libros_comprados)).limit(10).all()
+
+    return recomendaciones
 
 @app.get("/categorias")
 def obtener_categorias(db: Session = Depends(get_db)):
@@ -470,3 +537,62 @@ def crear_orden(data: OrdenCreate, db: Session = Depends(get_db)):
             status_code=500,
             detail=str(e)
         )
+
+@app.post("/usuarios", status_code=201)
+def crear_usuario(data: UsuarioBase, db: Session = Depends(get_db)):
+
+    usuario = Usuarios(
+        id_user=data.id_user,
+        nombre_user=data.nombre_user,
+        email=data.email,
+        password=data.password,
+        rol=data.rol,
+    )
+
+    db.add(usuario)
+    db.commit()
+    db.refresh(usuario)
+
+    return usuario
+
+@app.put("/usuarios")
+def actualizar_usuario(data: UsuarioBase, db: Session = Depends(get_db)):
+    usuario = db.query(Usuarios).filter(
+        Usuarios.id_user == data.id_user
+    ).first()
+
+    if not usuario:
+        raise HTTPException(
+            status_code=404,
+            detail="Usuario no encontrado"
+        )
+
+    usuario.nombre_user = data.nombre_user
+    usuario.email = data.email
+    usuario.password = data.password
+    usuario.rol = data.rol
+
+    db.commit()
+    db.refresh(usuario)
+
+    return usuario
+
+@app.delete("/usuarios/{id_user}")
+def eliminar_usuario(id_user: int, db: Session = Depends(get_db)):
+    usuario = db.query(Usuarios).filter(
+        Usuarios.id_user == id_user
+    ).first()
+
+    if not usuario:
+        raise HTTPException(
+            status_code=404,
+            detail="Libro no encontrado"
+        )
+
+    db.delete(usuario)
+    db.commit()
+
+    return {
+        "success": True,
+        "message": "Usuario eliminado correctamente"
+    }

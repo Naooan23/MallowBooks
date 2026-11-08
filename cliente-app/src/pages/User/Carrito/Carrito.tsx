@@ -5,7 +5,7 @@ import { useAuth } from "../../../services/useAuth";
 import "../Catalogo/Components/TaskCard.css";
 import { Resumen } from "./Components/CarritoComp";
 import ItemCarrito from "./Components/ItemCarrito";
-import OrdenCompra from "./Components/OrdenCompra";
+import { OrdenCompra } from "./Components/OrdenCompra";
 import type { LibroOrdenVista, Orden, OrdenCompraState } from "./Types";
 import "./style.css";
 
@@ -113,7 +113,7 @@ export default function Carrito() {
 
   return (
     <div className="cart-container">
-      <h1 className="cart-title">Tu Carrito (Cart)</h1>
+      <h1>Mi Carrito (Cart)</h1>
 
       <div className="cart-grid">
         <div className="cart-items-list">

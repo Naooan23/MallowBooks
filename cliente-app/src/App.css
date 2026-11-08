@@ -192,7 +192,12 @@ body,
 
 .App {
     height: 100%;
-    min-height: 0;
+    min-height: 100vh;
+}
+
+.App > footer {
+  margin-top: auto;
+  width: 100%;
 }
 
 .App > footer {
@@ -235,10 +240,9 @@ body,
 .main-modern,
 .dashboard-content {
     display: flex;
-    flex: 1 1 0%;
+    flex: 1;
     flex-direction: column;
-    min-width: 0;
-    min-height: 0;
+    min-height: 100%;
     max-height: 100% !important;
     overflow: hidden;
 }

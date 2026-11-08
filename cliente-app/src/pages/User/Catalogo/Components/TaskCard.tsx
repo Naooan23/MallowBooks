@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Button, Col } from "react-bootstrap";
-import { LoadingSimple, PopUp } from "../../../../components/Box.tsx";
+import { Card, LoadingSimple, PopUp } from "../../../../components/Box.tsx";
 import { get, put } from "../../../../config/api.ts";
 import { useCart } from "../../../../services/CartContext.tsx";
-import type { LibroCarrito, Libros } from "../../../../services/ServicesTypes.ts";
+import type { LibroCarrito, LibrosCover } from "../../../../services/ServicesTypes.ts";
 import type { CardLibroProps } from "./ComponentsTypes.ts";
 import "./TaskCard.css";
 
-export function CardLibro({ data, onClick }: CardLibroProps) {
+export function CardLibro({ data, classname, onClick, CoverWidth, CoverHeigth }: CardLibroProps) {
   const { librosCarrito, agregarAlCarrito, eliminarDelCarrito } = useCart();
   const libroActual = librosCarrito?.find((x: LibroCarrito) => x.id_book == data.id);
   const sinStock = data.stock <= 0;
@@ -41,10 +41,29 @@ export function CardLibro({ data, onClick }: CardLibroProps) {
   };
 
   return (
-    <div className="book-card" onClick={onClick}>
+    <Card
+      classname={classname}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
+        padding: "0",
+        cursor: "pointer",
+        transition: "transform 0.25s ease",
+        backgroundColor: "transparent",
+        border: "none",
+      }}
+      onClick={onClick}
+      width={"180px"}
+    >
       <div className="book-cover-container">
 
-        <BookCover {...data} />
+        <BookCover
+          width={CoverWidth}
+          heigth={CoverHeigth}
+          portada_url={data.portada_url}
+          titulo={data.titulo}
+        />
 
         <div
           className={`cart-button ${libroActual?.cantidad === 1
@@ -77,12 +96,12 @@ export function CardLibro({ data, onClick }: CardLibroProps) {
 
         <p>{data.autor}</p>
       </div>
-    </div>
+    </Card >
   );
 }
 
 
-export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
+export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth }: CardLibroProps) {
   const { librosCarrito, agregarAlCarrito, eliminarDelCarrito, cambiarCantidad } = useCart();
 
   const libroActual = librosCarrito?.find(libro => libro.id_book == data.id);
@@ -233,7 +252,13 @@ export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
     <PopUp titulo={data.titulo} onClose={onClick}>
       <div className="popup-detalle-wrapper">
       <div className="data-book">
-        <BookCover {...data} />
+
+        <BookCover
+          width={CoverWidth}
+          heigth={CoverHeigth}
+          portada_url={data.portada_url}
+          titulo={data.titulo}
+        />
 
         <p style={{ marginBottom: "0.1rem" }}>
           <strong>Precio:</strong> ${data.precio}
@@ -264,25 +289,25 @@ export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
               gap: "10px",
             }}
           >
-            <Button
+            <button
               className="botones"
               onClick={() => modificarCantidad(false)}
               disabled={loading || cantidadActual <= 0}
             >
               −
-            </Button>
+            </button>
 
             <span style={{ textAlign: "center" }}>
               {cantidadActual}
             </span>
 
-            <Button
+            <button
               className="botones"
               onClick={() => modificarCantidad(true)}
               disabled={loading || stock <= 0}
             >
               +
-            </Button>
+            </button>
           </Col>
         </div>
 
@@ -323,11 +348,26 @@ export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
   );
 }
 
-export function BookCover(data: Libros) {
+export function BookCover(data: LibrosCover) {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="book-cover detalle">
+    <Card
+      style={{
+        position: "relative",
+        padding: 0,
+        gap: 0,
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",     // Hereda el alto de la card del carrito (ej. 100% de 120px)
+        minHeight: "11rem", // Asegura una altura mínima si el padre es flexible
+        overflow: "hidden",
+        borderRadius: "0.4rem",
+        backgroundColor: "var(--color-blanco)",
+      }}
+      width={data.width}
+      height={data.heigth}
+    >
       {loading && <LoadingSimple />}
 
       <img
@@ -336,6 +376,18 @@ export function BookCover(data: Libros) {
         onLoad={() => setLoading(false)}
         onError={() => setLoading(false)}
         className={loading ? "imagen-cargando" : ""}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          objectFit: "cover",
+          display: "block",
+          borderRadius: "0.4rem",
+          transition: "opacity 0.2s ease",
+        }}
+        width="100%"
+        height="100%"
       />
-    </div>);
+    </Card>
+  );
 }

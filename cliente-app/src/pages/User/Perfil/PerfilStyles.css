@@ -1,20 +1,11 @@
 .profile-container {
-  padding: 30px;
-  height: 90vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-sizing: border-box;
-
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-.profile-title {
-  font-size: 28px;
-  font-weight: bold;
-  color: var(--cafe-oscuro);
-  margin-bottom: 20px;
-  flex-shrink: 0;
+  padding: 30px;
+  height: 90vh;
+  box-sizing: border-box;
+  color: var(--cafe-oscuro) !important;
 }
 
 .profile-grid {
@@ -25,24 +16,6 @@
   flex: 1;
   min-height: 0;
   min-width: 0;
-}
-
-.profile-card {
-  background: var(--color-blanco);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 12px var(--color-gris);
-  position: relative;
-  min-width: 0;
-  min-height: 0;
-  box-sizing: border-box;
-}
-
-.user-info-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
 }
 
 .avatar-section {
@@ -60,43 +33,10 @@
   line-height: 1;
 }
 
-.avatar-circle {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  border: 2px solid var(--color-negro);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-blanco);
-}
-
-.avatar-icon {
-  width: 55px;
-  height: 55px;
-  color: var(--color-negro);
-}
-
-.btn-edit-photo {
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--color-blanco);
-  border: 1px solid var(--color-negro);
-  border-radius: 12px;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 2px 8px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
 .user-name {
   font-size: 20px;
   font-weight: 800;
   margin: 10px 0 2px 0;
-  color: var(--color-negro);
 }
 
 .user-email {
@@ -106,42 +46,20 @@
 }
 
 .badge-role {
-  background-color: var(--badge-bg);
-  color: var(--color-negro);
+  background-color: var(--color-rosa-oscuro);
+  color: var(--color-blanco);
   font-size: 12px;
   font-weight: 700;
   padding: 4px 16px;
   border-radius: 12px;
   margin-bottom: 12px;
-  letter-spacing: 0.5px;
-}
-
-.member-since {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--color-gris-oscuro);
-  letter-spacing: 0.5px;
-  margin-bottom: 15px;
 }
 
 .illustration-container {
-  margin: 10px 0 20px 0;
+  margin-top: auto;
+  margin-bottom: auto;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.mascot-img {
-  width: 120px;
-  height: auto;
-  object-fit: contain;
-}
-
-.member-since-sub {
-  font-size: 9px;
-  font-weight: 600;
-  color: var(--color-gris-oscuro);
-  margin-top: 5px;
+  justify-content: center;
 }
 
 .section-header {
@@ -253,14 +171,6 @@ input[type="text"]:focus, input[type="password"]:focus {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
-}
-
-@media (max-width: 1100px) {
-  .profile-card {
-    height: 100%;
-    max-height: 100%;
-    overflow-y: auto;
-  }
 }
 
 @media (max-width: 1200px) {

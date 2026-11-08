@@ -49,7 +49,12 @@ export function Registro({ formData, setFormData, setRegistrar, hashPassword, }:
       if (response.success && response.usuario) {
         setUser(response.usuario);
 
-        navigate(response.usuario.rol === "admin" ? "/admin-dashboard" : "/dashboard");
+        navigate(
+          response.usuario.rol === "admin"
+            ? "/admin-dashboard"
+            : response.usuario.rol === "empleado"
+              ? "/empleado-dashboard"
+              : "/dashboard");
 
         return;
       }
@@ -111,6 +116,8 @@ export function Registro({ formData, setFormData, setRegistrar, hashPassword, }:
           fontWeight: 700,
         }}
         onErrorChange={handleErrorChange}
+        resetKey={null}
+        fontSize={"1.3rem"}
       />
 
       <Row
