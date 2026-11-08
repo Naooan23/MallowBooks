@@ -77,6 +77,7 @@ export function Login({ formData, setFormData, formDataRegistro, setRegistrar, h
           general: hasError,
         }));
       }}
+      fontSize={"1.3rem"}
     />
     <Row style={{ display: "flex", textAlign: "center", justifyContent: "center" }}>
       <button className="Button LogIn" onClick={sendData} disabled={buttonDisable || hayLoginErrores} >Iniciar Sesión</button>

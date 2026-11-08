@@ -10,7 +10,7 @@ class CarritoBase(BaseModel):
     id_user: int
 
 class LibroBase(BaseModel):
-    id_book : int
+    id_book: Optional[int] = None
     id_categoria: Optional[int] = None
     titulo: str
     autor: Optional[str] = None

@@ -1,9 +1,10 @@
 import { Col } from "react-bootstrap";
+import { Card } from "../../../../components/Box";
 import type { ResumenProps } from "../Types";
 
 export const Resumen = ({ dataSeleccionada, subtotal, cantidadSeleccionada, onClick }: ResumenProps) => {
   return (
-    <div className="cart-summary-card">
+    <Card width="40%" height="auto">
       <h2 className="summary-title">
         Resumen del pedido
       </h2>
@@ -40,6 +41,6 @@ export const Resumen = ({ dataSeleccionada, subtotal, cantidadSeleccionada, onCl
       <p className="selected-count-text">
         Unidades seleccionadas: {cantidadSeleccionada}
       </p>
-    </div>
+    </Card>
   );
 };

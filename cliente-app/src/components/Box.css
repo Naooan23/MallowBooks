@@ -14,7 +14,7 @@
 .detalle-modal {
     width: 600px;
     max-width: 90%;
-    max-height: 85vh;
+    max-height: 90vh;
 
     background: var(--color-beige-background);
     border-radius: 15px;
@@ -100,7 +100,6 @@
 
 .textbox-label {
   margin: 0;
-  font-size: 1.3rem;
   white-space: nowrap;
 }
 
@@ -109,9 +108,8 @@
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   column-gap: 0.5rem;
-  margin: 1rem;
-  margin-bottom: 0;
   min-width: 0;
+  width: 100%;
 }
 
 .selectbox-label {
@@ -121,6 +119,21 @@
 
 .selectbox-control {
   min-width: 0;
+}
+
+.card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  gap: 0.5rem;
+}
+
+.card-movement:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 @media (max-width: 600px) {

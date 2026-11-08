@@ -4,14 +4,14 @@ import type { SearchFilterProps } from "../../../../components/menu/SideBar/Type
 import { get } from "../../../../config/api";
 import "./SearchFilter.css";
 
-interface Categorias {
+export interface Categorias {
   id: number,
   value: string,
   label: string,
   icon: string,
 }
 
-interface ResponseCategorias {
+export interface ResponseCategorias {
   id_categoria: number,
   nombre_categoria_es: string,
   icono: string,
@@ -21,7 +21,7 @@ const SearchFilter = ({ search, setSearch, filter, setFilter }: SearchFilterProp
   const [categorias, setCategorias] = useState<Categorias[]>();
 
   const cargarCategorias = async () => {
-    const response = await get("categorias", null);
+    const response = await get("categorias", undefined);
 
     setCategorias([
       { id: 0, value: 0, label: "Todas", icon: "bi bi-bookmark-star" },

@@ -1,5 +1,6 @@
 import { Suspense, type ReactNode } from "react";
 import { AdminPage } from "../pages/Administrador/AdminPage";
+import Usuarios from "../pages/Administrador/Usuario/Usuario.tsx";
 import LoginPage from "../pages/Login/LoginPage";
 import { MainPage } from "../pages/MainPage/MainPage";
 import Carrito from "../pages/User/Carrito/Carrito";
@@ -49,6 +50,7 @@ export const appRoutes: AppRoute[] = [
     element: withSuspense(<DashBoard />),
     menu: true,
     admin: false,
+    empleado: false,
   },
   {
     icon: <i className="bi bi-collection" />,
@@ -58,6 +60,7 @@ export const appRoutes: AppRoute[] = [
     sidebar: SearchFilter,
     menu: true,
     admin: false,
+    empleado: false,
   },
   {
     icon: <i className="bi bi-cart4" />,
@@ -66,6 +69,7 @@ export const appRoutes: AppRoute[] = [
     element: withSuspense(<Carrito />),
     menu: true,
     admin: false,
+    empleado: false,
   },
   {
     icon: <i className="bi bi-person-circle" />,
@@ -74,6 +78,7 @@ export const appRoutes: AppRoute[] = [
     element: withSuspense(<Perfil />),
     menu: true,
     admin: false,
+    empleado: false,
   },
   {
     icon: <i className="bi bi-layout-wtf" />,
@@ -82,6 +87,7 @@ export const appRoutes: AppRoute[] = [
     element: withSuspense(<AdminPage />),
     menu: true,
     admin: true,
+    empleado: false,
   },
   {
     icon: <i className="bi bi-layout-wtf" />,
@@ -101,6 +107,15 @@ export const appRoutes: AppRoute[] = [
     menu: true,
     admin: false,
     empleado: true,
+  },
+  {
+    icon: <i className="bi bi-person-gear" />,
+    path: "/usuarios",
+    label: "Usuarios",
+    element: withSuspense(<Usuarios />),
+    menu: true,
+    admin: true,
+    empleado: false,
   },
 ];
 
