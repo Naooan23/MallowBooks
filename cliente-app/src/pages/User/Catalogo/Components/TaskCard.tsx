@@ -70,6 +70,7 @@ export function CardLibro({ data, onClick }: CardLibroProps) {
       <div className="book-info">
         <h2 style={{ fontSize: "1.6rem" }}>
           ${data.precio}
+          <small> MXN</small>
         </h2>
 
         <h3>{data.titulo}</h3>
@@ -230,6 +231,7 @@ export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
 
   return (
     <PopUp titulo={data.titulo} onClose={onClick}>
+      <div className="popup-detalle-wrapper">
       <div className="data-book">
         <BookCover {...data} />
 
@@ -316,6 +318,7 @@ export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
         <textarea disabled value={data.sinopsis} />
       </div>
       {loading && (<LoadingSimple />)}
+      </div>
     </PopUp>
   );
 }

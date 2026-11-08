@@ -1,6 +1,6 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { appRoutes } from './config/menuConfig';
 import Content from './Content';
@@ -27,7 +27,7 @@ function App() {
 
           <Route
             path="/"
-            element={<Navigate to="/login" replace />}
+            element={appRoutes.find(route => route.path === "/")?.element}
           />
 
           <Route

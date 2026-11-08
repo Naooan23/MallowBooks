@@ -1,28 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+/* ============================
+   GRID / CONTENEDOR
+   ============================ */
 .books-grid {
-    flex: 1;
-    min-width: 0;
-    height: 96%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 1rem;
-    padding-top: 0rem;
+ /* flex: 1 1 0%;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 1rem 1rem;
+  box-sizing: border-box;*/
+    height: 100vh;
+  flex: 1 1 0%;
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 1rem 1rem;
+  box-sizing: border-box;
 }
-
-.books-grid::-webkit-scrollbar {
-    width: 6px;
-}
-
-.books-grid::-webkit-scrollbar-track {
-    background: transparent;
-}
-
+.books-grid::-webkit-scrollbar { width: 6px; }
+.books-grid::-webkit-scrollbar-track { background: transparent; }
 .books-grid::-webkit-scrollbar-thumb {
-    background: var(--color-rosa-oscuro-claro);
-    border-radius: 10px;
-}
-
-.books-grid::-webkit-scrollbar-corner {
-    background: transparent;
+  background: var(--color-rosa);
+  border-radius: 10px;
 }
 
 .books-container {
@@ -33,249 +34,392 @@
   padding: 1rem;
 }
 
+/* ============================
+   TARJETA (BookCard)
+   ============================ */
 .book-card {
-  width: 11rem;
+  width: 13rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid var(--color-borde);
+  border-radius: 1rem;                /* rounded-2xl */
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+  transition: all .3s ease;
   cursor: pointer;
-  transition: transform 0.25s ease;
+  
 }
 
 .book-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  border-color: var(--color-borde-hover);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,.10),
+              0 4px 6px -4px rgba(0,0,0,.10);
+}
+
+/* ============================
+   PORTADA
+   ============================ */
+.book-cover-container {
+  position: relative;
+  padding: 1rem 1rem .75rem;
+  background: rgba(250, 247, 242, .6);
 }
 
 .book-cover {
-  width: 11rem;
-  height: 17rem;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: .5rem;
   overflow: hidden;
-  border-radius: 0.4rem;
-  background-color: var(--color-blanco);
+  background: var(--color-crema-cover);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.1);
+  transition: box-shadow .3s ease;
+}
+.book-card:hover .book-cover {
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,.15);
 }
 
 .book-cover img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
   display: block;
+  transition: transform .5s ease;
+}
+.book-card:hover .book-cover img {
+  transform: scale(1.05);
 }
 
-.book-info {
-  padding-top: 0.6rem;
-}
-
-.book-info h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.book-info p {
-  margin: 0.25rem 0 0;
-  font-size: 0.85rem;
-  color: var(--color-gris);
-  margin: 0px;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.book-cover.detalle {
-    position: relative;
-
-    width: 11rem;
-    min-height: 15rem;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.book-cover.detalle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-
-    transition: opacity 0.2s ease;
-}
-
-.book-cover-container {
-    position: relative;
-}
-
-.button-cart {
-    width: 100%;
-    margin-top: 12px;
-    padding: 10px 16px;
-
-    border: none;
-    border-radius: 10px;
-
-    background-color: var(--color-cafe);
-    color: var(--color-rosa);
-
-    font-size: 15px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.15s ease,
-        box-shadow 0.2s ease;
-}
-
-.button-cart:hover {
-  background-color: var(--color-cafe-claro) !important;
-  color: var(--color-rosa) !important;    
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px var(--color-morado-transparente);
-}
-
-.button-cart:active {
-    transform: translateY(0);
-}
-
-.button-delete {
-    width: 100%;
-    margin-top: 12px;
-    padding: 10px 16px;
-
-    border: none;
-    border-radius: 10px;
-
-    background-color: var(--color-rosa) !important;
-    color: var(--color-cafe) !important;
-    
-    font-size: 15px;
-    font-weight: 600;
-
-    cursor: pointer;
-    
-    transition: all 0.2s ease;
-  }
-  
-.button-delete:hover{
-  background-color: var(--color-cafe-claro) !important;
-  color: var(--color-rosa-coral) !important;
-}
-
-.cart-button {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-
-    width: 2rem;
-    height: 2rem;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 50%;
-    border: 2px solid var(--color-rosa);
-    background-color: var(--color-cafe);
-    color: var(--color-rosa);
-    font-weight: 700;
-
-    z-index: 2;
-}
-
-.cart-button.added {
-    border: 2px solid var(--color-cafe);
-    background-color: var(--color-rosa);
-    color: var(--color-cafe);
-}
-
-.cart-button.disable {
-  opacity: 0.5;
+/* Lomo del libro (gradiente lateral) */
+.book-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: .75rem;
+  background: linear-gradient(to right,
+              rgba(0,0,0,.25),
+              rgba(255,255,255,.1),
+              transparent);
   pointer-events: none;
-  cursor: not-allowed;
+  z-index: 2;
 }
 
-.cart-button i {
-    font-size: 1.5rem;
-    margin-bottom: 0.1rem;
+/* Portada en modo detalle */
+.book-cover.detalle {
+  width: 11rem;
+  min-height: 15rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
-
-.book-info {
-    flex: 1;
-    min-width: 0;
-    padding: 0;
+.book-cover.detalle img {
+  object-fit: cover;
+  border-radius: 8px;
+  transition: opacity .2s ease;
 }
+.imagen-cargando { opacity: 0; }
 
-.book-info p{
-    margin: 0px;
-    padding: 0px;
-}
-
-.book-info textarea {
-    width: 100%;
-    height: 85%;
-    box-sizing: border-box;
-    resize: none;
-    background-color: transparent;
-    border: none;
-    padding: 8px 10px;
-}
-
-.book-info textarea::-webkit-scrollbar {
-    width: 6px;
-}
-
-.book-info textarea::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.book-info textarea::-webkit-scrollbar-thumb {
-    background: var(--color-rosa-oscuro-claro);
-    border-radius: 10px;
-}
-
-.book-info textarea::-webkit-scrollbar-corner {
-    background: transparent;
-}
-
-.botones {
+/* ============================
+   BOTÓN FLOTANTE "+" / carrito
+   ============================ */
+.cart-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--color-rosa);
   background-color: var(--color-cafe);
   color: var(--color-rosa);
-  padding-top: 0;
-  padding-bottom: 0.2rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
   font-weight: 700;
-  font-size: 1.2rem;
-  border: none;
+  cursor: pointer;
+  z-index: 2;
+  transition: all .2s ease;
 }
-
-.botones:hover {  
+.cart-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(74,46,40,.25);
+}
+.cart-button.added {
+  border-color: var(--color-cafe);
   background-color: var(--color-rosa);
   color: var(--color-cafe);
 }
-
-.botones:active {
-  background-color: var(--color-rosa) !important;
-  color: var(--color-cafe) !important;
-  box-shadow: none !important;
+.cart-button.disable {
+  opacity: .5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.cart-button i {
+  font-size: 1.5rem;
+  line-height: 1;
 }
 
-.botones:disabled, .button-cart:disabled {
-  opacity: 0.5;
+/* ============================
+   INFO / TIPOGRAFÍA
+   ============================ */
+.book-info {
+  flex: 1;
+  min-width: 0;
+  padding: .9rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Precio — Roboto Slab */
+.book-info h2 {
+  margin: 0;
+  font-family: "Lora", Georgia, serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-cafe);
+  letter-spacing: -.01em;
+  text-align: right;
+}
+.book-info small{
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-ink-3, #9E7D76);
+  margin-left: 0.15rem;
+}
+/* Título — Libre Caslon, serif */
+.book-info h3 {
+  margin: .35rem 0 0;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-cafe);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .15s ease;
+}
+.book-card:hover .book-info h3 {
+  color: var(--color-rosa-coral);
+}
+
+/* Autor */
+.book-info p {
+  margin: .25rem 0 0;
+  padding: 0;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  font-size: .85rem;
+  color: var(--color-ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Separador antes de la zona de precio/acciones (solo en tarjeta) */
+.book-card .book-info {
+  border-top: 1px solid var(--color-sep);
+}
+
+/* Sinopsis en el detalle */
+.book-info textarea {
+  width: 100%;
+  height: 85%;
+  box-sizing: border-box;
+  resize: none;
+  background-color: transparent;
+  border: none;
+  padding: 8px 10px;
+  font-family: inherit;
+  color: var(--color-ink-2);
+}
+.book-info textarea::-webkit-scrollbar { width: 6px; }
+.book-info textarea::-webkit-scrollbar-track { background: transparent; }
+.book-info textarea::-webkit-scrollbar-thumb {
+  background: var(--color-rosa);
+  border-radius: 10px;
+}
+
+/* ============================
+   BOTONES
+   ============================ */
+.button-cart {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: .75rem;
+  background-color: var(--color-cafe);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color .2s ease, transform .15s ease, box-shadow .2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.button-cart:hover {
+  background-color: var(--color-cafe-claro) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(74,46,40,.18);
+}
+.button-cart:active { transform: translateY(0); }
+
+.button-delete {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: .75rem;
+  background-color: var(--color-emerald) !important;   /* verde "Agregado" */
+  color: #fff !important;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.button-delete:hover {
+  background-color: var(--color-emerald-hover) !important;
+}
+
+.button-disabled {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: 1px solid var(--color-stone-border);
+  border-radius: .75rem;
+  background-color: var(--color-stone-bg);
+  color: var(--color-stone-text);
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: not-allowed;
+}
+
+/* Botones +/- cantidad */
+.botones {
   background-color: var(--color-cafe);
   color: var(--color-rosa);
+  padding: .15rem .55rem .25rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  border: none;
+  border-radius: .6rem;
+  transition: all .15s ease;
+}
+.botones:hover {
+  background-color: var(--color-rosa);
+  color: var(--color-cafe);
+}
+.botones:active {
+  background-color: var(--color-rosa) !important;
+  color: var(--color-rosa) !important;
+  box-shadow: none !important;
+}
+.botones:disabled,
+.button-cart:disabled {
+  opacity: .5;
+  background-color: var(--color-cafe);
+  color: var(--color-rosa);
+  cursor: not-allowed;
 }
 
 .area-botones {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   width: 100%;
-  margin-top: 0.5rem;
+  margin-top: .5rem;
 }
 
+/* ============================
+   DETALLE (PopUp)
+   ============================ 
 .data-book {
   width: 40%;
   justify-items: center;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}*/
+/* Actualiza la clase .data-book existente */
+/* ============================
+   POPUP DETALLE - ESCRITORIO
+   ============================ */
+.popup-detalle-wrapper {
+  display: flex;
+  flex-direction: row; /* Lado a lado en PC */
+  gap: 2rem;
+  width: 100%;
+  max-height: 75vh; /* Evita que el popup se salga de la pantalla */
+  overflow-y: auto; /* Scroll interno si el texto es muy largo */
+  padding: 1rem;
 }
+
+/* El bloque de la portada y botones */
+.data-book {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+/* El bloque de la sinopsis */
+.book-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================
+   POPUP DETALLE - MÓVIL
+   ============================ */
+@media (max-width: 768px) {
+  
+  .popup-detalle-wrapper {
+    flex-direction: column; /* Se apilan uno arriba del otro */
+    gap: 1.5rem;
+    padding: 0.5rem;
+    max-height: 65vh;
+  }
+
+  /* Ambos ocupan el 100% del ancho */
+  .data-book,
+  .book-info {
+    width: 100%;
+  }
+
+  /* Ajustamos la portada para que no sea gigante en celular */
+  .book-cover.detalle {
+    width: 10rem;
+    min-height: 14rem;
+  }
+
+  /* Altura fija para el textarea en móviles */
+  .book-info textarea {
+    height: 120px;
+    margin-top: 0.5rem;
+  }
+
+  /* Evitar que los botones de cantidad se aplasten */
+  .data-book > div {
+    margin-bottom: 0.5rem;
+  }
+}
+
+
+/*botones del taskcard*/
+.botones.btn.btn-primary{
+  padding: 0.45rem 0.60rem;
+  background-color: var(--color-cafe);
+  color: white;
+}
+.button-cart.btn.btn-primary{
+  background-color: var(--color-cafe);
+}
+.modal-header {
+  background-color: var(--color-cafe);
+}
+.modal-header > div > h2{
+    color: var(--color-beige-background);
+}
+

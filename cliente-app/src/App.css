@@ -195,6 +195,11 @@ body,
     min-height: 0;
 }
 
+.App > footer {
+  margin-top: auto;
+  width: 100%;
+}
+
 .page-content,
 .total {
     display: flex;
@@ -245,4 +250,39 @@ body,
     overflow-x: hidden;
     overflow-y: auto;
     box-sizing: border-box;
+}
+
+.content-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+}
+
+.content-layout.has-sidebar {
+  grid-template-columns: 20vw minmax(0, 1fr);
+}
+
+.content-layout > .dashboard-sidebar {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+  height: 100%;
+}
+
+.content-layout > .page-content {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.content-layout:not(.has-sidebar) > .total {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.content-layout > footer {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  width: 100%;
 }
