@@ -12,3 +12,15 @@ export interface DetalleCatalogoContext {
   filter: number;
   setFilter: Dispatch<SetStateAction<number>>;
 }
+
+export interface LibroAPI {
+  id_book: number;
+  id_categoria: number;
+  portada_url: string;
+  titulo: string;
+  autor: string;
+  fecha_publicacion: string | null;
+  sinopsis: string;
+  precio: number;
+  stock: number;
+}

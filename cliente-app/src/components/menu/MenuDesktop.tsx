@@ -12,16 +12,18 @@ export default function MenuDesktop({ hayLogo, Logo }: MenuDesktopProps) {
   const [datosPerfil, setDatosPerfil] = useState(false);
   const navigate = useNavigate();
 
-  const esAdmin = user === null ? false : user?.rol === "admin";
-  const esEmpleado = user === null ? false : user?.rol === "empleado";
+  const esAdmin = user?.rol === "admin";
+  const esEmpleado = user?.rol === "empleado";
 
-  const rutasFiltradas = appRoutes.filter((route) =>
-    route.menu === true &&
-    (
-      (esAdmin && route.admin === true) ||
-      (esEmpleado && route.empleado === true)
-    )
-  );
+  const rutasFiltradas = appRoutes.filter(route => {
+    if (!route.menu) return false;
+
+    if (esAdmin) return route.admin === true;
+
+    if (esEmpleado) return route.empleado === true;
+
+    return route.menu === true && route.admin === false && route.empleado === false;
+  });
 
   return (
     <div className="sidebar">

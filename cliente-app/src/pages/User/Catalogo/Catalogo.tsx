@@ -3,20 +3,8 @@ import { useOutletContext } from "react-router-dom";
 import { Loading } from "../../../components/Box";
 import { get } from "../../../config/api";
 import type { Libros } from "../../../services/ServicesTypes.ts";
-import type { CatalogoContext } from "./Catalogo.ts";
+import type { CatalogoContext, LibroAPI } from "./Catalogo.ts";
 import { CardLibro, CardLibroDetalle } from "./Components/TaskCard.tsx";
-
-interface LibroAPI {
-  id_book: number;
-  id_categoria: number;
-  portada_url: string;
-  titulo: string;
-  autor: string;
-  fecha_publicacion: string | null;
-  sinopsis: string;
-  precio: number;
-  stock: number;
-}
 
 export default function Catalogo() {
   const [loading, setLoading] = useState(false);
@@ -26,7 +14,7 @@ export default function Catalogo() {
   const { search, filter } = useOutletContext<CatalogoContext>();
 
   const getLibros = async () => {
-    const response = (await get("libros", null)) as LibroAPI[];
+    const response = (await get("libros", undefined)) as LibroAPI[];
 
     setLibros(
       response.map((x: LibroAPI): Libros => ({
@@ -74,8 +62,11 @@ export default function Catalogo() {
         {librosFiltrados.map((x) => (
           <CardLibro
             key={x.id}
+            classname="card-movement"
             data={x}
             onClick={() => setDetalleCard(x)}
+            CoverHeigth="17rem"
+            CoverWidth="11rem"
           />
         ))}
       </div>
@@ -84,6 +75,8 @@ export default function Catalogo() {
         <CardLibroDetalle
           data={detalleCard}
           onClick={() => setDetalleCard(null)}
+          CoverHeigth="17rem"
+          CoverWidth="11rem"
         />
       )}
 

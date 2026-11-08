@@ -9,7 +9,7 @@ export interface CampoFormulario {
 
 export interface UserInfoProps {
   id_user: number;
-  nombre: string;
+  nombre_user: string;
   email: string;
   password: string;
   rol: string;

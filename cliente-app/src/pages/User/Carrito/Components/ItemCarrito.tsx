@@ -1,6 +1,17 @@
+import type { CSSProperties } from "react";
+import { Card } from "../../../../components/Box";
 import { get, put } from "../../../../config/api";
 import { useCart } from "../../../../services/CartContext";
+import { BookCover } from "../../Catalogo/Components/TaskCard";
 import type { ItemCarritoProps } from "../Types";
+
+const cartItemStyle: CSSProperties = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  gap: "0.5rem",
+  padding: "1rem 1.2rem",
+};
 
 export default function ItemCarrito({ item, setSeleccionados, librosCarrito, procesandoId, setProcesandoId, seleccionado, procesando }: ItemCarritoProps) {
   const { eliminarDelCarrito, cambiarCantidad, actualizarStock } = useCart();
@@ -90,9 +101,11 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
   };
 
   return (
-    <div
+    <Card
       key={item.id_book}
-      className="cart-item-card"
+      style={cartItemStyle}
+      width="100%"
+      height="100%"
     >
       <div className="item-checkbox-container">
         <input
@@ -104,13 +117,7 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
         />
       </div>
 
-      <div className="Book-Img">
-        <img
-          src={item.portada_url}
-          alt={`Portada de ${item.titulo}`}
-          className="book-cover"
-        />
-      </div>
+      <BookCover width="15rem" heigth="17rem" portada_url={item.portada_url} titulo={item.titulo} />
 
       <div className="Book-Info">
         <div style={{ flex: 1 }}>
@@ -163,6 +170,6 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
           </div>
         </div>
       </div>
-    </div>
+    </Card >
   );
 }

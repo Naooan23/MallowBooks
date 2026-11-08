@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import Select from "react-select";
 import "./Box.css";
-import type { PopUpProps, SelectBoxProps, TextBoxItem, TextBoxProps } from "./ComponentsTypes";
+import type { CardProps, PopUpProps, SelectBoxProps, TextBoxItem, TextBoxProps } from "./ComponentsTypes";
 
-const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey, }: TextBoxProps) => {
+const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey, fontSize }: TextBoxProps) => {
   const [touched, setTouched] = useState<boolean[]>([]);
 
   const validatePassword = (password: string): string => {
@@ -18,9 +18,11 @@ const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey
   const esEmailValido = (email: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const getError = (item: TextBoxItem): string => {
-    if (!item.value?.trim()) return "¡El campo no puede estar vacío!";
-    if (item.type === "email" && !esEmailValido(item.value)) return "Ingresa un correo válido";
-    if (item.type === "password" && !login) return validatePassword(item.value);
+    const value = String(item.value ?? "");
+
+    if (!value.trim()) return "¡El campo no puede estar vacío!";
+    if (item.type === "email" && !esEmailValido(value)) return "Ingresa un correo válido";
+    if (item.type === "password" && !login) return validatePassword(value);
 
     return "";
   };
@@ -63,12 +65,14 @@ const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey
       >
         {items.map((item, index) => (
           <React.Fragment key={item.key ?? index}>
-            <Form.Label className="textbox-label">
+            <Form.Label className="textbox-label"
+              style={{
+                fontSize: fontSize, fontWeight: "900"
+              }}>
               {item.label}:
             </Form.Label>
 
             <Form.Control
-              className="textbox-control"
               type={item.type}
               placeholder={item.label}
               value={item.value ?? ""}
@@ -79,7 +83,7 @@ const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey
               style={{
                 width: "100%",
                 minWidth: 0,
-                fontSize: "1.3rem",
+                fontSize: fontSize,
                 borderRadius: "18px",
               }}
             />
@@ -100,6 +104,139 @@ const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey
   );
 };
 
+const TextArea = ({ items, styleComponent, onErrorChange, fontSize }: TextBoxProps) => {
+  const [touched, setTouched] = useState<Record<number, boolean>>({});
+  const [errors, setErrors] = useState<Record<number, string>>({});
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const validarCampo = (item: any): string => {
+    const value = String(item.value ?? "").trim();
+
+    if (!value) return "¡El campo no puede estar vacío!";
+
+    if (item.type === "number" && Number(value) < 0) {
+      return "El valor no puede ser negativo.";
+    }
+
+    return "";
+  };
+
+  const handleBlur = (index: number) => {
+    const error = validarCampo(items[index]);
+
+    setTouched(prev => ({
+      ...prev,
+      [index]: true,
+    }));
+
+    setErrors(prev => ({
+      ...prev,
+      [index]: error,
+    }));
+  };
+
+  useEffect(() => {
+    const nuevosErrores: Record<number, string> = {};
+
+    items.forEach((item, index) => {
+      nuevosErrores[index] = validarCampo(item);
+    });
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setErrors(nuevosErrores);
+
+    onErrorChange?.(
+      Object.values(nuevosErrores).some(error => error !== "")
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items, touched]);
+
+  useEffect(() => {
+    const nuevosErrores: Record<number, string> = {};
+
+    items.forEach((item, index) => {
+      nuevosErrores[index] = touched[index]
+        ? validarCampo(item)
+        : "";
+    });
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setErrors(nuevosErrores);
+
+    onErrorChange?.(
+      Object.values(nuevosErrores).some(error => error !== "")
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items, touched]);
+
+  return (
+    <Form
+      style={{
+        width: "100%",
+        height: "100%",
+        minHeight: 0,
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          flex: 1,
+          minHeight: 0,
+          display: "flex",
+          flexDirection: "column",
+          marginTop: "1rem",
+          ...styleComponent,
+        }}
+      >
+        {items.map((item, index) => (
+          <React.Fragment key={item.key ?? index}>
+            <Form.Label
+              style={{
+                fontSize,
+                fontWeight: "900",
+              }}
+            >
+              {item.label}:
+            </Form.Label>
+
+            <Form.Control
+              as={item.type === "textarea" ? "textarea" : "input"}
+              type={item.type === "textarea" ? undefined : item.type}
+              placeholder={item.label}
+              value={item.value ?? ""}
+              onChange={e => item.onValueChange(e.target.value)}
+              onBlur={() => handleBlur(index)}
+              isInvalid={!!touched[index] && !!errors[index]}
+              disabled={item.disabled}
+              style={{
+                width: "100%",
+                minWidth: 0,
+                minHeight: item.type === "textarea" ? 0 : undefined,
+                flex: item.type === "textarea" ? "1 1 0" : "none",
+                fontSize,
+                borderRadius: "18px",
+                backgroundColor: "var(--color-blanco)",
+                padding: "1rem",
+                resize: "none",
+              }}
+            />
+
+            {!!touched[index] && !!errors[index] && (
+              <Form.Text className="text-danger">
+                {errors[index]}
+              </Form.Text>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+    </Form>
+  );
+};
+
 const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
   const [value, setValue] = useState(dataSource[0]?.value ?? "");
 
@@ -107,6 +244,15 @@ const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
     value: opc.value,
     label: opc.label,
   }));
+
+  useEffect(() => {
+    if (dataSource.length > 0 && !value) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setValue(dataSource[0].value);
+      onValueChange(dataSource[0].value);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataSource]);
 
   return (
     <Form.Group className="selectbox-group">
@@ -116,38 +262,49 @@ const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
 
       <Select
         className="selectbox-control"
+        classNamePrefix="selectbox"
         options={options}
         isSearchable={false}
+        menuPosition="absolute"
+        menuPlacement="auto"
+        menuShouldScrollIntoView={false}
+        maxMenuHeight={150}
         styles={{
           menu: base => ({
             ...base,
+            zIndex: 1000,
+          }),
+          menuList: base => ({
+            ...base,
+            maxHeight: "150px",
+            overflowY: "auto",
           }),
           control: (base, state) => ({
             ...base,
             borderRadius: "10px",
             width: "100%",
             borderColor: state.isFocused
-              ? "var(--color-focus-box)"
+              ? "var(--color-rosa-claro)"
               : "var(--color-box)",
             boxShadow: state.isFocused
-              ? "0 0 0 3px var(--color-shadow-box)"
+              ? "0 0 0 3px var(--color-rosa-background)"
               : "none",
             "&:hover": {
               borderColor: state.isFocused
-                ? "var(--color-focus-box)"
+                ? "var(--color-rosa)"
                 : "var(--color-box)",
             },
           }),
           option: (base, state) => ({
             ...base,
             backgroundColor: state.isSelected
-              ? "var(--color-selected-box)"
+              ? "var(--color-rosa-claro)"
               : "white",
             color: "black",
             paddingLeft: "1rem",
             paddingRight: "1rem",
             "&:hover": {
-              backgroundColor: "var(--color-selected-box-hover)",
+              backgroundColor: "var(--color-rosa-blanco-claro)",
             },
           }),
         }}
@@ -190,5 +347,21 @@ const LoadingSimple = () => (
   <div className="loading-spinner" />
 );
 
-export { Loading, LoadingSimple, PopUp, SelectBox, TextBox };
+const Card = ({ classname, children, width, height, style, onClick }: CardProps) => {
+  return (
+    <div
+      className={`card ${classname}`}
+      style={{
+        ...style,
+        width: width ?? "100%",
+        height: height ?? "auto",
+      }}
+      onClick={onClick}
+    >
+      {children}
+    </div>
+  );
+};
+
+export { Card, Loading, LoadingSimple, PopUp, SelectBox, TextArea, TextBox };
 

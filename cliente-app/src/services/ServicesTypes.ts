@@ -46,6 +46,13 @@ export interface Libros {
   cantidad: number,
 }
 
+export interface LibrosCover {
+  portada_url: string,
+  titulo: string,
+  width: string,
+  heigth: string,
+}
+
 export interface DetalleCarrito {
   id_carrito: number | null,
   id_book: number | null,

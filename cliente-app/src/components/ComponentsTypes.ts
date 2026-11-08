@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import type { User } from "../services/ServicesTypes";
+import type { CSSProperties, ReactNode } from "react";
+import type { UserInfoProps } from "../pages/User/Perfil/Types";
 
 export interface BackGroundImageProps {
   image: string,
@@ -9,7 +9,7 @@ export interface BackGroundImageProps {
 
 export interface Item {
   value: string,
-  type: string,
+  type?: string,
   label: string,
 }
 
@@ -30,11 +30,12 @@ export interface TextBoxProps {
   styleComponent?: React.CSSProperties;
   resetKey: number | undefined | null;
   onErrorChange: (hasError: boolean) => void;
+  fontSize?: string | number | undefined,
 }
 
 export interface SelectBoxProps {
   item: ReactNode,
-  dataSource: [Item],
+  dataSource: Item[],
   onValueChange: (x: string) => void,
 }
 
@@ -45,7 +46,16 @@ export interface PopUpProps {
 }
 
 export interface GridProps {
-  users: [User],
-  editarUser: (x: number) => void,
+  users: UserInfoProps[] | undefined,
+  editarUser: (usuario: UserInfoProps) => void,
   eliminarUser: (x: number) => void,
+}
+
+export interface CardProps {
+  classname?: string,
+  children: ReactNode,
+  width?: string,
+  height?: string,
+  style?: CSSProperties,
+  onClick?: () => void;
 }

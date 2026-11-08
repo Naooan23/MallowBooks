@@ -6,7 +6,7 @@
   --heading: 'Quicksand', sans-serif;
 
   /* ===== Fondos ===== */
-  --color-background: #f8e9e9;
+  --color-background: #f7eeee;
   --color-background-light: #F9FAFB;
   --color-filter-background: #ffe3f7;
 
@@ -36,10 +36,7 @@
   --morado-oscuro: #7a4f72;
 
   /* ===== Verde ===== */
-  --color-selected-box: #B8E8A8;
-  --color-selected-box-hover: #D1F5C8;
-  --color-focus-box: #20C997;
-  --color-shadow-box: rgba(32, 201, 151, 0.1);
+  --color-verde: #63e62f;
 
   /* ===== Rojo ===== */
   --color-rojo-rosa: #c05663;
@@ -57,10 +54,9 @@
   --color-beige-background: #F2E9D8;
   --color-gris-beige: #7c6f6c;
 
-  /* ===== Cafe ===== 
-  --color-cafe: #350F04;
-  --color-cafe-claro: #6B3F37;*/  
+  /* ===== Cafe ===== */  
   --cafe-oscuro: #3a2e2b;
+  --color-cafe-claro: #6B3F37;
   
   /* Base crema del diseño nuevo */
   --color-beige-bg:      #FAF7F2;   /* fondo suave zona portada */
@@ -90,6 +86,7 @@
 
   /* ===== Dorado ===== */
   --color-Dorado: #b47820;
+  --color-Dorado-Claro: #fce8bc;
 
   /* ===== Negro ===== */
   --color-negro: #222;

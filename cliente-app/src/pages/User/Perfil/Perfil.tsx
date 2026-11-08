@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Row } from "react-bootstrap";
 import Mascota from '../../../assets/Logo Perfil.jpeg';
-import { Loading, TextBox } from "../../../components/Box";
+import { Card, Loading, TextBox } from "../../../components/Box";
 import { get, put } from "../../../config/api";
 import { useAuth, useError } from "../../../services/useAuth";
 import { hashPassword } from "../../Login/LoginTypes";
@@ -26,7 +26,7 @@ export default function Perfil() {
   );
   const [formPreferencias, setFormPreferencias] = useState<CampoFormulario[]>(
     [
-      { key: "nombre", label: "Nombre", value: userInfo?.nombre ?? "", touched: false, type: "text", disabled: false },
+      { key: "nombre", label: "Nombre", value: userInfo?.nombre_user ?? "", touched: false, type: "text", disabled: false },
       { key: "email", label: "Correo", value: userInfo?.email ?? "", touched: false, type: "email", disabled: false },
     ]
   );
@@ -160,7 +160,7 @@ export default function Perfil() {
 
     setFormPreferencias((prev) =>
       prev.map((item) => {
-        if (item.key === "nombre") return { ...item, value: userInfo.nombre ?? "" };
+        if (item.key === "nombre") return { ...item, value: userInfo.nombre_user ?? "" };
         if (item.key === "email") return { ...item, value: userInfo.email ?? "" };
 
         return item;
@@ -185,34 +185,37 @@ export default function Perfil() {
 
   return (
     <div className="profile-container">
-      <h1 className="profile-title">Mi Perfil</h1>
+      <h1>Mi Perfil</h1>
 
       <div className="profile-grid">
-        <div className="profile-card user-info-card">
+        <Card
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+          }}>
           <div className="avatar-section">
             <i className="bi bi-person-circle" />
           </div>
 
-          <h2 className="user-name">{userInfo?.nombre ?? "Usuario"}</h2>
+          <h2 className="user-name">{userInfo?.nombre_user ?? "Usuario"}</h2>
           <p className="user-email">{userInfo?.email ?? ""}</p>
 
           <div className="badge-role">
-            <span className="check-icon">✓</span> USUARIO
+            {user?.rol.toUpperCase()}
           </div>
-
-          <p className="member-since">MIEMBRO DESDE: OCTUBRE 2024</p>
 
           <div className="illustration-container">
             <img
               src={Mascota}
-              style={{ width: "10rem" }}
+              style={{ width: "90%" }}
               alt="Mallow Books Mascot"
             />
-            <p className="member-since-sub">MIEMBRO DESDE: OCTUBRE 2024</p>
           </div>
-        </div>
+        </Card>
 
-        <div className="profile-card">
+        <Card>
           <Row>
             <h2 className="section-header">AJUSTES DE SEGURIDAD Y DATOS</h2>
           </Row>
@@ -247,6 +250,7 @@ export default function Perfil() {
 
                   setSeguridadErrors(hasError);
                 }}
+                fontSize={"1.3rem"}
               />
 
               <div className="form-row flex-end-row" style={{ marginTop: "1rem" }}>
@@ -286,6 +290,7 @@ export default function Perfil() {
                 onErrorChange={(hasError) => {
                   setPreferenciasErrors(hasError);
                 }}
+                fontSize={"1.3rem"}
               />
 
               <div
@@ -302,7 +307,7 @@ export default function Perfil() {
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
 
       {loading && <Loading />}
