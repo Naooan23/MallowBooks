@@ -11,4 +11,5 @@ export interface AppRoute {
   sidebarProps?: Record<string, unknown>;
   menu: boolean;
   admin?: boolean;
+  empleado?: boolean;
 }

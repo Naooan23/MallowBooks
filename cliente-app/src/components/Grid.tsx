@@ -19,16 +19,16 @@ function Grid({ users, editarUser, eliminarUser }: GridProps) {
           </thead>
           <tbody>
             {users.map(u => (
-              <tr key={u.id} >
+              <tr key={u.id_user} >
                 <td style={{ display: "flex", alignItems: "center", borderLeft: "none" }}>
-                  <Button className={"button-grid trash"} style={{ marginLeft: "0.5rem", marginRight: "0.2rem" }} onClick={() => eliminarUser(u.id)}>
+                  <Button className={"button-grid trash"} style={{ marginLeft: "0.5rem", marginRight: "0.2rem" }} onClick={() => eliminarUser(u.id_user)}>
                     <i className="bi bi-trash" style={{ fontSize: "1.5rem" }} />
                   </Button>
-                  <Button className={"button-grid edit"} style={{ marginLeft: "0.2rem", marginRight: "0.5rem" }} onClick={() => editarUser(u.id)}>
+                  <Button className={"button-grid edit"} style={{ marginLeft: "0.2rem", marginRight: "0.5rem" }} onClick={() => editarUser(u.id_user)}>
                     <i className="bi bi-pencil-square" style={{ fontSize: "1.5rem" }} />
                   </Button>
                 </td>
-                <td className="td-padding">{u.id}</td>
+                <td className="td-padding">{u.id_user}</td>
                 <td className="td-padding">{u.rol}</td>
                 <td className="td-padding">{u.nombre}</td>
                 <td className="td-padding">{u.email}</td>

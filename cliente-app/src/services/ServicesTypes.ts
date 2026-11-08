@@ -65,4 +65,5 @@ export interface CartContextType {
 export interface ProtectedRuleProps {
   children: ReactNode,
   onlyAdmin: boolean,
+  onlyEmpleado: boolean,
 }
