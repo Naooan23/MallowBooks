@@ -8,6 +8,7 @@ import SearchFilter from "../pages/User/Catalogo/Components/SearchFilter.tsx";
 import DashBoard from "../pages/User/Dashboard/DashBoard";
 import Perfil from "../pages/User/Perfil/Perfil.tsx";
 import type { AppRoute } from "./ConfigTypes";
+import { EmpleadoPage } from "../pages/Empleado/EmpleadoPage.tsx";
 
 const withSuspense = (Component: ReactNode) => (
   <Suspense fallback={
@@ -86,7 +87,7 @@ export const appRoutes: AppRoute[] = [
     icon: <i className="bi bi-layout-wtf" />,
     path: "/empleado-dashboard",
     label: "Inicio",
-    element: withSuspense(<DashBoard />),
+    element: withSuspense(<EmpleadoPage />),
     menu: true,
     admin: false,
     empleado: true,
