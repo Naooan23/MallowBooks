@@ -314,7 +314,7 @@
 }
 .botones:active {
   background-color: var(--color-rosa) !important;
-  color: var(--color-cafe) !important;
+  color: var(--color-rosa) !important;
   box-shadow: none !important;
 }
 .botones:disabled,
@@ -334,9 +334,92 @@
 
 /* ============================
    DETALLE (PopUp)
-   ============================ */
+   ============================ 
 .data-book {
   width: 40%;
   justify-items: center;
   font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}*/
+/* Actualiza la clase .data-book existente */
+/* ============================
+   POPUP DETALLE - ESCRITORIO
+   ============================ */
+.popup-detalle-wrapper {
+  display: flex;
+  flex-direction: row; /* Lado a lado en PC */
+  gap: 2rem;
+  width: 100%;
+  max-height: 75vh; /* Evita que el popup se salga de la pantalla */
+  overflow-y: auto; /* Scroll interno si el texto es muy largo */
+  padding: 1rem;
 }
+
+/* El bloque de la portada y botones */
+.data-book {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+/* El bloque de la sinopsis */
+.book-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================
+   POPUP DETALLE - MÓVIL
+   ============================ */
+@media (max-width: 768px) {
+  
+  .popup-detalle-wrapper {
+    flex-direction: column; /* Se apilan uno arriba del otro */
+    gap: 1.5rem;
+    padding: 0.5rem;
+    max-height: 65vh;
+  }
+
+  /* Ambos ocupan el 100% del ancho */
+  .data-book,
+  .book-info {
+    width: 100%;
+  }
+
+  /* Ajustamos la portada para que no sea gigante en celular */
+  .book-cover.detalle {
+    width: 10rem;
+    min-height: 14rem;
+  }
+
+  /* Altura fija para el textarea en móviles */
+  .book-info textarea {
+    height: 120px;
+    margin-top: 0.5rem;
+  }
+
+  /* Evitar que los botones de cantidad se aplasten */
+  .data-book > div {
+    margin-bottom: 0.5rem;
+  }
+}
+
+
+/*botones del taskcard*/
+.botones.btn.btn-primary{
+  padding: 0.45rem 0.60rem;
+  background-color: var(--color-cafe);
+  color: white;
+}
+.button-cart.btn.btn-primary{
+  background-color: var(--color-cafe);
+}
+.modal-header {
+  background-color: var(--color-cafe);
+}
+.modal-header > div > h2{
+    color: var(--color-beige-background);
+}
+

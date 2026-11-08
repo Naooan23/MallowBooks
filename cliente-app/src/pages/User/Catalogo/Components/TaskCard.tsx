@@ -231,6 +231,7 @@ export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
 
   return (
     <PopUp titulo={data.titulo} onClose={onClick}>
+      <div className="popup-detalle-wrapper">
       <div className="data-book">
         <BookCover {...data} />
 
@@ -317,6 +318,7 @@ export function CardLibroDetalle({ data, onClick }: CardLibroProps) {
         <textarea disabled value={data.sinopsis} />
       </div>
       {loading && (<LoadingSimple />)}
+      </div>
     </PopUp>
   );
 }
