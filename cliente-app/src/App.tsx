@@ -22,10 +22,6 @@ function App() {
     return route.menu === true && route.admin === false && route.empleado === false;
   });
 
-  console.log(rutasFiltradas);
-  console.log(user?.rol);
-  console.log(appRoutes.filter(x => x.empleado === true));
-
   return (
     <BrowserRouter>
       <div className="App">

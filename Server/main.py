@@ -542,7 +542,6 @@ def crear_orden(data: OrdenCreate, db: Session = Depends(get_db)):
 def crear_usuario(data: UsuarioBase, db: Session = Depends(get_db)):
 
     usuario = Usuarios(
-        id_user=data.id_user,
         nombre_user=data.nombre_user,
         email=data.email,
         password=data.password,

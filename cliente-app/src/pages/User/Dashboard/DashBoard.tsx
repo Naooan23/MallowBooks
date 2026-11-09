@@ -18,15 +18,12 @@ export default function DashBoard() {
   const { user } = useAuth();
 
   const getUltimaOrden = async () => {
-    const response = await get("ultOrden", undefined)
-
-    console.log(response);
+    const response = await get("ultOrden", undefined);
     setOrdenCompra(response)
   }
 
   const getRecomendaciones = async () => {
     const response = (await get("sistRecomendaciones", user?.id_user)) as LibroAPI[];
-    console.log(response);
     setData(
       response.map((x: LibroAPI): Libros => ({
         id: x.id_book,
