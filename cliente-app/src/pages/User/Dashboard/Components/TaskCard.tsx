@@ -3,9 +3,21 @@ import { Button, Col } from "react-bootstrap";
 import { LoadingSimple, PopUp } from "../../../../components/Box";
 import { get, put } from "../../../../config/api";
 import { useCart } from "../../../../services/CartContext";
+import type { LibroCarrito, Libros } from "../../../../services/ServicesTypes";
 import "./TaskCard.css";
 
-export function CardLibro({ data, onClick }) {
+interface CardLibroProps {
+  data: LibroCarrito,
+  onClick?: () => void,
+  onClose?: () => void,
+}
+
+interface BookCoverProps {
+  data: Libros,
+  onClick?: () => void,
+}
+
+export function CardLibro({ data, onClick }: CardLibroProps) {
   const { librosCarrito, agregarAlCarrito, eliminarDelCarrito } = useCart();
   const libroActual = librosCarrito?.find(x => x.id_book == data.id);
 
@@ -26,7 +38,7 @@ export function CardLibro({ data, onClick }) {
     }
   };
 
-  const actualizarStock = async (nuevoStock) => {
+  const actualizarStock = async (nuevoStock: number) => {
     const libro = await get("libros", data.id);
 
     libro.stock = nuevoStock;
@@ -44,7 +56,7 @@ export function CardLibro({ data, onClick }) {
           className={`cart-button 
             ${libroActual?.cantidad === 1
               ? "added"
-              : libroActual?.cantidad > 1
+              : (libroActual?.cantidad ?? 0) > 1
                 ? "disable added" : ""
             }`}
         >
@@ -59,7 +71,7 @@ export function CardLibro({ data, onClick }) {
       <div className="book-info" onClick={onClick}>
         <h3>{data.titulo}</h3>
         <p>{data.autor}</p>
-        <hr style={{color: "grey"}}/>
+        <hr style={{ color: "grey" }} />
         <h2 style={{ fontSize: "1.6rem" }}>
           ${data.precio}
         </h2>
@@ -69,7 +81,7 @@ export function CardLibro({ data, onClick }) {
   );
 }
 
-export function CardLibroDetalle({ data, onClose }) {
+export function CardLibroDetalle({ data, onClose }: CardLibroProps) {
   const { librosCarrito, agregarAlCarrito, eliminarDelCarrito, cambiarCantidad } = useCart();
   const libroActual = librosCarrito?.find(
     x => x.id_book == data.id && x.cantidad > 0
@@ -96,7 +108,7 @@ export function CardLibroDetalle({ data, onClose }) {
         ...data,
         cantidad: cantidadActual,
       });
-    } else {
+    } else if (libroActual) {
       await eliminarDelCarrito(libroActual.id_book);
       await ActualizarStock(stock + cantidadActual);
 
@@ -104,7 +116,7 @@ export function CardLibroDetalle({ data, onClose }) {
     }
   };
 
-  const modificarCantidad = async (sumar) => {
+  const modificarCantidad = async (sumar: boolean) => {
     if (sumar && stock <= 0) return;
     if (!sumar && cantidadActual <= 0) return;
 
@@ -134,23 +146,17 @@ export function CardLibroDetalle({ data, onClose }) {
     }
   };
 
-  const ActualizarLibroCarrito = async (nuevaCantidad) => {
-    const libro = {
-      ...libroActual,
-      cantidad: nuevaCantidad,
-    };
-
-    await cambiarCantidad(libro);
+  const ActualizarLibroCarrito = async (nuevaCantidad: number) => {
+    if (libroActual) await cambiarCantidad(libroActual.id_book, nuevaCantidad);
   };
 
-  const ActualizarStock = async (nuevoStock) => {
+  const ActualizarStock = async (nuevoStock: number) => {
     const libro = await get("libros", data.id);
     libro.stock = nuevoStock;
 
     setStock(nuevoStock);
 
-    const x = await put("libros", libro);
-    console.log(x);
+    await put("libros", libro);
   };
 
   const cargarStock = async () => {
@@ -171,7 +177,7 @@ export function CardLibroDetalle({ data, onClose }) {
   console.log(data);
 
   return (
-    <PopUp titulo={data.titulo} onClose={onClose}>
+    <PopUp titulo={data.titulo} onClose={onClose ?? (() => { })}>
       <div className="data-book">
         <BookCover data={data} />
 
@@ -243,7 +249,7 @@ export function CardLibroDetalle({ data, onClose }) {
         </p>
 
         <p>
-          <strong>Fecha de Publicación:</strong> {data.fecha}
+          <strong>Fecha de Publicación:</strong> {data.fecha.toString()}
         </p>
 
         <p>
@@ -256,7 +262,7 @@ export function CardLibroDetalle({ data, onClose }) {
   );
 }
 
-export function BookCover({ data, onClick }) {
+export function BookCover({ data, onClick }: BookCoverProps) {
   const [loading, setLoading] = useState(true);
 
   return (
@@ -264,7 +270,7 @@ export function BookCover({ data, onClick }) {
       {loading && <LoadingSimple />}
 
       <img
-        src={data.url}
+        src={data.portada_url}
         alt={`Portada de ${data.titulo}`}
         onLoad={() => setLoading(false)}
         onError={() => setLoading(false)}

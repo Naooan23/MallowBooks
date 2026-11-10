@@ -1,44 +1,29 @@
-
 import { useEffect, useMemo, useState } from "react";
-import { Button, Form, InputGroup, Table } from "react-bootstrap";
-import { Card, LoadingSimple, PopUp, SelectBox } from "../../../components/Box";
+import { Button, InputGroup, Table } from "react-bootstrap";
+import { Card, LoadingSimple, PopUp, SelectBox, TextBox } from "../../../components/Box";
 import { del, get, post, put } from "../../../config/api";
-import type { UserInfoProps } from "../../User/Perfil/Types";
+import type { CampoFormulario, UserInfoProps } from "../../User/Perfil/Types";
 
+import { obtenerAnchoLabel } from "../../../components/BoxUtils";
 import { useConfirm, useError } from "../../../services/useAuth";
+import { hashPassword } from "../../Login/LoginTypes";
 import "./Usuarios.css";
 
 type RolUsuario = "user" | "admin" | "empleado";
-
-interface UsuarioForm {
-  nombre_user: string;
-  email: string;
-  password: string;
-  rol: RolUsuario;
-}
-
-const formularioInicial: UsuarioForm = {
-  nombre_user: "",
-  email: "",
-  password: "",
-  rol: "user",
-};
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState<UserInfoProps[]>([]);
   const [busqueda, setBusqueda] = useState("");
   const [usuarioEditando, setUsuarioEditando] = useState<UserInfoProps | null>(null);
-  const [formulario, setFormulario] = useState<UsuarioForm>(formularioInicial);
-
+  const [formUsuarios, setFormUsuarios] = useState<CampoFormulario[]>([]);
   const [mostrarPopup, setMostrarPopup] = useState(false);
-  const [errores, setErrores] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-
   const [pagina, setPagina] = useState(1);
   const [limite, setLimite] = useState(10);
-
   const { showConfirm } = useConfirm();
   const { showError } = useError();
+  const fontSize = "1.3rem";
+
 
   // Obtener usuarios
   const getUsers = async () => {
@@ -58,13 +43,43 @@ export default function Usuarios() {
     }
   };
 
+  const generarCampos = (usuario?: UserInfoProps) => [
+    {
+      key: "nombre_user",
+      label: "Nombre",
+      value: usuario?.nombre_user ?? "",
+      touched: false,
+      type: "text",
+    },
+    {
+      key: "email",
+      label: "Correo electrónico",
+      value: usuario?.email ?? "",
+      touched: false,
+      type: "email",
+    },
+    {
+      key: "password",
+      label: "Contraseña",
+      value: usuario?.password ?? "",
+      touched: false,
+      type: "password",
+    },
+    {
+      key: "rol",
+      label: "Rol",
+      value: usuario?.rol ?? "user",
+      touched: false,
+      type: "select",
+    },
+  ];
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     getUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Búsqueda
   const usuariosFiltrados = useMemo(() => {
     const texto = busqueda.toLocaleLowerCase().trim();
 
@@ -75,7 +90,6 @@ export default function Usuarios() {
     );
   }, [usuarios, busqueda]);
 
-  // Paginación
   const totalPaginas = Math.max(
     1,
     Math.ceil(usuariosFiltrados.length / limite)
@@ -93,26 +107,14 @@ export default function Usuarios() {
     }
   }, [pagina, totalPaginas]);
 
-  // Abrir popup para crear
   const abrirCrear = () => {
-    setUsuarioEditando(null);
-    setFormulario(formularioInicial);
-    setErrores({});
+    setFormUsuarios(generarCampos());
     setMostrarPopup(true);
   };
 
-  // Abrir popup para editar
   const abrirEditar = (usuario: UserInfoProps) => {
     setUsuarioEditando(usuario);
-
-    setFormulario({
-      nombre_user: usuario.nombre_user ?? "",
-      email: usuario.email ?? "",
-      password: "",
-      rol: usuario.rol ? (usuario.rol as RolUsuario) : "user",
-    });
-
-    setErrores({});
+    setFormUsuarios(generarCampos(usuario));
     setMostrarPopup(true);
   };
 
@@ -121,131 +123,102 @@ export default function Usuarios() {
 
     setMostrarPopup(false);
     setUsuarioEditando(null);
-    setFormulario(formularioInicial);
-    setErrores({});
+    setFormUsuarios([]);
   };
 
-  // Actualizar campos
-  const cambiarCampo = (campo: keyof UsuarioForm, valor: string) => {
-    setFormulario((prev) => ({
-      ...prev,
-      [campo]: valor,
-    }));
-
-    setErrores((prev) => ({
-      ...prev,
-      [campo]: "",
-    }));
+  const cambiarCampo = (key: string, valor: string) => {
+    setFormUsuarios((prev) =>
+      prev.map((item) =>
+        item.key === key
+          ? { ...item, value: valor, touched: true }
+          : item
+      )
+    );
   };
 
-  // Validaciones
+  const obtenerValor = (key: string) => String(formUsuarios.find((x) => x.key === key)?.value ?? "");
+
   const validarFormulario = () => {
-    const nuevosErrores: Record<string, string> = {};
+    const nombre = obtenerValor("nombre_user");
+    const email = obtenerValor("email");
+    const password = obtenerValor("password");
+    const rol = obtenerValor("rol");
 
-    if (!formulario.nombre_user.trim()) {
-      nuevosErrores.nombre_user = "Ingresa el nombre del usuario.";
-    }
+    if (!nombre.trim()) return false;
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return false;
 
-    if (!formulario.email.trim()) {
-      nuevosErrores.email = "Ingresa un correo electrónico.";
-    } else if (
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formulario.email)
-    ) {
-      nuevosErrores.email = "Ingresa un correo electrónico válido.";
-    }
+    if (!usuarioEditando && !password.trim()) return false;
 
-    if (!usuarioEditando && !formulario.password.trim()) {
-      nuevosErrores.password = "La contraseña es obligatoria.";
-    } else if (
-      formulario.password &&
-      formulario.password.length < 6
-    ) {
-      nuevosErrores.password =
-        "La contraseña debe tener al menos 6 caracteres.";
-    } else if (
-      formulario.password &&
-      !/[A-Z]/.test(formulario.password)
-    ) {
-      nuevosErrores.password =
-        "La contraseña debe contener al menos una mayúscula.";
-    } else if (
-      formulario.password &&
-      !/[0-9]/.test(formulario.password)
-    ) {
-      nuevosErrores.password =
-        "La contraseña debe contener al menos un número.";
-    }
+    if (!usuarioEditando && password && password.length < 6) return false;
+    if (!usuarioEditando && password && !/[A-Z]/.test(password)) return false;
+    if (!usuarioEditando && password && !/[0-9]/.test(password)) return false;
 
-    if (!formulario.rol) {
-      nuevosErrores.rol = "Selecciona un rol.";
-    }
+    if (!rol) return false;
 
-    setErrores(nuevosErrores);
-
-    return Object.keys(nuevosErrores).length === 0;
+    return true;
   };
 
-  // Crear o actualizar
   const guardarUsuario = async () => {
-    if (!validarFormulario()) return;
+    const validacion = validarFormulario();
+    if (!validacion) {
+      showError({
+        success: false,
+        message: "Completa todos los campos correctamente.",
+      });
+      return;
+    }
 
     setLoading(true);
 
     try {
-      const usuario: Record<string, unknown> = {
-        nombre_user: formulario.nombre_user.trim(),
-        email: formulario.email.trim(),
-        rol: formulario.rol,
+      const usuario = {
+        nombre_user: obtenerValor("nombre_user").trim(),
+        email: obtenerValor("email").trim(),
+        password: await hashPassword(obtenerValor("password").trim()),
+        rol: obtenerValor("rol"),
       };
 
-      // No enviar contraseña vacía cuando se está editando.
-      if (formulario.password.trim()) {
-        usuario.password = formulario.password;
-      }
-
-      let response;
-
       if (usuarioEditando) {
-        response = await put(
-          "usuarios",
-          usuarioEditando.id_user,
-          usuario
-        );
+        const usuarioEditado = {
+          id_user: usuarioEditando.id_user,
+          ...usuario,
+        };
+
+        await put("usuarios", usuarioEditado);
+
+        showError({
+          success: true,
+          message: "Usuario actualizado correctamente.",
+        });
       } else {
-        response = await post("usuarios", usuario);
+        await post("usuarios", usuario);
+
+        showError({
+          success: true,
+          message: "Usuario registrado correctamente.",
+        });
       }
 
       await getUsers();
 
       setMostrarPopup(false);
       setUsuarioEditando(null);
-      setFormulario(formularioInicial);
-      setErrores({});
-
-      showError({
-        success: true,
-        message:
-          response?.message ||
-          (usuarioEditando
-            ? "Usuario actualizado correctamente."
-            : "Usuario registrado correctamente."),
-      });
+      setFormUsuarios([]);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.error("Error al guardar usuario:", error);
+      console.error(error);
 
       showError({
         success: false,
         message:
           error?.response?.data?.detail ||
-          "No se pudo guardar la información del usuario.",
+          "Ocurrió un error al guardar el usuario.",
       });
     } finally {
       setLoading(false);
     }
   };
 
-  // Eliminar con confirmación
   const eliminarUsuario = (id_user: number) => {
     showConfirm(
       "¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.",
@@ -279,6 +252,15 @@ export default function Usuarios() {
     );
   };
 
+  const anchoLabel = obtenerAnchoLabel(
+    ["Nombre", "Correo electrónico", "Contraseña", "Rol"],
+    fontSize
+  );
+
+  const cambiarCampoRol = (valor: RolUsuario) => {
+    cambiarCampo("rol", valor);
+  };
+
   return (
     <div
       style={{
@@ -294,15 +276,8 @@ export default function Usuarios() {
         height="90%"
       >
         <div className="usuarios-container">
-
-          {/* ENCABEZADO */}
           <div className="usuarios-header-container">
-            <div>
-              <h1>Usuarios</h1>
-              <span className="usuarios-subtitulo">
-                Administración de usuarios registrados
-              </span>
-            </div>
+            <h1>Usuarios</h1>
 
             <div className="usuarios-acciones-header">
               <InputGroup className="usuarios-search-box">
@@ -310,7 +285,9 @@ export default function Usuarios() {
                   <i className="bi bi-search" />
                 </InputGroup.Text>
 
-                <Form.Control
+                <input
+                  type="text"
+                  className="form-control"
                   placeholder="Buscar usuarios..."
                   value={busqueda}
                   onChange={(e) => {
@@ -330,7 +307,6 @@ export default function Usuarios() {
             </div>
           </div>
 
-          {/* TABLA */}
           <div className="usuarios-tabla-container">
             <Table responsive hover className="usuarios-tabla">
               <thead>
@@ -339,8 +315,8 @@ export default function Usuarios() {
                   <th>ID</th>
                   <th>Nombre</th>
                   <th>Rol</th>
-                  <th>Password</th>
                   <th>Correo electrónico</th>
+                  <th>Password</th>
                 </tr>
               </thead>
 
@@ -388,9 +364,9 @@ export default function Usuarios() {
                         </span>
                       </td>
 
-                      <td>{usuario.password}</td>
-
                       <td>{usuario.email}</td>
+
+                      <td>{usuario.password}</td>
                     </tr>
                   ))
                 ) : (
@@ -420,6 +396,7 @@ export default function Usuarios() {
                   setLimite(Number(value));
                   setPagina(1);
                 }}
+                fontSize={"1.3rem"}
               />
 
               <span>registros</span>
@@ -453,78 +430,41 @@ export default function Usuarios() {
         </div>
       </Card>
 
-      {/* POPUP CREAR / EDITAR */}
       {mostrarPopup && (
         <PopUp
           titulo={usuarioEditando ? "Editar usuario" : "Registrar usuario"}
           onClose={cerrarPopup}
+          width="40rem"
+          height="30rem"
         >
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              guardarUsuario();
-            }}
-            className="usuarios-formulario"
-          >
-            <div className="usuarios-form-grid">
+          <div className="usuarios-form-grid">
+            <TextBox
+              items={formUsuarios
+                .filter((x) => x.key !== "rol")
+                .map((x) => ({
+                  key: x.key,
+                  label: x.label,
+                  type: x.type,
+                  value: x.value,
+                  touched: x.touched,
+                  disabled: loading,
+                  onValueChange: (newValue: string) =>
+                    cambiarCampo(x.key, newValue),
+                }))}
+              login={false}
+              styleComponent={{
+                fontFamily: "var(--heading)",
+                fontWeight: 700,
+                marginTop: 0,
+                minWidth: 0,
+              }}
+              resetKey={0}
+              onErrorChange={() => { }}
+              fontSize={fontSize}
+              labelSize={anchoLabel}
+            />
 
-              <Form.Group>
-                <Form.Label>Nombre del usuario:</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Nombre completo"
-                  value={formulario.nombre_user}
-                  onChange={(e) =>
-                    cambiarCampo("nombre_user", e.target.value)
-                  }
-                  isInvalid={!!errores.nombre_user}
-                  disabled={loading}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errores.nombre_user}
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Correo electrónico:</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="correo@ejemplo.com"
-                  value={formulario.email}
-                  onChange={(e) =>
-                    cambiarCampo("email", e.target.value)
-                  }
-                  isInvalid={!!errores.email}
-                  disabled={loading}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errores.email}
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>
-                  Contraseña {usuarioEditando && "(opcional)"}
-                </Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder={
-                    usuarioEditando
-                      ? "Dejar vacío para conservar la actual"
-                      : "Contraseña"
-                  }
-                  value={formulario.password}
-                  onChange={(e) =>
-                    cambiarCampo("password", e.target.value)
-                  }
-                  isInvalid={!!errores.password}
-                  disabled={loading}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errores.password}
-                </Form.Control.Feedback>
-              </Form.Group>
-
+            <div className="usuarios-rol-container">
               <SelectBox
                 item="Rol"
                 dataSource={[
@@ -533,8 +473,10 @@ export default function Usuarios() {
                   { value: "empleado", label: "Empleado" },
                 ]}
                 onValueChange={(value) =>
-                  cambiarCampo("rol", value as RolUsuario)
+                  cambiarCampoRol(value as RolUsuario)
                 }
+                fontSize={fontSize}
+                labelSize={anchoLabel}
               />
             </div>
 
@@ -549,14 +491,15 @@ export default function Usuarios() {
               </Button>
 
               <Button
-                type="submit"
+                type="button"
                 className="usuarios-btn-guardar"
                 disabled={loading}
+                onClick={guardarUsuario}
               >
-                {loading && <LoadingSimple />}
+                {loading ? <LoadingSimple /> : "Guardar"}
               </Button>
             </div>
-          </Form>
+          </div>
         </PopUp>
       )}
     </div>

@@ -160,10 +160,10 @@ def cambiar_User(data:UserData, db:Session=Depends(get_db)):
         "email": user.email,
         "rol": user.rol
     }
-    
-@app.get("/ultOrden")
-def obtener_Ultima_Orden(db: Session = Depends(get_db)):
-    orden = db.query(Orden).order_by(desc(Orden.id_orden)).first()
+
+@app.get("/ultOrden/{id_user}")
+def obtener_Ultima_Orden(id_user: int, db: Session = Depends(get_db)):
+    orden = db.query(Orden).filter(Orden.id_user == id_user).order_by(desc(Orden.id_orden)).first()
 
     if not orden:
         return None
@@ -206,6 +206,79 @@ def obtener_Ultima_Orden(db: Session = Depends(get_db)):
         "email": usuario.email,
         "fecha": orden.fecha.isoformat()
     }
+
+@app.get("/ordenes/{id_user}")
+def obtener_Ordenes(id_user: int, db: Session = Depends(get_db)):
+
+    ordenes = (
+        db.query(Orden)
+        .filter(Orden.id_user == id_user)
+        .order_by(Orden.id_orden)
+        .all()
+    )
+
+    if not ordenes:
+        return []
+
+    usuario = (
+        db.query(Usuarios)
+        .filter(Usuarios.id_user == id_user)
+        .first()
+    )
+
+    if not usuario:
+        return []
+
+    respuesta = []
+
+    for orden in ordenes:
+
+        detalles = (
+            db.query(Detalleorden)
+            .filter(Detalleorden.id_orden == orden.id_orden)
+            .all()
+        )
+
+        libros_response = []
+        total_articulo = 0
+
+        for detalle in detalles:
+
+            libro = (
+                db.query(Libros)
+                .filter(Libros.id_book == detalle.id_book)
+                .first()
+            )
+
+            if libro:
+                subtotal = libro.precio * detalle.cantidad
+
+                libros_response.append({
+                    "id_book": libro.id_book,
+                    "titulo": libro.titulo,
+                    "autor": libro.autor,
+                    "precio": libro.precio,
+                    "cantidad": detalle.cantidad,
+                    "subtotal": subtotal
+                })
+
+                total_articulo += detalle.cantidad
+
+        respuesta.append({
+            "orden": {
+                "id_orden": orden.id_orden,
+                "total": orden.total,
+                "status": orden.status
+            },
+            "libros": libros_response,
+            "cliente": usuario.nombre_user,
+            "email": usuario.email,
+            "fecha": orden.fecha.isoformat(),
+            "totalArticulo": total_articulo,
+            "totalPrecio": orden.total
+        })
+
+    return respuesta
 
 @app.get("/sistRecomendaciones/{id_user}")
 def sistema_recomendacion(id_user: int, db: Session = Depends(get_db)):
@@ -501,7 +574,7 @@ def crear_orden(data: OrdenCreate, db: Session = Depends(get_db)):
             id_user=data.id_user,
             fecha=date.today(),
             total=total,
-            status="Pendiente de pago"
+            status="Pendiente"
         )
 
         db.add(orden)
@@ -542,7 +615,6 @@ def crear_orden(data: OrdenCreate, db: Session = Depends(get_db)):
 def crear_usuario(data: UsuarioBase, db: Session = Depends(get_db)):
 
     usuario = Usuarios(
-        id_user=data.id_user,
         nombre_user=data.nombre_user,
         email=data.email,
         password=data.password,
