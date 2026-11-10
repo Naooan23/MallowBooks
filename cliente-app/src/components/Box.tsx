@@ -4,7 +4,7 @@ import Select from "react-select";
 import "./Box.css";
 import type { CardProps, PopUpProps, SelectBoxProps, TextBoxItem, TextBoxProps } from "./ComponentsTypes";
 
-const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey, fontSize }: TextBoxProps) => {
+const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey, fontSize, labelSize }: TextBoxProps) => {
   const [touched, setTouched] = useState<boolean[]>([]);
 
   const validatePassword = (password: string): string => {
@@ -54,7 +54,7 @@ const TextBox = ({ items, login = false, styleComponent, onErrorChange, resetKey
         className="textbox-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "auto minmax(0, 1fr)",
+          gridTemplateColumns: `${labelSize ?? "auto"} minmax(0, 1fr)`,
           columnGap: "0.5rem",
           rowGap: "0.35rem",
           alignItems: "center",
@@ -237,7 +237,7 @@ const TextArea = ({ items, styleComponent, onErrorChange, fontSize }: TextBoxPro
   );
 };
 
-const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
+const SelectBox = ({ item, dataSource, onValueChange, fontSize, labelSize }: SelectBoxProps) => {
   const [value, setValue] = useState(dataSource[0]?.value ?? "");
 
   const options = dataSource.map((opc) => ({
@@ -256,7 +256,14 @@ const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
 
   return (
     <Form.Group className="selectbox-group">
-      <Form.Label className="selectbox-label">
+      <Form.Label
+        className="selectbox-label"
+        style={{
+          width: labelSize,
+          fontSize,
+          fontWeight: 900,
+        }}
+      >
         {item}:
       </Form.Label>
 
@@ -281,7 +288,9 @@ const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
           }),
           control: (base, state) => ({
             ...base,
-            borderRadius: "10px",
+            borderRadius: "18px",
+            minHeight: "38px",
+            fontSize,
             width: "100%",
             borderColor: state.isFocused
               ? "var(--color-rosa-claro)"
@@ -289,24 +298,21 @@ const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
             boxShadow: state.isFocused
               ? "0 0 0 3px var(--color-rosa-background)"
               : "none",
-            "&:hover": {
-              borderColor: state.isFocused
-                ? "var(--color-rosa)"
-                : "var(--color-box)",
-            },
+          }),
+          singleValue: (base) => ({
+            ...base,
+            fontSize,
           }),
           option: (base, state) => ({
             ...base,
+            fontSize,
             backgroundColor: state.isSelected
               ? "var(--color-rosa-claro)"
               : "white",
             color: "black",
             paddingLeft: "1rem",
             paddingRight: "1rem",
-            "&:hover": {
-              backgroundColor: "var(--color-rosa-blanco-claro)",
-            },
-          }),
+          })
         }}
         value={options.find(opc => opc.value === value)}
         onChange={selected => {
@@ -320,7 +326,7 @@ const SelectBox = ({ item, dataSource, onValueChange }: SelectBoxProps) => {
   );
 };
 
-const PopUp = ({ titulo, children, onClose }: PopUpProps) => (
+const PopUp = ({ titulo, children, onClose, width, height }: PopUpProps) => (
   <div className="detalle-overlay" onClick={onClose}>
     <div className="detalle-modal" onClick={(e) => e.stopPropagation()}>
       <div className="modal-header">
@@ -330,7 +336,7 @@ const PopUp = ({ titulo, children, onClose }: PopUpProps) => (
         <button className="no-print" onClick={onClose} aria-label="Cerrar">×</button>
       </div>
 
-      <div className="detalle-content">
+      <div className="detalle-content" style={{ width: width ?? "100%", height: height ?? "80vh" }}>
         {children}
       </div>
     </div>

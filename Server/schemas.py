@@ -1,5 +1,6 @@
 from datetime import date
 from decimal import Decimal
+from encodings import undefined
 import string
 from typing import Optional
 
@@ -45,7 +46,7 @@ class CarritoDetalleBase(BaseModel):
     cantidad: int
 
 class UsuarioBase(BaseModel):
-    id_user: int
+    id_user: int | None = None
     nombre_user: str
     email: str
     password: str
