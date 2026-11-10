@@ -9,6 +9,7 @@ import Catalogo from "../pages/User/Catalogo/Catalogo.tsx";
 import SearchFilter from "../pages/User/Catalogo/Components/SearchFilter.tsx";
 import DashBoard from "../pages/User/Dashboard/DashBoard";
 import { OrdenesCompra } from "../pages/User/OrdenesCompra/OrdenesCompra.tsx";
+import { SearchFilterOrdenes } from "../pages/User/OrdenesCompra/SideBarOrden.tsx";
 import Perfil from "../pages/User/Perfil/Perfil.tsx";
 import type { AppRoute } from "./ConfigTypes";
 
@@ -86,6 +87,7 @@ export const appRoutes: AppRoute[] = [
     path: "/ordenes",
     label: "Ordenes de compra",
     element: withSuspense(<OrdenesCompra />),
+    sidebar: SearchFilterOrdenes,
     menu: true,
     admin: false,
     empleado: false,

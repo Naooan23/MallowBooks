@@ -57,6 +57,7 @@ export interface GridProps {
 }
 
 export interface CardProps {
+  ref?: HTMLDivElement
   classname?: string,
   children: ReactNode,
   width?: string,

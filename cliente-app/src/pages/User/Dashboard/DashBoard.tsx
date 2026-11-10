@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "../../../components/Box";
 import { get } from "../../../config/api";
 import type { Libros } from "../../../services/ServicesTypes";
@@ -14,11 +14,11 @@ export default function DashBoard() {
   const [detalleCard, setDetalleCard] = useState<Libros | null>(null);
   const [data, setData] = useState<Libros[]>([]);
   const [ordenCompra, setOrdenCompra] = useState<OrdenCompraState | null>(null);
-  const documentoRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
 
   const getUltimaOrden = async () => {
-    const response = await get("ultOrden", undefined);
+    const response = await get("ultOrden", user?.id_user)
+
     setOrdenCompra(response)
   }
 
@@ -69,7 +69,6 @@ export default function DashBoard() {
             </Card>
           </div>
 
-          {/* SECCIÓN INFERIOR: RECOMENDACIONES PARA TI */}
           <Card width={"100%"}>
             <RecomendacionesCarrusel
               data={data}
@@ -89,7 +88,6 @@ export default function DashBoard() {
 
         {ordenCompra && (
           <OrdenDocumento
-            documentoRef={documentoRef}
             orden={ordenCompra.orden}
             fecha={ordenCompra.fecha}
             cliente={ordenCompra.cliente}
