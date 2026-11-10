@@ -31,18 +31,23 @@ export interface TextBoxProps {
   resetKey: number | undefined | null;
   onErrorChange: (hasError: boolean) => void;
   fontSize?: string | number | undefined,
+  labelSize?: string;
 }
 
 export interface SelectBoxProps {
   item: ReactNode,
   dataSource: Item[],
   onValueChange: (x: string) => void,
+  labelSize?: string | number | undefined,
+  fontSize?: string | number | undefined,
 }
 
 export interface PopUpProps {
   titulo: string,
   children: ReactNode,
   onClose: () => void,
+  width?: string,
+  height?: string,
 }
 
 export interface GridProps {
@@ -52,6 +57,7 @@ export interface GridProps {
 }
 
 export interface CardProps {
+  ref?: HTMLDivElement
   classname?: string,
   children: ReactNode,
   width?: string,

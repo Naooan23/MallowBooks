@@ -1,8 +1,17 @@
+.orden-documento-exportar {
+  width: 100%;
+  height: auto;
+  border-radius: 16px !important;
+  overflow: visible;
+  background: #ffffff;
+}
+
 .Orden-Compra{
   margin: 0;
   padding: 0;
-  max-height: 80vh;
   overflow-y: auto;
+  width: 100%;
+  min-width: 0;
   padding-right: 8px;
 }
 
@@ -24,8 +33,6 @@
 }
 
 .orden-acciones button {
-  display: inline-flex;
-  align-items: center;
   gap: 8px;
   border: 1px solid var(--color-morado-transparente);
   border-radius: 10px;
@@ -44,36 +51,6 @@
   color: var(--color-morado-oscuro);
   transform: translateY(-1px);
   box-shadow: 0 4px 8px var(--color-morado-transparente);
-}
-
-.orden-acciones button:active {
-  transform: translateY(0);
-}
-
-.orden-acciones button:disabled {
-  opacity: 0.6;
-  cursor: wait;
-  transform: none;
-}
-
-.orden-exportando {
-  text-align: center;
-  color: var(--color-morado);
-  font-size: 13px;
-  font-weight: 500;
-  margin-bottom: 12px;
-  animation: pulse 1.5s infinite;
-}
-
-.orden-documento {
-  padding: 1.5rem;
-  background: var(--color-blanco);
-  color: var(--color-rosa-blanco-claro);
-  border-radius: 16px;
-  border: 1px solid var(--color-rosa-background);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  max-width: 680px;
-  margin: 0 auto;
 }
 
 .orden-encabezado {
@@ -165,7 +142,7 @@
   padding: 2px 10px;
   border-radius: 20px;
   background-color: var(--color-rosa-blanco-claro);
-  color: var(--color-Dorado);
+  color: var(--color-Dorado) !important;
   font-size: 12px;
   font-weight: 700;
   margin-left: 4px;
@@ -223,6 +200,11 @@
   margin-top: 20px;
   padding: 20px 10px;
   border-bottom: 2px dashed var(--color-rosa-blanco-claro);
+}
+
+.orden-total-resumen {
+  border-top: 2px dashed var(--color-rosa-blanco-claro);
+  border-bottom: none;
 }
 
 .orden-total > span {

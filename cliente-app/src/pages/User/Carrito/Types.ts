@@ -1,4 +1,4 @@
-import type { Dispatch, RefObject, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import type { LibroCarrito } from "../../../services/ServicesTypes";
 
 export interface DataSelected {
@@ -40,14 +40,26 @@ export interface OrdenCompraProps {
   email: string;
   fecha: string;
   onClose: () => void;
+  height?: string;
+  width?: string;
 }
 
 export interface OrdenCompraDoc {
-  documentoRef: RefObject<HTMLDivElement | null>;
+  documentoRef?: React.RefObject<HTMLDivElement | null>;
   orden: OrdenGenerada;
   libros: LibroOrdenVista[];
   cliente: string;
   email: string;
+  fecha: string;
+  heigth?: string;
+  width?: string;
+  scrollbar: boolean;
+}
+
+export interface OrdenCompraResumen {
+  orden: OrdenGenerada;
+  totalArticulo: number;
+  totalPrecio: number;
   fecha: string;
   heigth?: string;
   width?: string;
@@ -76,4 +88,6 @@ export interface OrdenCompraState {
   cliente: string;
   email: string;
   fecha: string;
+  totalArticulo?: number;
+  totalPrecio?: number;
 }
