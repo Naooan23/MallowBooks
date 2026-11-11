@@ -1,4 +1,4 @@
-import Logo from "../../assets/Logo.jpg";
+import Logo from "../../pages/MainPage/Logo_t.png";
 import "./MenuBars.css";
 import MenuDesktop from "./MenuDesktop.js";
 
