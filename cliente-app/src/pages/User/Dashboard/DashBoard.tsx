@@ -69,12 +69,7 @@ export default function DashBoard() {
             </Card>
           </div>
 
-<<<<<<< HEAD
-          {/* SECCIÓN INFERIOR: RECOMENDACIONES PARA TI */}
-          <Card width={"100%"} height={"fit-content"}>
-=======
           <Card width={"100%"}>
->>>>>>> main
             <RecomendacionesCarrusel
               data={data}
               onSelectLibro={(libro) => setDetalleCard(libro)}
