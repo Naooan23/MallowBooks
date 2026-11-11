@@ -516,6 +516,7 @@ export function CardNuevoLibroAdmin({ onClick, cargarDatos, CoverWidth, CoverHei
             item="Categoría"
             dataSource={categorias}
             onValueChange={(v) => setCategoria(Number(v))}
+            fontSize={"1.3rem"}
           />
 
           <button

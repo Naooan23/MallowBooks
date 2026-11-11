@@ -93,14 +93,10 @@ export default function Carrito() {
       setSeleccionados([]);
 
       for (const item of librosSeleccionados) {
-        console.log(item);
         try {
           await eliminarDelCarrito(item?.id_book);
         } catch (error) {
-          console.error(
-            `La orden se creó, pero no se pudo retirar el libro ${item.id_book} del carrito:`,
-            error
-          );
+          console.error(`La orden se creó, pero no se pudo retirar el libro ${item.id_book} del carrito:`, error);
         }
       }
     } catch (error) {

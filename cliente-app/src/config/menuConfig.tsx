@@ -1,5 +1,6 @@
 import { Suspense, type ReactNode } from "react";
 import { AdminPage } from "../pages/Administrador/AdminPage";
+import CatalogoAdmin from "../pages/Administrador/Catalogo/CatalogoAdmin.tsx";
 import Usuarios from "../pages/Administrador/Usuario/Usuario.tsx";
 import LoginPage from "../pages/Login/LoginPage";
 import { MainPage } from "../pages/MainPage/MainPage";
@@ -7,6 +8,8 @@ import Carrito from "../pages/User/Carrito/Carrito";
 import Catalogo from "../pages/User/Catalogo/Catalogo.tsx";
 import SearchFilter from "../pages/User/Catalogo/Components/SearchFilter.tsx";
 import DashBoard from "../pages/User/Dashboard/DashBoard";
+import { OrdenesCompra } from "../pages/User/OrdenesCompra/OrdenesCompra.tsx";
+import { SearchFilterOrdenes } from "../pages/User/OrdenesCompra/SideBarOrden.tsx";
 import Perfil from "../pages/User/Perfil/Perfil.tsx";
 import type { AppRoute } from "./ConfigTypes";
 import { EmpleadoPage } from "../pages/Empleado/EmpleadoPage.tsx";
@@ -81,10 +84,30 @@ export const appRoutes: AppRoute[] = [
     empleado: false,
   },
   {
+    icon: <i className="bi bi-person-circle" />,
+    path: "/ordenes",
+    label: "Ordenes de compra",
+    element: withSuspense(<OrdenesCompra />),
+    sidebar: SearchFilterOrdenes,
+    menu: true,
+    admin: false,
+    empleado: false,
+  },
+  {
     icon: <i className="bi bi-layout-wtf" />,
     path: "/admin-dashboard",
     label: "Admin",
     element: withSuspense(<AdminPage />),
+    menu: true,
+    admin: true,
+    empleado: false,
+  },
+  {
+    icon: <i className="bi bi-collection" />,
+    path: "/admin-catalogo",
+    label: "Catálogo",
+    element: withSuspense(<CatalogoAdmin />),
+    sidebar: SearchFilter,
     menu: true,
     admin: true,
     empleado: false,

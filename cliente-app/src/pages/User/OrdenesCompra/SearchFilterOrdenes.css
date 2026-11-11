@@ -1,0 +1,64 @@
+/* BÚSQUEDA */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.search-box input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* FILTROS */
+.categories-container {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.filter-group-label {
+  margin-bottom: 0.8rem;
+}
+
+.filter-group-label label {
+  font-weight: 600;
+  color: #765b62;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #927b80;
+  text-align: left;
+  transition: background 0.2s, color 0.2s;
+}
+
+.filter-btn i {
+  width: 1.5rem;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.filter-btn:hover {
+  background: #f8eee9;
+  color: #a77c85;
+}
+
+.filter-btn.active {
+  background: #f3dfe0;
+  color: #946b76;
+  font-weight: 600;
+}
