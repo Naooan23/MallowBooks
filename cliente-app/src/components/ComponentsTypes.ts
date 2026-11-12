@@ -51,9 +51,13 @@ export interface PopUpProps {
 }
 
 export interface GridProps {
-  users: UserInfoProps[] | undefined,
-  editarUser: (usuario: UserInfoProps) => void,
-  eliminarUser: (x: number) => void,
+  loading: boolean,
+  usuarios?: UserInfoProps[],
+  usuariosPagina?: UserInfoProps[],
+  usuariosFiltrados?: UserInfoProps[],
+  abrirEditar: (usuario: UserInfoProps) => void,
+  eliminarUsuario: (x: number) => void,
+  rolesSeleccionados?: string[];
 }
 
 export interface CardProps {

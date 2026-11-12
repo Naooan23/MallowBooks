@@ -10,4 +10,6 @@ export interface SearchFilterProps {
   setSearch: Dispatch<SetStateAction<string>>;
   filter: number;
   setFilter: Dispatch<SetStateAction<number>>;
+  roles: string[];
+  setRoles: Dispatch<SetStateAction<string[]>>;
 }

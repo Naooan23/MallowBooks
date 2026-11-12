@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
 import "./SearchFilterOrdenes.css";
 
 interface SearchFilterOrdenesProps {
@@ -17,6 +17,12 @@ export const estados = [
 ];
 
 export function SearchFilterOrdenes({ search, setSearch, filter, setFilter }: SearchFilterOrdenesProps) {
+  useEffect(() => {
+    setFilter("Todas");
+    setSearch("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <div className="search-box">

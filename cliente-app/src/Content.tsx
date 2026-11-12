@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Footer } from "./components/Footer";
@@ -6,12 +7,25 @@ import TopBar from "./components/menu/TopBar";
 import type { AppRoute } from "./config/ConfigTypes";
 
 interface ContentProps {
-  route: AppRoute,
+  route: AppRoute;
 }
 
 export default function Content({ route }: ContentProps) {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState(0);
+  // Estados del catálogo
+  const [searchCatalogo, setSearchCatalogo] = useState("");
+  const [filterCatalogo, setFilterCatalogo] = useState(0);
+
+  // Estados de las órdenes
+  const [searchOrdenes, setSearchOrdenes] = useState("");
+  const [filterOrdenes, setFilterOrdenes] = useState("Todas");
+
+  const esOrdenes = route.path === "/ordenes";
+
+  const search = esOrdenes ? searchOrdenes : searchCatalogo;
+  const setSearch = esOrdenes ? setSearchOrdenes : setSearchCatalogo;
+
+  const filter = esOrdenes ? filterOrdenes : filterCatalogo;
+  const setFilter = esOrdenes ? setFilterOrdenes : setFilterCatalogo;
 
   const tieneSideBar = route.sidebar != null;
 

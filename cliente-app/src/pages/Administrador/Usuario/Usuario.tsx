@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { Button, InputGroup, Table } from "react-bootstrap";
+import { Button, InputGroup } from "react-bootstrap";
 import { Card, LoadingSimple, PopUp, SelectBox, TextBox } from "../../../components/Box";
 import { del, get, post, put } from "../../../config/api";
 import type { CampoFormulario, UserInfoProps } from "../../User/Perfil/Types";
 
 import { obtenerAnchoLabel } from "../../../components/BoxUtils";
+import GridUsuarios from "../../../components/Grid";
 import { useConfirm, useError } from "../../../services/useAuth";
 import { hashPassword } from "../../Login/LoginTypes";
 import "./Usuarios.css";
@@ -308,77 +309,7 @@ export default function Usuarios() {
           </div>
 
           <div className="usuarios-tabla-container">
-            <Table responsive hover className="usuarios-tabla">
-              <thead>
-                <tr>
-                  <th>Acciones</th>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Rol</th>
-                  <th>Correo electrónico</th>
-                  <th>Password</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {loading && usuarios.length === 0 ? <LoadingSimple /> : usuariosPagina.length > 0 ? (
-                  usuariosPagina.map((usuario) => (
-                    <tr key={usuario.id_user}>
-                      <td>
-                        <div className="usuarios-btn-acciones">
-                          <button
-                            type="button"
-                            title="Editar usuario"
-                            className="usuario-btn-editar"
-                            onClick={() => abrirEditar(usuario)}
-                            disabled={loading}
-                          >
-                            <i className="bi bi-pencil-square" />
-                          </button>
-
-                          <button
-                            type="button"
-                            title="Eliminar usuario"
-                            className="usuario-btn-eliminar"
-                            onClick={() =>
-                              eliminarUsuario(usuario.id_user!)
-                            }
-                            disabled={loading}
-                          >
-                            <i className="bi bi-trash3-fill" />
-                          </button>
-                        </div>
-                      </td>
-
-                      <td>{usuario.id_user}</td>
-
-                      <td>{usuario.nombre_user}</td>
-
-                      <td>
-                        <span className={`usuario-rol rol-${usuario.rol}`}>
-                          {usuario.rol === "admin"
-                            ? "Administrador"
-                            : usuario.rol === "empleado"
-                              ? "Empleado"
-                              : "Usuario"}
-                        </span>
-                      </td>
-
-                      <td>{usuario.email}</td>
-
-                      <td>{usuario.password}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={5} className="usuarios-vacio">
-                      <i className="bi bi-people" />
-                      <p>No se encontraron usuarios.</p>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </Table>
+            <GridUsuarios loading={loading} usuarios={usuarios} usuariosPagina={usuariosPagina} abrirEditar={abrirEditar} eliminarUsuario={eliminarUsuario} />
           </div>
 
           <div className="usuarios-footer">
