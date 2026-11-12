@@ -56,8 +56,8 @@
 
 .usuarios-tabla {
   margin: 0;
-  vertical-align: middle;
   white-space: nowrap;
+  height: 100%;
 }
 
 .usuarios-tabla thead {
@@ -72,11 +72,6 @@
   font-weight: 800;
   padding: 1rem;
   border-bottom: 2px solid var(--color-rosa-claro);
-}
-
-.usuarios-tabla tbody td {
-  padding: 0.85rem 1rem;
-  color: var(--color-texto);
 }
 
 .usuario-rol {
