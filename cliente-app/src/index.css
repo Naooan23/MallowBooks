@@ -83,10 +83,10 @@
   --color-stone-bg:      #F5F5F4;
   --color-stone-border:  #E7E5E4;
   --color-stone-text:    #A8A29E;
-
-  /* ===== Dorado ===== */
+  --color-Rojo-Claro: #fccfcf;
   --color-Dorado: #b47820;
-  --color-Dorado-Claro: #fce8bc;
+  --color-Dorado-Claro: #fcedcf;
+  --color-Verde-Claro: #e7fccf;
 
   /* ===== Negro ===== */
   --color-negro: #222;
