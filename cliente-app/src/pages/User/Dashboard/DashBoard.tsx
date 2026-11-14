@@ -79,8 +79,8 @@ export default function DashBoard() {
               <CardLibroDetalle
                 data={detalleCard}
                 onClick={() => setDetalleCard(null)}
-                CoverHeigth="17rem"
-                CoverWidth="11rem"
+                CoverHeigth="15rem"
+                CoverWidth="9rem"
               />
             )}
           </Card>

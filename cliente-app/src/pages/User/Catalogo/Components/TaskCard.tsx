@@ -7,7 +7,7 @@ import type { LibroCarrito, LibrosCover } from "../../../../services/ServicesTyp
 import type { CardLibroProps } from "./ComponentsTypes.ts";
 import "./TaskCard.css";
 
-export function CardLibro({ data, classname, onClick, CoverWidth, CoverHeigth }: CardLibroProps) {
+export function CardLibro({ data, classname, onClick, CoverWidth, CoverHeigth, isReadOnly = false }: CardLibroProps) {
   const { librosCarrito, agregarAlCarrito, eliminarDelCarrito } = useCart();
   const libroActual = librosCarrito?.find((x: LibroCarrito) => x.id_book == data.id);
   const sinStock = data.stock <= 0;
@@ -65,24 +65,26 @@ export function CardLibro({ data, classname, onClick, CoverWidth, CoverHeigth }:
           titulo={data.titulo}
         />
 
-        <div
-          className={`cart-button ${libroActual?.cantidad === 1
-            ? "added"
-            : (libroActual?.cantidad ?? 0) > 1
-              ? "disable added"
-              : sinStock
-                ? "disable"
-                : ""
-            }`}
-        >
-          <i
-            className="bi bi-plus"
-            onClick={(event) => {
-              event.stopPropagation();
-              buttonClick();
-            }}
-          />
-        </div>
+        {!isReadOnly && (
+          <div
+            className={`cart-button ${libroActual?.cantidad === 1
+              ? "added"
+              : (libroActual?.cantidad ?? 0) > 1
+                ? "disable added"
+                : sinStock
+                  ? "disable"
+                  : ""
+              }`}
+          >
+            <i
+              className="bi bi-plus"
+              onClick={(event) => {
+                event.stopPropagation();
+                buttonClick();
+              }}
+            />
+          </div>
+        )}
 
       </div>
 
@@ -101,7 +103,7 @@ export function CardLibro({ data, classname, onClick, CoverWidth, CoverHeigth }:
 }
 
 
-export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth }: CardLibroProps) {
+export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth,isReadOnly = false  }: CardLibroProps) {
   const { librosCarrito, agregarAlCarrito, eliminarDelCarrito, cambiarCantidad } = useCart();
 
   const libroActual = librosCarrito?.find(libro => libro.id_book == data.id);
@@ -268,62 +270,29 @@ export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth }: Car
           <strong>Stock:</strong>{" "}
           {sinStock ? "Agotado" : stock}
         </p>
+{!isReadOnly && (
+            <>
+              <div style={{ display: "flex", width: "100%", justifyContent: "center" }}>
+                <Col xs={3}><strong>Cantidad:</strong></Col>
+                <Col xs={9} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+                  <button className="botones" onClick={() => modificarCantidad(false)} disabled={loading || cantidadActual <= 0}>−</button>
+                  <span style={{ textAlign: "center" }}>{cantidadActual}</span>
+                  <button className="botones" onClick={() => modificarCantidad(true)} disabled={loading || stock <= 0}>+</button>
+                </Col>
+              </div>
 
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-          }}
-        >
-          <Col xs={3}>
-            <strong>Cantidad:</strong>
-          </Col>
+              <div className="area-botones">
+                <Button
+                  className={botonClase}
+                  disabled={loading || (!estaEnCarrito && (!cantidadValida || sinStock))}
+                  onClick={buttonClick}
+                >
+                  <span>{loading ? "Procesando..." : botonTexto}</span>
+                </Button>
+              </div>
+            </>
+          )}
 
-          <Col
-            xs={9}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "10px",
-            }}
-          >
-            <button
-              className="botones"
-              onClick={() => modificarCantidad(false)}
-              disabled={loading || cantidadActual <= 0}
-            >
-              −
-            </button>
-
-            <span style={{ textAlign: "center" }}>
-              {cantidadActual}
-            </span>
-
-            <button
-              className="botones"
-              onClick={() => modificarCantidad(true)}
-              disabled={loading || stock <= 0}
-            >
-              +
-            </button>
-          </Col>
-        </div>
-
-        <div className="area-botones">
-          <Button
-            className={botonClase}
-            disabled={
-              loading ||
-              (!estaEnCarrito &&
-                (!cantidadValida || sinStock))
-            }
-            onClick={buttonClick}
-          >
-            <span>{loading ? "Procesando..." : botonTexto}</span>
-          </Button>
-        </div>
       </div>
 
       <div className="book-info">

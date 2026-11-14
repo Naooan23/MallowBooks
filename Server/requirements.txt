@@ -11,3 +11,5 @@ email-validator
 sqlacodegen
 requests
 bcrypt
+httpx
+numpy

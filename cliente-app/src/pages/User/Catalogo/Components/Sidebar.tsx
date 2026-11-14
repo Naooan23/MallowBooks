@@ -4,7 +4,7 @@ import MenuButtonMovil from "../../../../components/menu/MenuButtonMovil";
 import MenuDesktop from "../../../../components/menu/MenuDesktop";
 import MenuMovil from "../../../../components/menu/MenuMovil";
 import { appRoutes } from "../../../../config/menuConfig";
-import Logo from "../../assets/Logo.png";
+import Logo from "../../../../pages/MainPage/Logo_t.png";
 
 export default function AppSidebar() {
   const [open, setOpen] = useState(false);

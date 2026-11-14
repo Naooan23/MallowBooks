@@ -194,6 +194,7 @@ export default function Perfil() {
             flexDirection: "column",
             alignItems: "center",
             textAlign: "center",
+            marginBottom: "2rem",
           }}>
           <div className="avatar-section">
             <i className="bi bi-person-circle" />

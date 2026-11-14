@@ -63,7 +63,9 @@
     box-sizing: border-box;
     height: auto;
     min-height: 0;
+    max-width: 100%;
 }
+
 
 .loading-overlay {
     position: fixed;

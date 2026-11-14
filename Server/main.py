@@ -12,6 +12,7 @@ from database import get_db
 from models import Carrito, Detallecarrito, Detalleorden, Libros, Orden, Usuarios, Categoria
 from schemas import LibroBase, CarritoBase, LibroResponse, LoginRequest, RegisterRequest, CarritoResponse, CarritoDetalleResponse, CarritoDetalleBase, OrdenCreate, PasswordData, UserData, UsuarioBase
 from decimal import Decimal
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -206,6 +207,50 @@ def obtener_Ultima_Orden(id_user: int, db: Session = Depends(get_db)):
         "email": usuario.email,
         "fecha": orden.fecha.isoformat()
     }
+# NUEVA RUTA: Obtener TODAS las órdenes (Para el Empleado)
+@app.get("/ordenes/todas")
+def obtener_todas_las_ordenes(db: Session = Depends(get_db)):
+    # Traemos todas las órdenes, de la más reciente a la más antigua
+    ordenes = db.query(Orden).order_by(Orden.id_orden.desc()).all()
+    
+    respuesta = []
+
+    for orden in ordenes:
+        usuario = db.query(Usuarios).filter(Usuarios.id_user == orden.id_user).first()
+        detalles = db.query(Detalleorden).filter(Detalleorden.id_orden == orden.id_orden).all()
+        
+        libros_response = []
+        total_articulo = 0
+
+        for detalle in detalles:
+            libro = db.query(Libros).filter(Libros.id_book == detalle.id_book).first()
+            if libro:
+                subtotal = libro.precio * detalle.cantidad
+                libros_response.append({
+                    "id_book": libro.id_book,
+                    "titulo": libro.titulo,
+                    "autor": libro.autor,
+                    "precio": libro.precio,
+                    "cantidad": detalle.cantidad,
+                    "subtotal": subtotal
+                })
+                total_articulo += detalle.cantidad
+
+        respuesta.append({
+            "orden": {
+                "id_orden": orden.id_orden,
+                "total": orden.total,
+                "status": orden.status
+            },
+            "libros": libros_response,
+            "cliente": usuario.nombre_user if usuario else "Usuario eliminado",
+            "email": usuario.email if usuario else "Sin correo",
+            "fecha": orden.fecha.isoformat(),
+            "totalArticulo": total_articulo,
+            "totalPrecio": orden.total
+        })
+
+    return respuesta
 
 @app.get("/ordenes/{id_user}")
 def obtener_Ordenes(id_user: int, db: Session = Depends(get_db)):
@@ -279,6 +324,31 @@ def obtener_Ordenes(id_user: int, db: Session = Depends(get_db)):
         })
 
     return respuesta
+
+
+
+
+
+# NUEVA RUTA: Actualizar el estado de una orden
+class EstadoUpdate(BaseModel):
+    status: str
+
+@app.put("/ordenes/{id_orden}/status")
+def actualizar_estado_orden(id_orden: int, data: EstadoUpdate, db: Session = Depends(get_db)):
+    orden = db.query(Orden).filter(Orden.id_orden == id_orden).first()
+
+    if not orden:
+        raise HTTPException(status_code=404, detail="Orden no encontrada")
+
+    orden.status = data.status
+    
+    try:
+        db.commit()
+        db.refresh(orden)
+        return {"mensaje": "Estado actualizado correctamente", "status": orden.status}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/sistRecomendaciones/{id_user}")
 def sistema_recomendacion(id_user: int, db: Session = Depends(get_db)):
