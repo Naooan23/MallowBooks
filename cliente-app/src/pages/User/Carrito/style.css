@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
-/* ============================
-   CONTENEDOR PRINCIPAL (Ancho Completo)
-   ============================ */
 .cart-container {
   padding: 2rem 3rem;
   width: 100%;
@@ -28,14 +25,11 @@
   width: 100%;
 }
 
-/* ============================
-   LISTA DE LIBROS (Lado Izquierdo - Expandido)
-   ============================ */
 .cart-items-list {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  flex: 1; /* Toma todo el espacio sobrante disponible */
+  flex: 1;
   max-height: 75vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -43,7 +37,6 @@
   box-sizing: border-box;
 }
 
-/* Scrollbar estética */
 .cart-items-list::-webkit-scrollbar,
 .summary-items-list::-webkit-scrollbar {
   width: 6px;
@@ -60,7 +53,6 @@
   border-radius: 10px;
 }
 
-/* TARJETA INDIVIDUAL DE PRODUCTO */
 .cart-item-card {
   display: flex;
   align-items: center;
@@ -82,7 +74,6 @@
               0 4px 6px -4px rgba(0,0,0,.10);
 }
 
-/* Portada del libro dentro de la tarjeta */
 .cart-item-img {
   width: 90px;
   height: 120px;
@@ -92,7 +83,6 @@
   flex-shrink: 0;
 }
 
-/* Detalles del texto dentro de la tarjeta */
 .cart-item-info {
   flex: 1;
   display: flex;
@@ -138,7 +128,6 @@
   zoom: 1.2;
 }
 
-/* Controles de cantidad */
 .quantity-controls {
   display: flex;
   align-items: center;
@@ -176,7 +165,6 @@
   font-size: 1rem;
 }
 
-/* Columna de Precios */
 .item-price-col {
   text-align: right;
   min-width: 110px;
@@ -196,11 +184,8 @@
   color: var(--color-ink-3, #9E7D76);
 }
 
-/* ============================
-   RESUMEN DEL PEDIDO (Lado Derecho - Ancho Fijo Adecuado)
-   ============================ */
 .cart-summary-card {
-  width: 380px; /* Ancho cómodo y fijo para que no se vea aplastado ni gigante */
+  width: 380px;
   flex-shrink: 0;
   background-color: #ffffff;
   border: 1px solid var(--color-borde, #E5D5C5);
@@ -293,9 +278,6 @@
   margin-bottom: 0;
 }
 
-/* ============================
-   RESPONSIVO PARA PANTALLAS PEQUEÑAS
-   ============================ */
 @media (max-width: 1024px) {
   .cart-container {
     padding: 1.5rem 1rem;
@@ -313,6 +295,6 @@
   }
   .cart-summary-card {
     width: 100% !important;
-    position: static !important; /* Se desactiva el sticky en móviles para que fluya de manera natural */
+    position: static !important;
   }
 }

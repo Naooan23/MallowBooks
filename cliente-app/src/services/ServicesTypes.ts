@@ -65,7 +65,7 @@ export interface CartContextType {
   eliminarDelCarrito: (id_book: number | null) => Promise<void>;
   cambiarCantidad: (id_book: number, cantidad: number) => Promise<void>;
   vaciarCarrito: () => void;
-  actualizarStock: (id_book: number, stock: number) => void; // Changed from Promise<void> to void
+  actualizarStock: (id_book: number, stock: number) => void;
   cantidadTotal: number | undefined;
 }
 

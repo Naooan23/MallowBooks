@@ -15,7 +15,6 @@
   --color-rosa-background:rgb(242, 216, 216);
   --color-rosa-claro-background:#fff5f5;
   --color-rosa-claro: #FACFCF;
-  /*--color-rosa: #ECB8B8;*/
   --color-rosa-oscuro-claro-disable: #b58f8f;
   --color-rosa-oscuro-claro: #D9958F;
   --color-rosa-oscuro: #E98181;
@@ -23,6 +22,8 @@
   --accent-pink: #e8a5a5;
   --accent-pink-hover: #d89191;
   --rosa-oscuro: #a66e8e;
+  --color-rosa:          #E8A5B2;
+  --color-rosa-coral:    #BF6A7C;
 
   /* ===== Morado ===== */
   --color-lila-blanco-claro: #E5D6E8;
@@ -53,30 +54,22 @@
   --color-beige-texto: #F2E6D8;
   --color-beige-background: #F2E9D8;
   --color-gris-beige: #7c6f6c;
+  --color-beige-bg:      #FAF7F2;
+  --color-borde:         #EFE4DA;
+  --color-borde-hover:   #E8A5B2;
+  --color-sep:           #F5EEE6;
+  --color-crema-cover:   #E8DDD4;
+  --color-rosa-soft:     #FCECEF;
 
   /* ===== Cafe ===== */  
   --cafe-oscuro: #3a2e2b;
   --color-cafe-claro: #6B3F37;
+  --color-cafe:          #4A2E28;
+  --color-cafe-claro:    #5C3D35;
+  --color-ink-2:         #75554E;
+  --color-ink-3:         #9E7D76;
   
-  /* Base crema del diseño nuevo */
-  --color-beige-bg:      #FAF7F2;   /* fondo suave zona portada */
-  --color-borde:         #EFE4DA;   /* borde tarjeta */
-  --color-borde-hover:   #E8A5B2;   /* borde hover (rosa) */
-  --color-sep:           #F5EEE6;   /* separador superior del precio */
-  --color-crema-cover:   #E8DDD4;   /* placeholder portada */
-  --color-rosa-soft:     #FCECEF;   /* hover botón detalles */
-
-  /* Tinta */
-  --color-cafe:          #4A2E28;   /* ya la tenías → tinta principal */
-  --color-cafe-claro:    #5C3D35;   /* hover primario */
-  --color-ink-2:         #75554E;   /* texto secundario (autor) */
-  --color-ink-3:         #9E7D76;   /* texto apagado (categoría, estante) */
-
-  /* Acento rosa */
-  --color-rosa:          #E8A5B2;   /* ya la tenías */
-  --color-rosa-coral:    #BF6A7C;   /* hover título / acento fuerte */
-
-  /* Estados */
+  /* ===== Estados ===== */
   --color-emerald:       #047857;
   --color-emerald-hover: #065F46;
   --color-amber:         #D97706;

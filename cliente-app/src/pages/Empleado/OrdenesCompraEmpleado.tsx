@@ -15,28 +15,22 @@ interface SearchFilterContext {
   setFilter: Dispatch<SetStateAction<string>>;
 }
 
-// Estados posibles (ajusta esto a los que use tu base de datos)
 const ESTADOS_ORDEN = ["Pendiente", "Pagado", "Cancelado"];
 
 export function OrdenesCompraEmpleado() {
   const [ordenes, setOrdenes] = useState<OrdenCompraState[]>([]);
   const [ordenSeleccionada, setOrdenSeleccionada] = useState<OrdenCompraState | null>(null);
   const [cargando, setCargando] = useState(true);
-  const [actualizandoEstado, setActualizandoEstado] = useState<number | null>(null); // Para el spinner de guardado
-  
+  const [actualizandoEstado, setActualizandoEstado] = useState<number | null>(null);
+
   const { search, filter: filtroOriginal } = useOutletContext<SearchFilterContext>();
   const filter = typeof filtroOriginal === "string" ? filtroOriginal : "Todas";
 
-    // 1. Obtener todas las órdenes
- const getTodasLasOrdenes = async () => {
+  const getTodasLasOrdenes = async () => {
     try {
       setCargando(true);
-      
-      const listaOrdenes = await get("ordenes/todas", undefined); 
-      
-      // 👇 MIRA LA CONSOLA DEL NAVEGADOR (F12)
-      console.log("1. Lo que devuelve el backend:", listaOrdenes); 
-      
+
+      const listaOrdenes = await get("ordenes/todas", undefined);
       setOrdenes(listaOrdenes ?? []);
     } catch (error) {
       console.error("Error al obtener las órdenes:", error);
@@ -46,14 +40,11 @@ export function OrdenesCompraEmpleado() {
     }
   };
 
-  // 2. Cambiar el estado
   const handleCambiarEstado = async (id_orden: number, nuevoEstado: string) => {
     setActualizandoEstado(id_orden);
     try {
-      // 👈 Hacemos la petición PUT a la nueva ruta
-      await put(`ordenes/${id_orden}/status`, { status: nuevoEstado }); 
-      
-      // Actualizamos la UI localmente
+      await put(`ordenes/${id_orden}/status`, { status: nuevoEstado });
+
       setOrdenes((prevOrdenes) =>
         prevOrdenes.map((item) =>
           item.orden.id_orden === id_orden
@@ -61,9 +52,9 @@ export function OrdenesCompraEmpleado() {
             : item
         )
       );
-      
+
       if (ordenSeleccionada?.orden.id_orden === id_orden) {
-        setOrdenSeleccionada((prev) => 
+        setOrdenSeleccionada((prev) =>
           prev ? { ...prev, orden: { ...prev.orden, status: nuevoEstado } } : null
         );
       }
@@ -74,19 +65,17 @@ export function OrdenesCompraEmpleado() {
       setActualizandoEstado(null);
     }
   };
+
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getTodasLasOrdenes();
   }, []);
 
-
-    const ordenesFiltradas = useMemo(() => {
+  const ordenesFiltradas = useMemo(() => {
     const busqueda = String(search ?? "").trim().toLowerCase();
     const estadoSeleccionado = String(filter ?? "Todas");
 
     const resultado = ordenes.filter((item) => {
-      // 👇 MIRA LA CONSOLA DEL NAVEGADOR (F12)
-      console.log("2. Evaluando orden:", item.orden.id_orden, "Filtro actual:", estadoSeleccionado);
-
       const orden = item.orden;
       const estadoOrden = String(orden.status ?? "").toLowerCase();
 
@@ -104,9 +93,6 @@ export function OrdenesCompraEmpleado() {
 
       return coincideEstado && coincideBusqueda;
     });
-
-    // 👇 MIRA LA CONSOLA DEL NAVEGADOR (F12)
-    console.log("3. Órdenes que pasaron el filtro:", resultado);
 
     return resultado;
   }, [ordenes, search, filter]);
@@ -130,8 +116,6 @@ export function OrdenesCompraEmpleado() {
         <div className="ordenes-grid">
           {ordenesFiltradas.map((item) => (
             <div key={item.orden.id_orden} className="ordenes-empleado-card">
-              
-              {/* Selector de Estado */}
               <div className="estado-selector-container">
                 <label>Estado:</label>
                 <select
@@ -149,7 +133,6 @@ export function OrdenesCompraEmpleado() {
                 {actualizandoEstado === item.orden.id_orden && <span className="saving-text">Guardando...</span>}
               </div>
 
-              {/* Tarjeta de Resumen de la Orden */}
               <div
                 className="orden-resumen-click"
                 onClick={() => setOrdenSeleccionada(item)}

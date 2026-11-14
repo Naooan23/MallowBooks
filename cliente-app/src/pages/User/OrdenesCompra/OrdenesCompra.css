@@ -118,8 +118,6 @@
   }
 }
 
-/*========================empleado=========================*/
-/* Contenedor de la tarjeta en modo empleado */
 .ordenes-empleado-card {
   display: flex;
   flex-direction: column;
@@ -131,7 +129,6 @@
   box-shadow: 0 4px 6px -1px rgba(0,0,0,.05);
 }
 
-/* Selector de estado */
 .estado-selector-container {
   display: flex;
   align-items: center;
@@ -153,7 +150,7 @@
   cursor: pointer;
   outline: none;
   transition: all 0.2s;
-  flex: 1; /* Para que ocupe el ancho restante */
+  flex: 1;
 }
 
 .estado-select:focus {
@@ -161,7 +158,6 @@
   box-shadow: 0 0 0 2px rgba(232, 165, 178, 0.2);
 }
 
-/* Colores dinámicos según el estado (opcional, le da un toque visual) */
 .estado-select.status-pendiente {
   background-color: #FEF3C7;
   color: #92400E;
@@ -191,7 +187,6 @@
   50% { opacity: 0.5; }
 }
 
-/* Ajuste para que el resumen haga click y el select no interfiera */
 .orden-resumen-click {
   cursor: pointer;
   transition: transform 0.2s;
@@ -200,9 +195,6 @@
   transform: translateY(-2px);
 }
 
-/* ============================
-   DASHBOARD STATS (EMPLEADO)
-   ============================ */
 .dashboard-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -269,7 +261,6 @@
   color: var(--color-cafe, #4A2E28);
 }
 
-/* Botón para ir a la página completa */
 .btn-ver-todas {
   display: inline-flex;
   align-items: center;

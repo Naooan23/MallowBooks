@@ -11,11 +11,9 @@ interface ContentProps {
 }
 
 export default function Content({ route }: ContentProps) {
-  // Estados del catálogo
   const [searchCatalogo, setSearchCatalogo] = useState("");
   const [filterCatalogo, setFilterCatalogo] = useState(0);
 
-  // Estados de las órdenes
   const [searchOrdenes, setSearchOrdenes] = useState("");
   const [filterOrdenes, setFilterOrdenes] = useState("Todas");
 

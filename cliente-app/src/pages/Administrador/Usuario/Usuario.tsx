@@ -25,8 +25,6 @@ export default function Usuarios() {
   const { showError } = useError();
   const fontSize = "1.3rem";
 
-
-  // Obtener usuarios
   const getUsers = async () => {
     try {
       const data = await get("usuarios", undefined);

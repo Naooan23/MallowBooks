@@ -8,7 +8,6 @@ export const Footer = () => {
     <footer className="mallow-footer">
       <div className="footer-container">
         <div className="footer-grid">
-          {/* Columna 1: Logo y descripción */}
           <div className="footer-brand-column">
             <div className="footer-brand">
               <div className="footer-logo-container">
@@ -67,7 +66,6 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Columna 2: Contacto */}
           <div className="footer-column">
             <h3 className="footer-heading">Contacto</h3>
 
@@ -96,7 +94,6 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Barra inferior */}
         <div className="footer-bottom">
           <p>© 2026 Mallow Books. Todos los derechos reservados.</p>
         </div>

@@ -31,8 +31,6 @@
   align-items: start;
 }
 
-
-/* Sección del Avatar / Tarjeta de Usuario Izquierda */
 .avatar-section {
   position: relative;
   width: 5.5rem;
@@ -85,7 +83,6 @@
   justify-content: center;
 }
 
-/* Encabezados de Sección */
 .section-header {
   font-family: "Libre Caslon Condensed", serif;
   font-size: 1.8rem;
@@ -133,7 +130,6 @@
   flex: 1;
 }
 
-/* Inputs unificados con la estética de la librería */
 input[type="text"], 
 input[type="password"],
 input[type="email"] {
@@ -203,7 +199,6 @@ input[type="email"]:focus {
   justify-content: flex-end;
 }
 
-/* Botón principal unificado con .button-cart / .btn-checkout */
 .btn-primary {
   background-color: var(--color-cafe, #4A2E28);
   color: #ffffff;
@@ -237,9 +232,6 @@ input[type="email"]:focus {
   box-sizing: border-box;
 }
 
-/* ============================
-   RESPONSIVO
-   ============================ */
 @media (max-width: 1200px) {
   .forms-group {
     display: flex;

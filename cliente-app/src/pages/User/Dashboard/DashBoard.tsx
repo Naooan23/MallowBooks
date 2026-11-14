@@ -52,8 +52,6 @@ export default function DashBoard() {
       <div className="dashboard-grid">
         <div className="dashboard-right-column">
           <div className="notices-row">
-
-            {/* Tarjeta de Avisos */}
             <Card>
               <div className="notice-header-title">
                 <div className="icon">
