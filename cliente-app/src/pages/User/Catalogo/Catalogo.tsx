@@ -65,8 +65,8 @@ export default function Catalogo() {
             classname="card-movement"
             data={x}
             onClick={() => setDetalleCard(x)}
-            CoverHeigth="17rem"
-            CoverWidth="11rem"
+            CoverHeigth="15rem"
+            CoverWidth="9rem"
           />
         ))}
       </div>
@@ -75,8 +75,8 @@ export default function Catalogo() {
         <CardLibroDetalle
           data={detalleCard}
           onClick={() => setDetalleCard(null)}
-          CoverHeigth="17rem"
-          CoverWidth="11rem"
+          CoverHeigth="15rem"
+          CoverWidth="9rem"
         />
       )}
 

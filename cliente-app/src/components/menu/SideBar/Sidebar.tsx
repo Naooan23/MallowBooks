@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Logo from "../../../assets/Logo.jpg";
+import Logo from "../../../pages/MainPage/Logo_t.png";
 import "./Sidebar.css";
 import type { SideBarProps } from "./TypesSideBar";
 
