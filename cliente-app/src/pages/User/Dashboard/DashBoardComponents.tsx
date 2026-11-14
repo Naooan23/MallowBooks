@@ -25,8 +25,8 @@ export default function RecomendacionesCarrusel({ data, onSelectLibro }: Recomen
           classname="card-movement"
           data={libro}
           onClick={() => onSelectLibro(libro)}
-          CoverWidth="11rem"
-          CoverHeigth="17rem"
+          CoverWidth="9rem"
+          CoverHeigth="15rem"
         />
       )}
     />

@@ -243,6 +243,7 @@
   border-radius: 10px;
 }
 
+
 /* ============================
    BOTONES
    ============================ */
@@ -303,7 +304,7 @@
   color: var(--color-rosa);
   padding: .15rem .55rem .25rem;
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1rem;
   border: none;
   border-radius: .6rem;
   transition: all .15s ease;

@@ -9,8 +9,13 @@ const cartItemStyle: CSSProperties = {
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
-  gap: "0.5rem",
-  padding: "1rem 1.2rem",
+  gap: "1.5rem",
+  padding: "1.25rem 1.75rem",
+  borderRadius: "1rem",
+  boxShadow: "0 2px 5px rgba(0,0,0,.03)",
+  border: "1px solid var(--color-borde, #EFE4DA)",
+  width: "100%",
+  boxSizing: "border-box"
 };
 
 export default function ItemCarrito({ item, setSeleccionados, librosCarrito, procesandoId, setProcesandoId, seleccionado, procesando }: ItemCarritoProps) {
@@ -63,7 +68,7 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
           console.error("No se pudo revertir el stock:", errorStock);
         }
       }
-      console.log("Error: ", error)
+      console.log("Error: ", error);
     } finally {
       setProcesandoId(null);
     }
@@ -106,6 +111,7 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
       style={cartItemStyle}
       width="100%"
       height="100%"
+      classname="cart-item-card"
     >
       <div className="item-checkbox-container">
         <input
@@ -117,34 +123,32 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
         />
       </div>
 
-      <BookCover width="15rem" heigth="17rem" portada_url={item.portada_url} titulo={item.titulo} />
+      <BookCover width="11rem" height="14rem" portada_url={item.portada_url} titulo={item.titulo} />
 
-      <div className="Book-Info">
-        <div style={{ flex: 1 }}>
-          <h3 className="book-title">{item.titulo}</h3>
-          <p className="book-author">{item.autor}</p>
+      {/* Contenedor principal que se extiende y distribuye los elementos en filas/columnas */}
+      <div className="Book-Info" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%", gap: "1rem" }}>
+        
+        {/* Columna Izquierda: Título, Autor y el botón de eliminar arriba */}
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%", flex: 1, minWidth: 0, gap: "1.5rem" }}>
+          <div>
+            <h3 className="book-title">{item.titulo}</h3>
+            <p className="book-author">{item.autor}</p>
+          </div>
+
         </div>
 
-        <button
-          type="button"
-          className="btn-icon"
-          onClick={() => eliminarLibro(item.id_book)}
-          disabled={procesandoId !== null}
-          title="Eliminar"
-        >
-          <i className="bi bi-trash3-fill button" />
-        </button>
-
-        <div style={{ alignContent: "center" }}>
-          <div className="item-price-col">
+        {/* Columna Derecha: Precio y controles de cantidad alineados a la orilla derecha */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.75rem", flexShrink: 0, minWidth: "120px" }}>
+          <div className="item-price-col" style={{ textAlign: "right" }}>
             <span className="item-total-price">${(item.precio * item.cantidad).toFixed(2)}</span>
             {item.cantidad > 1 && (<span className="item-unit-price">${item.precio} c/u</span>)}
           </div>
 
           <div className="quantity-controls">
+            
             <button
               type="button"
-              className="qty-btn "
+              className="qty-btn"
               onClick={() => modificarCantidad(item.id_book, false)}
               disabled={
                 procesandoId !== null ||
@@ -169,7 +173,17 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
             </button>
           </div>
         </div>
+          <button
+            type="button"
+            className="btn-icon"
+            onClick={() => eliminarLibro(item.id_book)}
+            disabled={procesandoId !== null}
+            title="Eliminar"
+            style={{ width: "fit-content", padding: 0 }}
+          >
+            <i className="bi bi-trash3-fill button" />
+          </button>
       </div>
-    </Card >
+    </Card>
   );
 }

@@ -12,6 +12,9 @@ import { OrdenesCompra } from "../pages/User/OrdenesCompra/OrdenesCompra.tsx";
 import { SearchFilterOrdenes } from "../pages/User/OrdenesCompra/SideBarOrden.tsx";
 import Perfil from "../pages/User/Perfil/Perfil.tsx";
 import type { AppRoute } from "./ConfigTypes";
+import { EmpleadoPage } from "../pages/Empleado/EmpleadoPage.tsx";
+import CatalogoEmpleado from "../pages/Empleado/CatalogoEmpleado.tsx";
+import {OrdenesCompraEmpleado} from "../pages/Empleado/OrdenesCompraEmpleado.tsx";
 
 const withSuspense = (Component: ReactNode) => (
   <Suspense fallback={
@@ -115,7 +118,17 @@ export const appRoutes: AppRoute[] = [
     icon: <i className="bi bi-layout-wtf" />,
     path: "/empleado-dashboard",
     label: "Inicio",
-    element: withSuspense(<DashBoard />),
+    element: withSuspense(<EmpleadoPage />),
+    menu: true,
+    admin: false,
+    empleado: true,
+  },
+  {
+    icon: <i className="bi bi-person-circle" />,
+    path: "/ordenes-empleado",
+    label: "Ordenes de compra",
+    element: withSuspense(<OrdenesCompraEmpleado/>),
+    sidebar: SearchFilterOrdenes,
     menu: true,
     admin: false,
     empleado: true,
@@ -124,7 +137,7 @@ export const appRoutes: AppRoute[] = [
     icon: <i className="bi bi-collection" />,
     path: "/empleado-catalogo",
     label: "Catálogo",
-    element: withSuspense(<Catalogo />),
+    element: withSuspense(<CatalogoEmpleado />),
     sidebar: SearchFilter,
     menu: true,
     admin: false,
