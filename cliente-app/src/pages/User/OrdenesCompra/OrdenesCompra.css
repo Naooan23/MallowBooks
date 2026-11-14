@@ -1,14 +1,21 @@
 .pagina-ordenes {
   width: 100%;
   height: 100%;
-  padding: 1.5rem;
+  padding: 2.5rem 2.5rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   overflow-y: auto;
   min-width: 0;
 }
-
+.pagina-ordenes::-webkit-scrollbar {
+  width: 8px;
+  background-color: var(--color-rosa-blanco-claro);
+}
+.pagina-ordenes::-webkit-scrollbar-thumb {
+  background-color: var(--color-rosa);
+  border-radius: 4px;
+}
 .ordenes-header {
   width: 100%;
   display: flex;
@@ -109,4 +116,176 @@
   .ordenes-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/*========================empleado=========================*/
+/* Contenedor de la tarjeta en modo empleado */
+.ordenes-empleado-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-borde, #EFE4DA);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.05);
+}
+
+/* Selector de estado */
+.estado-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-cafe, #4A2E28);
+}
+
+.estado-select {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-borde, #EFE4DA);
+  background-color: #FAF7F2;
+  color: var(--color-cafe, #4A2E28);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+  flex: 1; /* Para que ocupe el ancho restante */
+}
+
+.estado-select:focus {
+  border-color: var(--color-rosa, #E8A5B2);
+  box-shadow: 0 0 0 2px rgba(232, 165, 178, 0.2);
+}
+
+/* Colores dinámicos según el estado (opcional, le da un toque visual) */
+.estado-select.status-pendiente {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border-color: #FDE68A;
+}
+
+.estado-select.status-pagado {
+  background-color: #D1FAE5;
+  color: #065F46;
+  border-color: #A7F3D0;
+}
+
+.estado-select.status-cancelado {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  border-color: #FECACA;
+}
+
+.saving-text {
+  font-size: 0.75rem;
+  color: var(--color-rosa-coral, #BF6A7C);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Ajuste para que el resumen haga click y el select no interfiera */
+.orden-resumen-click {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.orden-resumen-click:hover {
+  transform: translateY(-2px);
+}
+
+/* ============================
+   DASHBOARD STATS (EMPLEADO)
+   ============================ */
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-borde, #EFE4DA);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.05);
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: var(--color-rosa-soft, #FCECEF);
+  color: var(--color-rosa-coral, #BF6A7C);
+  font-size: 1.5rem;
+}
+
+.stat-icon.warning {
+  background-color: #FEF3C7;
+  color: #D97706;
+}
+
+.stat-icon.success {
+  background-color: #D1FAE5;
+  color: #059669;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.85rem;
+  color: var(--color-ink-2, #75554E);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-family: "Lora", Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-cafe, #4A2E28);
+}
+
+/* Botón para ir a la página completa */
+.btn-ver-todas {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-cafe, #4A2E28);
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-ver-todas:hover {
+  background-color: var(--color-cafe-claro, #5C3D35);
+  transform: translateX(3px);
 }
