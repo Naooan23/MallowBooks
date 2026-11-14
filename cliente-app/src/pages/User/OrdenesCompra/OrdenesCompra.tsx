@@ -1,5 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Loading } from "../../../components/Box";
 import { get } from "../../../config/api";
@@ -88,57 +87,56 @@ export function OrdenesCompra() {
         </span>
       </header>
 
-      {cargando ? (
-        <Loading />
-      ) : ordenesFiltradas.length > 0 ? (
-        <div className="ordenes-grid">
-          {ordenesFiltradas.map((item) => (
-            <div
-              key={item.orden.id_orden}
-              className="orden-resumen-click"
-              style={{ width: "fit-content" }}
-              onClick={() => setOrdenSeleccionada(item)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  setOrdenSeleccionada(item);
-                }
-              }}
-            >
-              {item.totalArticulo != null &&
-                item.totalPrecio != null && (
-                  <OrdenResumen
-                    orden={item.orden}
-                    fecha={item.fecha}
-                    totalArticulo={item.totalArticulo}
-                    totalPrecio={item.totalPrecio}
-                    width="17rem"
-                    heigth="16rem"
-                    scrollbar={false}
-                  />
-                )}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="ordenes-vacio">
-          <i className="bi bi-receipt-cutoff" />
+      {cargando ? (<Loading />)
+        : ordenesFiltradas.length > 0 ? (
+          <div className="ordenes-grid">
+            {ordenesFiltradas.map((item) => (
+              <div
+                key={item.orden.id_orden}
+                className="orden-resumen-click"
+                style={{ width: "fit-content" }}
+                onClick={() => setOrdenSeleccionada(item)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setOrdenSeleccionada(item);
+                  }
+                }}
+              >
+                {item.totalArticulo != null &&
+                  item.totalPrecio != null && (
+                    <OrdenResumen
+                      orden={item.orden}
+                      fecha={item.fecha}
+                      totalArticulo={item.totalArticulo}
+                      totalPrecio={item.totalPrecio}
+                      width="17rem"
+                      heigth="16rem"
+                      scrollbar={false}
+                    />
+                  )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="ordenes-vacio">
+            <i className="bi bi-receipt-cutoff" />
 
-          <h3>
-            {search || filter !== "Todas"
-              ? "No se encontraron órdenes"
-              : "Aún no tienes órdenes de compra"}
-          </h3>
+            <h3>
+              {search || filter !== "Todas"
+                ? "No se encontraron órdenes"
+                : "Aún no tienes órdenes de compra"}
+            </h3>
 
-          <p>
-            {search || filter !== "Todas"
-              ? "Intenta cambiar los filtros o el término de búsqueda."
-              : "Cuando realices una compra, podrás consultar aquí los detalles de tu orden."}
-          </p>
-        </div>
-      )}
+            <p>
+              {search || filter !== "Todas"
+                ? "Intenta cambiar los filtros o el término de búsqueda."
+                : "Cuando realices una compra, podrás consultar aquí los detalles de tu orden."}
+            </p>
+          </div>
+        )}
 
       {ordenSeleccionada && (
         <OrdenCompra

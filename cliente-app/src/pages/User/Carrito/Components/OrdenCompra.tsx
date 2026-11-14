@@ -272,7 +272,12 @@ export function OrdenResumen({ orden, fecha, totalArticulo, totalPrecio, heigth,
         <span>ORDEN DE COMPRA</span>
         <strong>#{orden.id_orden}</strong>
         <small>Fecha: {fecha}</small>
-        <span className="orden-estado">{estados.find(x => x.value === orden.status)?.label ?? orden.status}</span>
+        <span
+          className={`orden-estado 
+          ${estados.find(x => x.value === orden.status)?.value.toLowerCase() ?? orden.status.toLowerCase()}`}
+        >
+          {estados.find(x => x.value === orden.status)?.label ?? orden.status}
+        </span>
       </div>
 
       <div className="orden-total orden-total-resumen">
