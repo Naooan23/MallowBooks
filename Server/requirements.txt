@@ -5,7 +5,6 @@ psycopg[binary]
 python-dotenv
 pydantic
 pydantic-settings
-python-jose[cryptography]
 passlib[bcrypt]
 email-validator
 sqlacodegen
@@ -13,3 +12,4 @@ requests
 bcrypt
 httpx
 numpy
+python-jose[cryptography]

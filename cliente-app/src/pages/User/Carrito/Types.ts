@@ -45,7 +45,6 @@ export interface OrdenCompraProps {
 }
 
 export interface OrdenCompraDoc {
-  documentoRef?: React.RefObject<HTMLDivElement | null>;
   orden: OrdenGenerada;
   libros: LibroOrdenVista[];
   cliente: string;

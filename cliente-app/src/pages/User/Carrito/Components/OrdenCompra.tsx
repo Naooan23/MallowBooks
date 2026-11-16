@@ -129,18 +129,18 @@ export function OrdenCompra({ orden, libros, cliente, email, fecha, onClose, wid
           </button>
         </div>
 
-        <div className="orden-documento-exportar">
-          {documentoRef != null && (
-            <OrdenDocumento
-              documentoRef={documentoRef}
-              orden={orden}
-              fecha={fecha}
-              cliente={cliente}
-              email={email}
-              libros={libros}
-              scrollbar={false}
-            />
-          )}
+        <div
+          ref={documentoRef}
+          className="orden-documento-exportar"
+        >
+          <OrdenDocumento
+            orden={orden}
+            fecha={fecha}
+            cliente={cliente}
+            email={email}
+            libros={libros}
+            scrollbar={false}
+          />
         </div>
 
         <div

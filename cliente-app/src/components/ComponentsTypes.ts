@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { type CSSProperties, type ReactNode, type Ref } from "react";
 import type { UserInfoProps } from "../pages/User/Perfil/Types";
 
 export interface BackGroundImageProps {
@@ -61,11 +61,11 @@ export interface GridProps {
 }
 
 export interface CardProps {
-  ref?: HTMLDivElement
-  classname?: string,
-  children: ReactNode,
-  width?: string,
-  height?: string,
-  style?: CSSProperties,
+  ref?: Ref<HTMLDivElement>;
+  classname?: string;
+  children: ReactNode;
+  width?: string;
+  height?: string;
+  style?: CSSProperties;
   onClick?: () => void;
 }

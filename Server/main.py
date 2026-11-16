@@ -1,14 +1,14 @@
 from datetime import date, datetime
+from auth import create_access_token, get_password_hash, require_admin, verify_password
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Depends
-from requests import session
 from sqlalchemy import desc, asc, null, func
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Carrito, Detallecarrito, Detalleorden, Libros, Orden, Usuarios, Categoria
-from schemas import LibroBase, CarritoBase, LibroResponse, LoginRequest, RegisterRequest, CarritoResponse, CarritoDetalleResponse, CarritoDetalleBase, OrdenCreate, PasswordData, UserData, UsuarioBase
+from schemas import LibroBase, CarritoBase, LibroResponse, LoginRequest, RegisterRequest, CarritoDetalleResponse, CarritoDetalleBase, OrdenCreate, PasswordData, UserData, UsuarioBase
 from decimal import Decimal
 from pydantic import BaseModel
 
@@ -16,14 +16,18 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost",
+        "http://localhost:80",
+        "http://localhost:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 @app.get("/libros", response_model=list[LibroResponse])
-def obtener_libros(db: Session = Depends(get_db)):
+def obtener_libros( db: Session = Depends(get_db)):
     libros = db.query(Libros).order_by(Libros.id_book).all()
 
     return libros
@@ -44,7 +48,7 @@ def obtener_libro(id_book: int, db: Session = Depends(get_db)):
     return libro
 
 @app.post("/libros", response_model=LibroResponse, status_code=201)
-def crear_libro(data: LibroBase, db: Session = Depends(get_db)):
+def crear_libro(data: LibroBase,  _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
 
     libro = Libros(
         id_categoria=data.id_categoria,
@@ -65,7 +69,7 @@ def crear_libro(data: LibroBase, db: Session = Depends(get_db)):
     return libro
 
 @app.put("/libros")
-def actualizar_libro(data: LibroBase, db: Session = Depends(get_db)):
+def actualizar_libro(data: LibroBase, _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
     libro = db.query(Libros).filter(
         Libros.id_book == data.id_book
     ).first()
@@ -90,7 +94,7 @@ def actualizar_libro(data: LibroBase, db: Session = Depends(get_db)):
     db.refresh(libro)
 
 @app.delete("/libros/{id_book}")
-def eliminar_libro(id_book: int, db: Session = Depends(get_db)):
+def eliminar_libro(id_book: int, _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
 
     libro = db.query(Libros).filter(
         Libros.id_book == id_book
@@ -111,10 +115,19 @@ def eliminar_libro(id_book: int, db: Session = Depends(get_db)):
     }
 
 @app.get("/usuarios")
-def obtener_usuarios(db: Session = Depends(get_db)):
+def obtener_usuarios( _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
     usuarios = db.query(Usuarios).all()
 
-    return usuarios
+    return [
+        {
+            "id_user": usuario.id_user,
+            "nombre": usuario.nombre_user,
+            "email": usuario.email,
+            "password": usuario.password,
+            "rol": usuario.rol,
+        }
+        for usuario in usuarios
+    ]
 
 @app.get("/usuarios/{id_user}")
 def obtener_usuarios(id_user: int, db: Session = Depends(get_db)):
@@ -136,7 +149,7 @@ def obtener_usuarios(id_user: int, db: Session = Depends(get_db)):
 def cambiar_password(data: PasswordData, db: Session = Depends(get_db)):
     user=db.query(Usuarios).filter(Usuarios.id_user==data.id_user).first()
 
-    user.password=data.new_Password
+    user.password = get_password_hash(data.new_Password)
 
     db.commit()
     db.refresh(user)
@@ -205,10 +218,9 @@ def obtener_Ultima_Orden(id_user: int, db: Session = Depends(get_db)):
         "email": usuario.email,
         "fecha": orden.fecha.isoformat()
     }
-# NUEVA RUTA: Obtener TODAS las órdenes (Para el Empleado)
+
 @app.get("/ordenes/todas")
 def obtener_todas_las_ordenes(db: Session = Depends(get_db)):
-    # Traemos todas las órdenes, de la más reciente a la más antigua
     ordenes = db.query(Orden).order_by(Orden.id_orden.desc()).all()
     
     respuesta = []
@@ -518,8 +530,6 @@ def actualizar_libro(data: CarritoDetalleBase, db: Session = Depends(get_db)):
             Detallecarrito.id_carrito==data.id_carrito
         ).first()
 
-        print("Libro: ", libro)
-
         if not libro:
             raise HTTPException(
                 status_code=404,
@@ -542,12 +552,17 @@ def registrar_usuario( data: RegisterRequest, db: Session = Depends(get_db) ):
     if usuario_existente: 
         raise HTTPException( status_code=400, detail="El correo ya está registrado" ) 
     
-    usuario = Usuarios( 
-        nombre_user=data.nombre, 
-        email=data.email, 
-        password=data.password, 
-        rol="user" 
-    ) 
+    usuario = Usuarios(
+        nombre_user=data.nombre,
+        email=data.email,
+        password=get_password_hash(data.password),
+        rol="user"
+    )
+
+    token = create_access_token({
+        "id_user": usuario.id_user,
+        "rol": usuario.rol
+    })
 
     db.add(usuario) 
     db.commit() 
@@ -555,6 +570,7 @@ def registrar_usuario( data: RegisterRequest, db: Session = Depends(get_db) ):
 
     return {
             "success": True,
+            "token": token,
             "message": "Usuario registrado correctamente",
             "usuario": {
                 "id_user": usuario.id_user,
@@ -567,17 +583,34 @@ def registrar_usuario( data: RegisterRequest, db: Session = Depends(get_db) ):
 
 @app.post("/auth/login")
 def iniciar_sesion(data: LoginRequest, db: Session = Depends(get_db)):
-
     if not data.email or not data.password:
         raise HTTPException(
             status_code=400,
             detail="Correo y contraseña son obligatorios"
         )
 
+    print("Enviado:", data)
+
     usuario = db.query(Usuarios).filter(
-        Usuarios.email == data.email,
-        Usuarios.password == data.password
+        Usuarios.email == data.email
     ).first()
+
+    print("Enviado:", data)
+    print("Email recibido:", repr(data.email))
+
+    usuario = db.query(Usuarios).filter(
+        Usuarios.email == data.email
+    ).first()
+
+    print("Usuario:", usuario)
+
+    print("Guardado:", usuario.password)
+
+    if not verify_password(data.password, usuario.password):
+        raise HTTPException(
+            status_code=401,
+            detail="Correo o contraseña incorrectos"
+        )
 
     if not usuario:
         raise HTTPException(
@@ -585,8 +618,14 @@ def iniciar_sesion(data: LoginRequest, db: Session = Depends(get_db)):
             detail="Correo o contraseña incorrectos"
         )
 
+    token = create_access_token({
+        "id_user": usuario.id_user,
+        "rol": usuario.rol
+    })
+
     return {
         "success": True,
+        "token": token,
         "message": "Inicio de sesión correcto",
         "usuario": {
             "id_user": usuario.id_user,
@@ -671,12 +710,11 @@ def crear_orden(data: OrdenCreate, db: Session = Depends(get_db)):
         )
 
 @app.post("/usuarios", status_code=201)
-def crear_usuario(data: UsuarioBase, db: Session = Depends(get_db)):
-
+def crear_usuario(data: UsuarioBase, _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
     usuario = Usuarios(
         nombre_user=data.nombre_user,
         email=data.email,
-        password=data.password,
+        password= get_password_hash(data.password),
         rol=data.rol,
     )
 
@@ -687,7 +725,7 @@ def crear_usuario(data: UsuarioBase, db: Session = Depends(get_db)):
     return usuario
 
 @app.put("/usuarios")
-def actualizar_usuario(data: UsuarioBase, db: Session = Depends(get_db)):
+def actualizar_usuario(data: UsuarioBase, _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
     usuario = db.query(Usuarios).filter(
         Usuarios.id_user == data.id_user
     ).first()
@@ -698,7 +736,7 @@ def actualizar_usuario(data: UsuarioBase, db: Session = Depends(get_db)):
             detail="Usuario no encontrado"
         )
 
-    usuario.nombre_user = data.nombre_user
+    usuario.nombre_user = data.nombre
     usuario.email = data.email
     usuario.password = data.password
     usuario.rol = data.rol
@@ -709,7 +747,7 @@ def actualizar_usuario(data: UsuarioBase, db: Session = Depends(get_db)):
     return usuario
 
 @app.delete("/usuarios/{id_user}")
-def eliminar_usuario(id_user: int, db: Session = Depends(get_db)):
+def eliminar_usuario(id_user: int, _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
     usuario = db.query(Usuarios).filter(
         Usuarios.id_user == id_user
     ).first()
@@ -729,7 +767,7 @@ def eliminar_usuario(id_user: int, db: Session = Depends(get_db)):
     }
 
 @app.get("/dashboardCardsInfo")
-def get_Admin_Info_Cards(db: Session = Depends(get_db)):
+def get_Admin_Info_Cards( _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
     totalUsuarios = db.query(Usuarios).filter(Usuarios.rol=="user").count()
     totalPedidos = db.query(Orden).filter(Orden.status!=["pendiente", "cancelado"]).count()
     totalLibros = db.query(Libros).count()
@@ -802,7 +840,7 @@ def libros_mas_vendidos(db: Session = Depends(get_db)):
     }
 
 @app.get("/ActividadTienda")
-def actividad_tienda(db: Session = Depends(get_db)):
+def actividad_tienda( _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
     return {
         "pendientes": db.query(Orden).filter(Orden.status == "Pendiente")
             .count(),
@@ -813,7 +851,7 @@ def actividad_tienda(db: Session = Depends(get_db)):
     }
 
 @app.get("/InventarioBajo")
-def get_inventarioBajo(db: Session = Depends(get_db)):
+def get_inventarioBajo( _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
     pocos_libros = db.query(Libros).filter(Libros.stock < 10).order_by(asc(Libros.stock)).all()
 
     return [
@@ -826,7 +864,7 @@ def get_inventarioBajo(db: Session = Depends(get_db)):
     ]
 
 @app.get("/PedidosRecientes")
-def get_Pedidos_Recientes(db: Session = Depends(get_db)):
+def get_Pedidos_Recientes( _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
     ultimosPedidos = db.query(Orden).order_by(desc(Orden.fecha)).limit(10).all()
 
     return [

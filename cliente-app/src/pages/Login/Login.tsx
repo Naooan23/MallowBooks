@@ -39,6 +39,9 @@ export function Login({ formData, setFormData, formDataRegistro, setRegistrar, h
     const passwordOriginal = formData.find(x => x.key === "password")?.value;
     const password = await hashPassword(passwordOriginal ?? "");
 
+
+    console.log("HASH:", password);
+
     const response = await authService.login(email ?? "", password ?? "");
 
     if (response.success) {
@@ -55,6 +58,7 @@ export function Login({ formData, setFormData, formDataRegistro, setRegistrar, h
 
     if (response.message !== "") showError(response);
   };
+
   return (<>
     <h1 className="titulo" >BIENVENIDO AL INICIO DE SESIÓN</h1>
     <TextBox

@@ -71,7 +71,6 @@ export function AdminPage() {
     const response = await get("PedidosRecientes", undefined);
     setUltimosPedidos(response);
   }
-  console.log(ultimosPedidos);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect

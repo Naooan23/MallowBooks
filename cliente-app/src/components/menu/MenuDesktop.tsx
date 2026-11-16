@@ -8,7 +8,7 @@ import "./MenuBars.css";
 import type { MenuDesktopProps } from "./MenuTypes";
 
 export default function MenuDesktop({ hayLogo, Logo }: MenuDesktopProps) {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [datosPerfil, setDatosPerfil] = useState(false);
   const navigate = useNavigate();
 
@@ -105,6 +105,8 @@ export default function MenuDesktop({ hayLogo, Logo }: MenuDesktopProps) {
               className="profile-logout-button"
               onClick={() => {
                 setDatosPerfil(false);
+                setUser(null);
+                sessionStorage.removeItem("token");
                 navigate('/login');
               }}
             >

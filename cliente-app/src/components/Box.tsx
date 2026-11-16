@@ -336,7 +336,7 @@ const PopUp = ({ titulo, children, onClose, width, height }: PopUpProps) => (
         <button className="no-print" onClick={onClose} aria-label="Cerrar">×</button>
       </div>
 
-      <div className="detalle-content" style={{ width: width ?? "50vw", height: height ?? "80vh" }}>
+      <div className="detalle-content" style={{ width: width ?? "100%", height: height ?? "80vh" }}>
         {children}
       </div>
     </div>
@@ -353,9 +353,10 @@ const LoadingSimple = () => (
   <div className="loading-spinner" />
 );
 
-const Card = ({ classname, children, width, height, style, onClick }: CardProps) => {
+const Card = ({ ref, classname, children, width, height, style, onClick }: CardProps) => {
   return (
     <div
+      ref={ref}
       className={`card ${classname}`}
       style={{
         ...style,

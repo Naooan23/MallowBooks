@@ -21,7 +21,6 @@ const LibrosMasVendidosCard = ({ totalVentas, librosMasVendidos, categorias }: L
   const categoriasIzquierda = categorias.slice(0, mitad);
   const categoriasDerecha = categorias.slice(mitad);
 
-
   return (
     <Card style={{ padding: "2rem", paddingTop: "1rem", paddingBottom: "1rem" }}>
       <div className="actividad-header">
@@ -228,8 +227,6 @@ const UltimosPedidos = ({ data }: PedidosRecientesProps) => {
           <i className="bi bi-cart" />
           <h5>Pedidos recientes</h5>
         </div>
-
-        <VerTodoButton page={"/admin-ordenes"} />
       </div>
 
 

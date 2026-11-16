@@ -73,8 +73,8 @@ export default function CatalogoAdmin() {
         style={{ width: "100%", justifyContent: "end" }}
       >
         <button
-          className="botones"
-          style={{ width: "10rem" }}
+          className="botones-admin"
+          style={{ width: "10rem", marginTop: "1rem" }}
           onClick={() => setNuevoLibro(true)}
         >
           + Agregar libro
@@ -96,7 +96,7 @@ export default function CatalogoAdmin() {
             data={x}
             onClick={() => setDetalleCard(x)}
             CoverHeigth="17rem"
-            CoverWidth="11rem"
+            CoverWidth="100%"
             onDelete={() => eliminarLibro(x.id)}
           />
         ))}

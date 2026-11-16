@@ -165,16 +165,11 @@ export function CardLibroDetalle({ data, onClose }: CardLibroProps) {
     setStock(libro.stock);
   };
 
-  console.log(libroActual);
-  console.log(librosCarrito);
-
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     cargarStock();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.id]);
-
-  console.log(data);
 
   return (
     <PopUp titulo={data.titulo} onClose={onClose ?? (() => { })}>

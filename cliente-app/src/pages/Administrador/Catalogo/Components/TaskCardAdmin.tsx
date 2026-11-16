@@ -7,8 +7,8 @@ import { del, get, post, put } from "../../../../config/api.ts";
 import type { LibrosCover } from "../../../../services/ServicesTypes.ts";
 import { useConfirm, useError } from "../../../../services/useAuth.tsx";
 import type { ResponseCategorias } from "../../../User/Catalogo/Components/SearchFilter.tsx";
+import "../../../User/Catalogo/Components/TaskCard.css";
 import type { CardLibroNuevoProps, CardLibroProps } from "./ComponentsTypes.ts";
-import "./TaskCardAdmin.css";
 
 export function CardLibroAdmin({ data, classname, onClick, onDelete, CoverWidth, CoverHeigth }: CardLibroProps) {
   const { showError } = useError();
@@ -283,14 +283,14 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
           }}
         >
           <button
-            className="botones"
+            className="botones-admin"
             onClick={guardarCambios}
             disabled={loading || hayErrores}
           >
             Guardar Cambios
           </button>
           <button
-            className="botones"
+            className="botones-admin"
             onClick={() => borrar(data.id)}
             disabled={loading || hayErrores}
           >
@@ -520,7 +520,7 @@ export function CardNuevoLibroAdmin({ onClick, cargarDatos, CoverWidth, CoverHei
           />
 
           <button
-            className="botones"
+            className="botones-admin"
             onClick={agregarLibro}
             disabled={loading || hayErrores}
           >

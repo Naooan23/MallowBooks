@@ -43,8 +43,8 @@ def obtener_libros_openlibrary(categoria):
     session = requests.Session()
 
     retries = Retry(
-        total=5,                # reintentos
-        backoff_factor=1,       # espera exponencial
+        total=5,
+        backoff_factor=1,
         status_forcelist=[429, 500, 502, 503, 504],
         allowed_methods=["GET"]
     )
@@ -91,7 +91,7 @@ def obtener_sinopsis(work_id):
         timeout=30,
         verify=False,
         proxies={"http": None, "https": None},
-        headers={"Connection": "close"}  # fuerza IPv4
+        headers={"Connection": "close"}
     )
 
     response.raise_for_status()
@@ -116,8 +116,6 @@ def cargar_libros():
 
             if libros_insertados >= CANTIDAD_LIBROS:
                 break
-
-            print(f"\nBuscando libros de categoría: {c.nombre}")
 
             libros = obtener_libros_openlibrary(c.nombre)
 
@@ -173,13 +171,7 @@ def cargar_libros():
 
                 libros_insertados += 1
 
-                print(
-                    f"{libros_insertados}/{CANTIDAD_LIBROS} "
-                    f"- {titulo}"
-                )
-
         db.commit()
-        print(f"\nSe insertaron {libros_insertados} libros.")
 
     except Exception as error:
         db.rollback()

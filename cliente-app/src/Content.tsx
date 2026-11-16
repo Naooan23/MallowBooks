@@ -17,7 +17,7 @@ export default function Content({ route }: ContentProps) {
   const [searchOrdenes, setSearchOrdenes] = useState("");
   const [filterOrdenes, setFilterOrdenes] = useState("Todas");
 
-  const esOrdenes = route.path === "/ordenes";
+  const esOrdenes = route.path.includes("orden");
 
   const search = esOrdenes ? searchOrdenes : searchCatalogo;
   const setSearch = esOrdenes ? setSearchOrdenes : setSearchCatalogo;
@@ -38,6 +38,10 @@ export default function Content({ route }: ContentProps) {
             setSearch,
             filter,
             setFilter,
+            searchOrdenes,
+            setSearchOrdenes,
+            filterOrdenes,
+            setFilterOrdenes
           }}
         />
       )}
