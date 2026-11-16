@@ -2,10 +2,8 @@ from datetime import date, datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Depends
-from httpx import get
-from numpy import number
 from requests import session
-from sqlalchemy import desc, null
+from sqlalchemy import desc, asc, null, func
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from database import get_db
@@ -325,11 +323,6 @@ def obtener_Ordenes(id_user: int, db: Session = Depends(get_db)):
 
     return respuesta
 
-
-
-
-
-# NUEVA RUTA: Actualizar el estado de una orden
 class EstadoUpdate(BaseModel):
     status: str
 
@@ -446,11 +439,7 @@ def obtener_libros_carrito(id_carrito: int, db: Session = Depends(get_db)):
 
     return libros
 
-@app.post(
-    "/librosCarrito",
-    response_model=CarritoDetalleResponse,
-    status_code=201
-)
+@app.post("/librosCarrito", response_model=CarritoDetalleResponse, status_code=201)
 def agregar_libro_carrito(data: CarritoDetalleBase, db: Session = Depends(get_db)):
     try:
         detalle = db.query(Detallecarrito).filter(
@@ -738,3 +727,114 @@ def eliminar_usuario(id_user: int, db: Session = Depends(get_db)):
         "success": True,
         "message": "Usuario eliminado correctamente"
     }
+
+@app.get("/dashboardCardsInfo")
+def get_Admin_Info_Cards(db: Session = Depends(get_db)):
+    totalUsuarios = db.query(Usuarios).filter(Usuarios.rol=="user").count()
+    totalPedidos = db.query(Orden).filter(Orden.status!=["pendiente", "cancelado"]).count()
+    totalLibros = db.query(Libros).count()
+    totalempleados = db.query(Usuarios).filter(Usuarios.rol!="user").count()
+
+    return{
+        "totalUsuarios": totalUsuarios,
+        "totalPedidos": totalPedidos,
+        "totalLibros": totalLibros,
+        "totalempleados": totalempleados
+    }
+
+@app.get("/libros+")
+def libros_mas_vendidos(db: Session = Depends(get_db)):
+    total_ventas = (
+        db.query(func.sum(Orden.total))
+        .scalar()
+    ) or 0
+
+    total_ordenes = db.query(Orden).count()
+
+    libros_mas_vendidos = (
+        db.query(
+            Libros.titulo,
+            func.sum(Detalleorden.cantidad).label("vendidos")
+        )
+        .join(Detalleorden)
+        .group_by(Libros.id_book, Libros.titulo)
+        .order_by(func.sum(Detalleorden.cantidad).desc())
+        .limit(5)
+        .all()
+    )
+
+    ventas_por_categoria = (
+        db.query(
+            Categoria.nombre_categoria_es,
+            func.sum(Detalleorden.cantidad).label("cantidad")
+        )
+        .join(Libros, Categoria.id_categoria == Libros.id_categoria)
+        .join(Detalleorden, Libros.id_book == Detalleorden.id_book)
+        .group_by(Categoria.id_categoria, Categoria.nombre_categoria_es)
+        .all()
+    )
+
+    total_libros_vendidos = sum(
+        int(categoria.cantidad)
+        for categoria in ventas_por_categoria
+    )
+
+    categorias = [
+        {
+            "nombre": categoria.nombre_categoria_es,
+            "cantidad": int(categoria.cantidad),
+        }
+        for categoria in ventas_por_categoria
+    ]
+
+    return {
+        "totalVentas": float(total_ventas),
+        "totalOrdenes": total_ordenes,
+        "totalLibrosVendidos": total_libros_vendidos,
+        "categorias": categorias,
+        "librosMasVendidos": [
+            {
+                "titulo": libro.titulo,
+                "vendidos": int(libro.vendidos)
+            }
+            for libro in libros_mas_vendidos
+        ]
+    }
+
+@app.get("/ActividadTienda")
+def actividad_tienda(db: Session = Depends(get_db)):
+    return {
+        "pendientes": db.query(Orden).filter(Orden.status == "Pendiente")
+            .count(),
+        "completados": db.query(Orden).filter(Orden.status == "Pagado")
+            .count(),
+        "cancelados": db.query(Orden).filter(Orden.status == "Cancelado")
+            .count(),
+    }
+
+@app.get("/InventarioBajo")
+def get_inventarioBajo(db: Session = Depends(get_db)):
+    pocos_libros = db.query(Libros).filter(Libros.stock < 10).order_by(asc(Libros.stock)).all()
+
+    return [
+        {
+            "portada_url": libro.portada_url,
+            "titulo": libro.titulo,
+            "cantidad": libro.stock
+        }
+        for libro in pocos_libros
+    ]
+
+@app.get("/PedidosRecientes")
+def get_Pedidos_Recientes(db: Session = Depends(get_db)):
+    ultimosPedidos = db.query(Orden).order_by(desc(Orden.fecha)).limit(10).all()
+
+    return [
+        {
+            "num": pedido.id_orden,
+            "usuario": db.query(Usuarios).filter(Usuarios.id_user == pedido.id_user).first().nombre_user,
+            "fecha": pedido.fecha,
+            "status": pedido.status,
+        }
+        for pedido in ultimosPedidos
+    ]

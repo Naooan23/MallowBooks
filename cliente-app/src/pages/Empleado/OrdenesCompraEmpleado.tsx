@@ -145,7 +145,7 @@ export function OrdenesCompraEmpleado() {
                     fecha={item.fecha}
                     totalArticulo={item.totalArticulo}
                     totalPrecio={item.totalPrecio}
-                    width="17rem"
+                    width="100%"
                     heigth="16rem"
                     scrollbar={false}
                   />

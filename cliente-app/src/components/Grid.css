@@ -142,7 +142,6 @@
   background-color: var(--color-beige) !important;
 }
 
-/* Paginación inferior */
 .usuarios-footer {
   display: flex;
   justify-content: space-between;
