@@ -315,6 +315,7 @@ export default function Usuarios() {
 
               <SelectBox
                 item=""
+                value={String(limite)}
                 dataSource={[
                   { value: "10", label: "10" },
                   { value: "25", label: "25" },
@@ -324,7 +325,6 @@ export default function Usuarios() {
                   setLimite(Number(value));
                   setPagina(1);
                 }}
-                fontSize={"1.3rem"}
               />
 
               <span>registros</span>
@@ -400,6 +400,7 @@ export default function Usuarios() {
                   { value: "admin", label: "Administrador" },
                   { value: "empleado", label: "Empleado" },
                 ]}
+                value={obtenerValor("rol")}
                 onValueChange={(value) =>
                   cambiarCampoRol(value as RolUsuario)
                 }

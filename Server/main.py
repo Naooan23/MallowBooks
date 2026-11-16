@@ -50,13 +50,16 @@ def obtener_libro(id_book: int, db: Session = Depends(get_db)):
 @app.post("/libros", response_model=LibroResponse, status_code=201)
 def crear_libro(data: LibroBase,  _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
 
+    # Si la fecha viene vacía o nula, asignamos la fecha de hoy por defecto
+    fecha_pub = data.fecha_publicacion or date.today()
+
     libro = Libros(
         id_categoria=data.id_categoria,
         titulo=data.titulo,
         autor=data.autor,
         sinopsis=data.sinopsis,
         portada_url=data.portada_url,
-        fecha_publicacion=data.fecha_publicacion,
+        fecha_publicacion=fecha_pub,
         status=data.status,
         precio=data.precio,
         stock=data.stock
@@ -69,7 +72,7 @@ def crear_libro(data: LibroBase,  _: Usuarios = Depends(require_admin), db: Sess
     return libro
 
 @app.put("/libros")
-def actualizar_libro(data: LibroBase, _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
+def actualizar_libro(data: LibroBase, db: Session = Depends(get_db)):
     libro = db.query(Libros).filter(
         Libros.id_book == data.id_book
     ).first()
@@ -80,18 +83,20 @@ def actualizar_libro(data: LibroBase, _: Usuarios = Depends(require_admin), db: 
             detail="Libro no encontrado"
         )
 
-    libro.id_categoria = data.id_categoria
-    libro.titulo = data.titulo
-    libro.autor = data.autor
-    libro.sinopsis = data.sinopsis
-    libro.portada_url = data.portada_url
-    libro.fecha_publicacion = data.fecha_publicacion
-    libro.status = data.status
-    libro.precio = data.precio
-    libro.stock = data.stock
+    datos = data.model_dump(exclude_unset=True)
+
+    for campo, valor in datos.items():
+        if campo != "id_book":
+            setattr(libro, campo, valor)
 
     db.commit()
     db.refresh(libro)
+
+    return {
+        "success": True,
+        "message": "Libro actualizado correctamente",
+        "id_book": libro.id_book
+    }
 
 @app.delete("/libros/{id_book}")
 def eliminar_libro(id_book: int, _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
@@ -711,18 +716,23 @@ def crear_orden(data: OrdenCreate, db: Session = Depends(get_db)):
 
 @app.post("/usuarios", status_code=201)
 def crear_usuario(data: UsuarioBase, _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
-    usuario = Usuarios(
-        nombre_user=data.nombre_user,
-        email=data.email,
-        password= get_password_hash(data.password),
-        rol=data.rol,
-    )
+    try:
+        usuario = Usuarios(
+            nombre_user=data.nombre,
+            email=data.email,
+            password=get_password_hash(data.password),
+            rol=data.rol,
+        )
 
-    db.add(usuario)
-    db.commit()
-    db.refresh(usuario)
+        db.add(usuario)
+        db.commit()
 
-    return usuario
+        db.refresh(usuario)
+
+    except Exception as e:
+        db.rollback()
+        print("ERROR AL REGISTRAR:", repr(e))
+        raise
 
 @app.put("/usuarios")
 def actualizar_usuario(data: UsuarioBase, _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):

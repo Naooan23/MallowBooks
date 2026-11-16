@@ -108,6 +108,7 @@ export default function CatalogoAdmin() {
           onClick={() => setDetalleCard(null)}
           CoverHeigth="17rem"
           CoverWidth="11rem"
+          cargarDatos={cargarDatos}
           onDelete={() => eliminarLibro(detalleCard.id)}
         />
       )}

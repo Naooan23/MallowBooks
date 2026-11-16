@@ -37,6 +37,7 @@ export interface TextBoxProps {
 export interface SelectBoxProps {
   item: ReactNode,
   dataSource: Item[],
+  value?: string,
   onValueChange: (x: string) => void,
   labelSize?: string | number | undefined,
   fontSize?: string | number | undefined,

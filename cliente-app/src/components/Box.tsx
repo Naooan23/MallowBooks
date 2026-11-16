@@ -237,22 +237,18 @@ const TextArea = ({ items, styleComponent, onErrorChange, fontSize }: TextBoxPro
   );
 };
 
-const SelectBox = ({ item, dataSource, onValueChange, fontSize, labelSize }: SelectBoxProps) => {
-  const [value, setValue] = useState(dataSource[0]?.value ?? "");
-
+const SelectBox = ({ item, dataSource, value, onValueChange, fontSize, labelSize }: SelectBoxProps) => {
   const options = dataSource.map((opc) => ({
     value: opc.value,
     label: opc.label,
   }));
 
-  useEffect(() => {
-    if (dataSource.length > 0 && !value) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setValue(dataSource[0].value);
-      onValueChange(dataSource[0].value);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataSource]);
+  console.log(value);
+
+  const valorSeleccionado = options.find(
+    opc => opc.value == value
+  ) ?? null;
+  console.log(valorSeleccionado);
 
   return (
     <Form.Group className="selectbox-group">
@@ -299,7 +295,7 @@ const SelectBox = ({ item, dataSource, onValueChange, fontSize, labelSize }: Sel
               ? "0 0 0 3px var(--color-rosa-background)"
               : "none",
           }),
-          singleValue: (base) => ({
+          singleValue: base => ({
             ...base,
             fontSize,
           }),
@@ -314,12 +310,11 @@ const SelectBox = ({ item, dataSource, onValueChange, fontSize, labelSize }: Sel
             paddingRight: "1rem",
           })
         }}
-        value={options.find(opc => opc.value === value)}
+        value={valorSeleccionado}
         onChange={selected => {
-          if (!selected) return;
-
-          setValue(selected.value);
-          onValueChange(selected.value);
+          if (selected) {
+            onValueChange(selected.value);
+          }
         }}
       />
     </Form.Group>
