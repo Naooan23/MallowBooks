@@ -243,12 +243,7 @@ const SelectBox = ({ item, dataSource, value, onValueChange, fontSize, labelSize
     label: opc.label,
   }));
 
-  console.log(value);
-
-  const valorSeleccionado = options.find(
-    opc => opc.value == value
-  ) ?? null;
-  console.log(valorSeleccionado);
+  const valorSeleccionado = options.find(opc => opc.value == value) ?? null;
 
   return (
     <Form.Group className="selectbox-group">

@@ -39,9 +39,6 @@ export function Login({ formData, setFormData, formDataRegistro, setRegistrar, h
     const passwordOriginal = formData.find(x => x.key === "password")?.value;
     const password = await hashPassword(passwordOriginal ?? "");
 
-
-    console.log("HASH:", password);
-
     const response = await authService.login(email ?? "", password ?? "");
 
     if (response.success) {

@@ -49,8 +49,6 @@ def obtener_libro(id_book: int, db: Session = Depends(get_db)):
 
 @app.post("/libros", response_model=LibroResponse, status_code=201)
 def crear_libro(data: LibroBase,  _: Usuarios = Depends(require_admin), db: Session = Depends(get_db)):
-
-    # Si la fecha viene vacía o nula, asignamos la fecha de hoy por defecto
     fecha_pub = data.fecha_publicacion or date.today()
 
     libro = Libros(

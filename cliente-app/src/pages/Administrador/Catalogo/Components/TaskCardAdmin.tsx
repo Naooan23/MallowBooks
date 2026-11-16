@@ -114,10 +114,8 @@ export function CardLibroDetalleAdmin({ data, onClick, cargarDatos, CoverWidth, 
         try {
           const response = await del("libros", id_libro);
 
-          console.log("Respuesta del servidor:", response);
-
-          await cargarDatos(); // Actualizar catálogo
-          onClick();               // Cerrar popup
+          await cargarDatos();
+          onClick();
 
           showError({
             success: true,
@@ -225,10 +223,6 @@ export function CardLibroDetalleAdmin({ data, onClick, cargarDatos, CoverWidth, 
   }, [data]);
 
   const guardarCambios = async () => {
-    console.log("Ejecutando guardarCambios");
-
-    console.log("Errores:", hayErrores);
-
     if (hayErrores) return;
 
     const datosLibro = Object.fromEntries([
@@ -236,8 +230,6 @@ export function CardLibroDetalleAdmin({ data, onClick, cargarDatos, CoverWidth, 
       ...formLibroIzq,
       ...formTextArea,
     ].map(item => [item.key, item.value]));
-
-    console.log("Datos recopilados:", datosLibro);
 
     const libroActualizado = {
       id_book: data.id,
@@ -248,14 +240,10 @@ export function CardLibroDetalleAdmin({ data, onClick, cargarDatos, CoverWidth, 
       stock: Number(datosLibro.stock),
     };
 
-    console.log("Libro enviado:", libroActualizado);
-
     setLoading(true);
 
     try {
-      const response = await put("libros", libroActualizado);
-
-      console.log("Respuesta del servidor:", response);
+      await put("libros", libroActualizado);
 
       await cargarDatos();
       onClick();
