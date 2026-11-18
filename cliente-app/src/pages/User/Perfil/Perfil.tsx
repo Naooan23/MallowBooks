@@ -4,7 +4,6 @@ import Mascota from '../../../assets/Logo Perfil.jpeg';
 import { Card, Loading, TextBox } from "../../../components/Box";
 import { get, put } from "../../../config/api";
 import { useAuth, useError } from "../../../services/useAuth";
-import { hashPassword } from "../../Login/LoginTypes";
 import './PerfilStyles.css';
 import type { CampoFormulario, UserInfoProps } from "./Types";
 
@@ -26,7 +25,7 @@ export default function Perfil() {
   );
   const [formPreferencias, setFormPreferencias] = useState<CampoFormulario[]>(
     [
-      { key: "nombre", label: "Nombre", value: userInfo?.nombre_user ?? "", touched: false, type: "text", disabled: false },
+      { key: "nombre", label: "Nombre", value: userInfo?.nombre ?? "", touched: false, type: "text", disabled: false },
       { key: "email", label: "Correo", value: userInfo?.email ?? "", touched: false, type: "email", disabled: false },
     ]
   );
@@ -79,8 +78,8 @@ export default function Perfil() {
   };
 
   const handleGuardarSeguridad = async () => {
-    const newPassword = await hashPassword(getField(formSeguridad, "newPassword")?.value ?? "");
-    const confPassword = await hashPassword(getField(formSeguridad, "confPassword")?.value ?? "");
+    const newPassword = getField(formSeguridad, "newPassword")?.value ?? "";
+    const confPassword = getField(formSeguridad, "confPassword")?.value ?? "";
 
     if (newPassword !== confPassword) {
       showError({
@@ -119,8 +118,6 @@ export default function Perfil() {
       email: getField(formPreferencias, "email")?.value ?? "",
     });
 
-    console.log("Respuesta del servidor:", response);
-
     setUser(response);
 
     setFormPreferencias(prev =>
@@ -128,7 +125,7 @@ export default function Perfil() {
         ...item,
         value:
           item.key === "nombre"
-            ? response.nombre_user ?? response.nombre ?? ""
+            ? response.nombre
             : response.email ?? "",
         touched: false,
       }))
@@ -160,7 +157,7 @@ export default function Perfil() {
 
     setFormPreferencias((prev) =>
       prev.map((item) => {
-        if (item.key === "nombre") return { ...item, value: userInfo.nombre_user ?? "" };
+        if (item.key === "nombre") return { ...item, value: userInfo.nombre ?? "" };
         if (item.key === "email") return { ...item, value: userInfo.email ?? "" };
 
         return item;
@@ -200,7 +197,7 @@ export default function Perfil() {
             <i className="bi bi-person-circle" />
           </div>
 
-          <h2 className="user-name">{userInfo?.nombre_user ?? "Usuario"}</h2>
+          <h2 className="user-name">{userInfo?.nombre ?? "Usuario"}</h2>
           <p className="user-email">{userInfo?.email ?? ""}</p>
 
           <div className="badge-role">

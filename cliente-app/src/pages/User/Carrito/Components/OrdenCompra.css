@@ -13,15 +13,12 @@
   width: 100%;
   min-width: 0;
   padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-lila-claro) var(--color-rosa-blanco-claro);
 }
 
 .Orden-Compra::-webkit-scrollbar {
   width: 8px;
-}
-
-.Orden-Compra {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-lila-claro) var(--color-rosa-blanco-claro);
 }
 
 .orden-acciones {
@@ -147,8 +144,9 @@
 }
 
 .pendiente{
-  color: var(--color-Dorado) !important;  
   background-color: var(--color-Dorado-Claro);
+  color: var(--color-amber) !important;
+  border-color: var(--color-Dorado);
 }
 
 .pagado{

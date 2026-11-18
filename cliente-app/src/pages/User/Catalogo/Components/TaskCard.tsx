@@ -103,7 +103,7 @@ export function CardLibro({ data, classname, onClick, CoverWidth, CoverHeigth, i
 }
 
 
-export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth,isReadOnly = false  }: CardLibroProps) {
+export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth, isReadOnly = false }: CardLibroProps) {
   const { librosCarrito, agregarAlCarrito, eliminarDelCarrito, cambiarCantidad } = useCart();
 
   const libroActual = librosCarrito?.find(libro => libro.id_book == data.id);
@@ -253,24 +253,24 @@ export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth,isRead
   return (
     <PopUp titulo={data.titulo} onClose={onClick}>
       <div className="popup-detalle-wrapper">
-      <div className="data-book">
+        <div className="data-book">
 
-        <BookCover
-          width={CoverWidth}
-          heigth={CoverHeigth}
-          portada_url={data.portada_url}
-          titulo={data.titulo}
-        />
+          <BookCover
+            width={CoverWidth}
+            heigth={CoverHeigth}
+            portada_url={data.portada_url}
+            titulo={data.titulo}
+          />
 
-        <p style={{ marginBottom: "0.1rem" }}>
-          <strong>Precio:</strong> ${data.precio}
-        </p>
+          <p style={{ marginBottom: "0.1rem" }}>
+            <strong>Precio:</strong> ${data.precio}
+          </p>
 
-        <p>
-          <strong>Stock:</strong>{" "}
-          {sinStock ? "Agotado" : stock}
-        </p>
-{!isReadOnly && (
+          <p>
+            <strong>Stock:</strong>{" "}
+            {sinStock ? "Agotado" : stock}
+          </p>
+          {!isReadOnly && (
             <>
               <div style={{ display: "flex", width: "100%", justifyContent: "center" }}>
                 <Col xs={3}><strong>Cantidad:</strong></Col>
@@ -293,25 +293,25 @@ export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth,isRead
             </>
           )}
 
-      </div>
+        </div>
 
-      <div className="book-info">
-        <p>
-          <strong>Autor:</strong> {data.autor}
-        </p>
+        <div className="book-info">
+          <p>
+            <strong>Autor:</strong> {data.autor}
+          </p>
 
-        <p>
-          <strong>Fecha de Publicación:</strong>{" "}
-          {data.fecha.getFullYear()}
-        </p>
+          <p>
+            <strong>Fecha de Publicación:</strong>{" "}
+            {data.fecha.getFullYear()}
+          </p>
 
-        <p>
-          <strong>Sinopsis:</strong>
-        </p>
+          <p>
+            <strong>Sinopsis:</strong>
+          </p>
 
-        <textarea disabled value={data.sinopsis} />
-      </div>
-      {loading && (<LoadingSimple />)}
+          <textarea disabled value={data.sinopsis} />
+        </div>
+        {loading && (<LoadingSimple />)}
       </div>
     </PopUp>
   );
@@ -328,8 +328,8 @@ export function BookCover(data: LibrosCover) {
         gap: 0,
         justifyContent: "center",
         alignItems: "center",
-        height: "100%",     // Hereda el alto de la card del carrito (ej. 100% de 120px)
-        minHeight: "11rem", // Asegura una altura mínima si el padre es flexible
+        height: "100%",
+        minHeight: "11rem",
         overflow: "hidden",
         borderRadius: "0.4rem",
         backgroundColor: "var(--color-blanco)",

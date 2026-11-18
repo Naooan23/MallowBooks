@@ -6,5 +6,5 @@ export interface CardLibroProps {
   onClick: () => void;
   CoverWidth: string;
   CoverHeigth: string;
-  isReadOnly?: boolean; //para el empleado, no se puede agregar al carrito, solo ver detalles
+  isReadOnly?: boolean;
 }

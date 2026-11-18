@@ -6,7 +6,7 @@ import "./MenuBars.css";
 import type { MenuMovilProps } from "./MenuTypes";
 
 export default function MenuMovil({ hayLogo, colSize, Logo, open, onClick }: MenuMovilProps) {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const navigate = useNavigate();
 
   const esAdmin = user?.rol === "admin";
@@ -79,7 +79,11 @@ export default function MenuMovil({ hayLogo, colSize, Logo, open, onClick }: Men
                   <Nav.Link
                     className="sidebar-link-cerrarSesion-movil w-100"
                     style={{ justifyContent: "center" }}
-                    onClick={() => navigate('/login')}
+                    onClick={() => {
+                      setUser(null);
+                      sessionStorage.removeItem("token");
+                      navigate('/login');
+                    }}
 
                   >
                     <div className="d-flex flex-column align-items-center">

@@ -1,0 +1,390 @@
+.analisis-ventas-card {
+  background: #fff8f8;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+}
+
+.analisis-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.analisis-header h5 {
+  margin: 0;
+  font-weight: 700;
+  color: #7d5555;
+}
+
+.analisis-select {
+  width: auto;
+  border-radius: 1rem;
+}
+
+.analisis-content {
+  display: flex;
+  gap: 0.5rem;
+}
+
+
+.separador {
+  width: 1px;
+  background: #e9d6d6;
+}
+
+.libro-item {
+  display: grid;
+  grid-template-columns: 1fr 130px 40px;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.title-libros {
+  font-size: 0.9rem;
+  color: #6d5b5b;
+}
+
+.barra-container {
+  background: #f0e6e6;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barra {
+  height: 100%;
+  background: #d38f97;
+  border-radius: 999px;
+}
+
+.cantidad {
+  font-weight: 600;
+  width: fit-content;
+}
+
+.grafico-info {
+  align-items: center;
+}
+
+.grafico-circular {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #d9c8c2 0deg 70deg,
+    #efc7be 70deg 130deg,
+    #f4d7a7 130deg 210deg,
+    #cfd0c2 210deg 280deg,
+    #e6b1af 280deg 360deg
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grafico-centro {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.grafico-centro strong {
+  font-size: 1rem;
+}
+
+.grafico-centro span {
+  font-size: 0.75rem;
+}
+
+.leyenda {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-left: 1rem;
+  width: 55%;
+  height: stretch;
+}
+
+.color {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.color-0 {
+  background: #d9c8c2;
+}
+
+.color-1 {
+  background: #efc7be;
+}
+
+.color-2 {
+  background: #f4d7a7;
+}
+
+.color-3 {
+  background: #cfd0c2;
+}
+
+.color-4 {
+  background: #e6b1af;
+}
+
+.leyenda-item {
+  align-items: center;
+}
+
+.categoria-nombre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.categoria-porcentaje {
+  text-align: right;
+}
+
+.actividad-card {
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  background: #fff8f8;
+}
+
+.actividad-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.actividad-titulo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.actividad-titulo h5 {
+  margin: 0;
+  font-weight: 700;
+  color: #7d5555;
+}
+
+.actividad-titulo i {
+  color: #cf8a8a;
+  font-size: 1.2rem;
+}
+
+.actividad-icono {
+  color: #f2a14c;
+  font-size: 1.4rem;
+}
+
+.actividad-body {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.actividad-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actividad-info {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-size: 2rem;
+}
+
+.actividad-info span {
+  color: #7d5555;
+  font-size: 1rem;
+  margin-left: 1rem;
+}
+
+.actividad-pendiente {
+  color: #c79c5a;
+}
+
+.actividad-completado {
+  color: #6db37c;
+}
+
+.actividad-cancelado {
+  color: #d67c84;
+}
+
+.actividad-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.badge-pendiente {
+  background-color: var(--color-stone-border);
+  color: var(--color-amber);
+  border-color: var(--color-Dorado);
+}
+
+.badge-completado {
+  background-color: var(--color-Verde-Claro);
+  color:var(--color-emerald-hover);
+  border-color: var(--color-emerald);
+}
+
+.badge-cancelado {
+  background-color: var(--color-Rojo-Claro);
+  color: var(--color-rojo);
+  border-color: var(--color-rosa);
+}
+
+.inventario-card {
+  padding: 1.5rem;
+  background: var(--color-rosa-claro-background);
+}
+
+.inventario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inventario-btn {
+  border: none;
+  color: var(--cafe-oscuro);
+  font-weight: 1000;
+  background: var(--color-rosa-background);
+  border-radius: 999px;
+  padding: .5rem 1rem;
+}
+
+.inventario-btn i{
+  margin-left: 0.25rem;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.card-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.card-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.card-body::-webkit-scrollbar-thumb {
+    background: var(--color-rosa-oscuro-claro);
+    border-radius: 10px;
+}
+
+.card-body::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+.inventario-accent {
+  width: 4px;
+  height: 50px;
+  background: var(--color-rosa-oscuro);
+  border-radius: 999px;
+}
+
+.inventario-item {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: .75rem 0;
+  border-top: 1px solid var(--color-rosa-claro);
+}
+
+.inventario-portada {
+  width: 40px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.inventario-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.inventario-titulo {
+  font-weight: 600;
+  color: var(--rosa-oscuro);
+}
+
+.inventario-info small {
+  color: var(--color-rosa-oscuro-claro-disable);
+}
+
+.inventario-stock {
+  color: var(--color-rosa-oscuro-claro-disable);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.pedidos-recientes-card {
+  height: 320px !important;
+}
+
+.pedidos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pedidos-title {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.pedidos-title h5 {
+  margin: 0;
+  color: var(--rosa-oscuro);
+  font-weight: 700;
+}
+
+.pedidos-btn {
+  border: none;
+  background: var(--color-rosa-claro);
+  border-radius: 999px;
+  padding: .4rem .8rem;
+  color: var(--cafe-oscuro);
+  font-weight: 600;
+}
+
+.pedido-item {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  gap: .75rem;
+  color: var(--cafe-oscuro)
+}
+
+.pedido-fecha {
+  font-size: .85rem;
+  color: var(--color-gris);
+}

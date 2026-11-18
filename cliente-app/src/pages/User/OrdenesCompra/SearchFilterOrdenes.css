@@ -1,4 +1,3 @@
-/* BÚSQUEDA */
 .search-box {
   display: flex;
   align-items: center;
@@ -11,7 +10,6 @@
   min-width: 0;
 }
 
-/* FILTROS */
 .categories-container {
   width: 100%;
   margin-top: 1.5rem;
