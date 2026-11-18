@@ -293,8 +293,6 @@ button {
   display: none;
 }
 
-/* Portada */
-
 .mallow-main {
   max-width: 1280px;
   margin: auto;
@@ -380,9 +378,7 @@ button {
   color: var(--mallow-muted);
   font-size: 14px;
 }
-/* ============================================
-   MINI CATÁLOGO (5 libros, solo display)
-   ============================================ */
+
 .mini-catalog {
   max-width: 1200px;
   margin: 0 auto;
@@ -390,7 +386,6 @@ button {
 }
 
 .mini-catalog-header {
-  /*text-align: center;*/
   margin-bottom: 2.5rem;
 }
 
@@ -422,14 +417,12 @@ button {
   font-size: 0.95rem;
 }
 
-/* Grid de 5 tarjetas */
 .mini-catalog-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);   /* 5 en fila en escritorio */
+  grid-template-columns: repeat(5, 1fr);
   gap: 1.25rem;
 }
 
-/* Tarjeta (sin carrito) */
 .mini-book-card {
   display: flex;
   flex-direction: column;
@@ -447,7 +440,6 @@ button {
   box-shadow: 0 15px 25px -12px rgba(74, 46, 40, 0.18);
 }
 
-/* Portada */
 .mini-book-cover {
   position: relative;
   aspect-ratio: 3 / 4;
@@ -467,7 +459,6 @@ button {
   transform: scale(1.05);
 }
 
-/* Lomo del libro */
 .mini-book-cover::before {
   content: "";
   position: absolute;
@@ -483,7 +474,6 @@ button {
   z-index: 1;
 }
 
-/* Info */
 .mini-book-info {
   padding: 0.85rem 0.9rem 1rem;
   display: flex;
@@ -527,21 +517,17 @@ button {
   margin-left: 0.15rem;
 }
 
-/* Botón inferior */
 .mini-catalog-cta {
   display: flex;
   justify-content: center;
   margin-top: 2.5rem;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
 @media (max-width: 1024px) {
   .mini-catalog-grid {
     grid-template-columns: repeat(4, 1fr);
   }
-  /* oculta la 5ta en tablets, o cambia a 3 */
+
   .mini-catalog-grid > *:nth-child(5) {
     display: none;
   }
@@ -559,10 +545,10 @@ button {
     gap: 1rem;
   }
   .mini-catalog-grid > *:nth-child(5) {
-    display: flex;   /* vuelve a mostrarse */
+    display: flex;
   }
   .mini-catalog-grid > *:nth-child(5) {
-    grid-column: 1 / -1;   /* se centra sola en su fila */
+    grid-column: 1 / -1;
     max-width: 50%;
     justify-self: center;
   }
@@ -577,20 +563,15 @@ button {
   }
 }
 
-/* ============================================
-   SOBRE NOSOTROS — 2 columnas
-   ============================================ */
 .about-section {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;   /* texto más ancho que la imagen */
-  align-items: center;                 /* centra verticalmente */
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
   gap: 3rem;
-  /*max-width: 1100px;*/
   margin: 0 auto;
   padding: 5rem 2rem;
 }
 
-/* --- Columna de texto --- */
 .about-text .section-label {
   display: inline-block;
   font-size: 0.7rem;
@@ -619,7 +600,6 @@ button {
   margin-bottom: 0;
 }
 
-/* --- Columna de imagen --- */
 .about-image {
   display: flex;
   justify-content: center;
@@ -631,8 +611,6 @@ button {
   max-width: 380px;
   height: auto;
   object-fit: contain;
-
-  /* Marco suave tipo tarjeta */
   background: var(--color-beige-bg, #FAF7F2);
   border: 1px solid var(--color-borde, #EFE4DA);
   border-radius: 1.25rem;
@@ -640,7 +618,6 @@ button {
   box-shadow: 0 15px 30px -12px rgba(74, 46, 40, 0.15);
 }
 
-/* --- Responsive: una columna en móvil --- */
 @media (max-width: 768px) {
   .about-section {
     grid-template-columns: 1fr;
@@ -650,7 +627,7 @@ button {
   }
 
   .about-image {
-    order: -1;               /* imagen arriba en móvil (opcional) */
+    order: -1;
   }
 
   .mallow-logo-about {
@@ -663,7 +640,6 @@ button {
   }
 }
 
-/*===============categorías====================*/
 .mallow-categories {
   padding: 4rem 2rem;
   max-width: 1200px;
@@ -768,7 +744,6 @@ button {
 .category-card.active .category-label {
   color: #fff;
 }
-/* Adaptación para móviles */
 
 @media (max-width: 1050px) {
   .mallow-navbar {

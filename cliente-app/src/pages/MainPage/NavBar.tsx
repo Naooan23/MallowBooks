@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../pages/MainPage/Logo_t.png";
 import "./MainPage.css";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 
 interface UserProfile {
   name: string;
@@ -34,8 +33,6 @@ export function Navbar({ currentUser = null }: NavbarProps) {
       return;
     }
 
-    // Si estamos en otra página, ir al inicio
-    // y guardar la sección de destino.
     if (location.pathname !== "/") {
       navigate("/", {
         state: { sectionId },
@@ -43,7 +40,6 @@ export function Navbar({ currentUser = null }: NavbarProps) {
       return;
     }
 
-    // Si ya estamos en MainPage, desplazarnos directamente.
     document.getElementById(sectionId)?.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -56,14 +52,12 @@ export function Navbar({ currentUser = null }: NavbarProps) {
 
     if (!sectionId) return;
 
-    // Esperar a que se renderice la página de inicio.
     requestAnimationFrame(() => {
       document.getElementById(sectionId)?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
 
-      // Limpiar el destino para evitar repetir el desplazamiento.
       navigate("/", {
         replace: true,
         state: null,
@@ -141,7 +135,7 @@ export function Navbar({ currentUser = null }: NavbarProps) {
               <a href="/login" className="login-link">
                 Iniciar sesión
               </a>
-              
+
             )}
           </div>
 

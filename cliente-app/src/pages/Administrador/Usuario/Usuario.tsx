@@ -7,7 +7,6 @@ import type { CampoFormulario, UserInfoProps } from "../../User/Perfil/Types";
 import { obtenerAnchoLabel } from "../../../components/BoxUtils";
 import GridUsuarios from "../../../components/Grid";
 import { useConfirm, useError } from "../../../services/useAuth";
-import { hashPassword } from "../../Login/LoginTypes";
 import "./Usuarios.css";
 
 type RolUsuario = "user" | "admin" | "empleado";
@@ -25,8 +24,6 @@ export default function Usuarios() {
   const { showError } = useError();
   const fontSize = "1.3rem";
 
-
-  // Obtener usuarios
   const getUsers = async () => {
     try {
       const data = await get("usuarios", undefined);
@@ -46,9 +43,9 @@ export default function Usuarios() {
 
   const generarCampos = (usuario?: UserInfoProps) => [
     {
-      key: "nombre_user",
+      key: "nombre",
       label: "Nombre",
-      value: usuario?.nombre_user ?? "",
+      value: usuario?.nombre ?? "",
       touched: false,
       type: "text",
     },
@@ -85,7 +82,7 @@ export default function Usuarios() {
     const texto = busqueda.toLocaleLowerCase().trim();
 
     return usuarios.filter((u) =>
-      [u.nombre_user, u.email, u.rol].some((valor) =>
+      [u.nombre, u.email, u.rol].some((valor) =>
         String(valor ?? "").toLocaleLowerCase().includes(texto)
       )
     );
@@ -140,7 +137,7 @@ export default function Usuarios() {
   const obtenerValor = (key: string) => String(formUsuarios.find((x) => x.key === key)?.value ?? "");
 
   const validarFormulario = () => {
-    const nombre = obtenerValor("nombre_user");
+    const nombre = obtenerValor("nombre");
     const email = obtenerValor("email");
     const password = obtenerValor("password");
     const rol = obtenerValor("rol");
@@ -173,9 +170,9 @@ export default function Usuarios() {
 
     try {
       const usuario = {
-        nombre_user: obtenerValor("nombre_user").trim(),
+        nombre: obtenerValor("nombre").trim(),
         email: obtenerValor("email").trim(),
-        password: await hashPassword(obtenerValor("password").trim()),
+        password: obtenerValor("password").trim(),
         rol: obtenerValor("rol"),
       };
 
@@ -318,6 +315,7 @@ export default function Usuarios() {
 
               <SelectBox
                 item=""
+                value={String(limite)}
                 dataSource={[
                   { value: "10", label: "10" },
                   { value: "25", label: "25" },
@@ -327,7 +325,6 @@ export default function Usuarios() {
                   setLimite(Number(value));
                   setPagina(1);
                 }}
-                fontSize={"1.3rem"}
               />
 
               <span>registros</span>
@@ -403,6 +400,7 @@ export default function Usuarios() {
                   { value: "admin", label: "Administrador" },
                   { value: "empleado", label: "Empleado" },
                 ]}
+                value={obtenerValor("rol")}
                 onValueChange={(value) =>
                   cambiarCampoRol(value as RolUsuario)
                 }

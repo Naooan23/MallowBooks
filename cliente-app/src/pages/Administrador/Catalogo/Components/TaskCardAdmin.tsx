@@ -7,8 +7,10 @@ import { del, get, post, put } from "../../../../config/api.ts";
 import type { LibrosCover } from "../../../../services/ServicesTypes.ts";
 import { useConfirm, useError } from "../../../../services/useAuth.tsx";
 import type { ResponseCategorias } from "../../../User/Catalogo/Components/SearchFilter.tsx";
+import "../../../User/Catalogo/Components/TaskCard.css";
 import type { CardLibroNuevoProps, CardLibroProps } from "./ComponentsTypes.ts";
-import "./TaskCardAdmin.css";
+
+const hoy = () => new Date().toISOString().split("T")[0];
 
 export function CardLibroAdmin({ data, classname, onClick, onDelete, CoverWidth, CoverHeigth }: CardLibroProps) {
   const { showError } = useError();
@@ -91,7 +93,7 @@ export function CardLibroAdmin({ data, classname, onClick, onDelete, CoverWidth,
   );
 }
 
-export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, CoverHeigth }: CardLibroProps) {
+export function CardLibroDetalleAdmin({ data, onClick, cargarDatos, CoverWidth, CoverHeigth }: CardLibroProps & { cargarDatos: () => Promise<void> }) {
   const [formLibro, setFormLibro] = useState<any[]>([]);
   const [formLibroIzq, setFormLibroIzq] = useState<any[]>([]);
   const [formTextArea, setFormTextArea] = useState<any[]>([]);
@@ -112,8 +114,8 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
         try {
           const response = await del("libros", id_libro);
 
+          await cargarDatos();
           onClick();
-          await onDelete(id_libro);
 
           showError({
             success: true,
@@ -143,16 +145,21 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
     );
   };
 
-  const Inicializar = () => {
-    const fecha = data.fecha instanceof Date
-      ? `${data.fecha.getFullYear()}-${String(data.fecha.getMonth() + 1).padStart(2, "0")}-${String(data.fecha.getDate()).padStart(2, "0")}`
-      : String(data.fecha ?? "").slice(0, 10);
+  useEffect(() => {
+    const fecha =
+      data.fecha instanceof Date
+        ? `${data.fecha.getFullYear()}-${String(data.fecha.getMonth() + 1).padStart(2, "0")}-${String(data.fecha.getDate()).padStart(2, "0")}`
+        : String(data.fecha ?? "").slice(0, 10);
 
+    const fechaFinal = fecha || hoy();
+
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormLibro([
       {
         key: "titulo",
         label: "Título",
-        value: data.titulo,
+        value: data.titulo ?? "",
         type: "text",
         onValueChange: (v: string) =>
           actualizarCampo(setFormLibro, "titulo", v),
@@ -160,7 +167,7 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
       {
         key: "autor",
         label: "Autor",
-        value: data.autor,
+        value: data.autor ?? "",
         type: "text",
         onValueChange: (v: string) =>
           actualizarCampo(setFormLibro, "autor", v),
@@ -168,7 +175,7 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
       {
         key: "portada_url",
         label: "Portada URL",
-        value: data.portada_url,
+        value: data.portada_url ?? "",
         type: "text",
         onValueChange: (v: string) =>
           actualizarCampo(setFormLibro, "portada_url", v),
@@ -176,7 +183,7 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
       {
         key: "fecha_publicacion",
         label: "Fecha de publicación",
-        value: fecha,
+        value: fechaFinal,
         type: "date",
         onValueChange: (v: string) =>
           actualizarCampo(setFormLibro, "fecha_publicacion", v),
@@ -187,7 +194,7 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
       {
         key: "precio",
         label: "Precio",
-        value: String(data.precio),
+        value: String(data.precio ?? 0),
         type: "number",
         onValueChange: (v: string) =>
           actualizarCampo(setFormLibroIzq, "precio", v),
@@ -195,7 +202,7 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
       {
         key: "stock",
         label: "Stock",
-        value: String(data.stock),
+        value: String(data.stock ?? 0),
         type: "number",
         onValueChange: (v: string) =>
           actualizarCampo(setFormLibroIzq, "stock", v),
@@ -212,46 +219,48 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
           actualizarCampo(setFormTextArea, "sinopsis", v),
       },
     ]);
-  }
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    Inicializar();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const guardarCambios = async () => {
     if (hayErrores) return;
 
+    const datosLibro = Object.fromEntries([
+      ...formLibro,
+      ...formLibroIzq,
+      ...formTextArea,
+    ].map(item => [item.key, item.value]));
+
+    const libroActualizado = {
+      id_book: data.id,
+      id_categoria: data.id_categoria,
+      ...datosLibro,
+      fecha_publicacion: datosLibro.fecha_publicacion || hoy(),
+      precio: Number(datosLibro.precio),
+      stock: Number(datosLibro.stock),
+    };
+
     setLoading(true);
 
     try {
-      const datosLibro = Object.fromEntries([
-        ...formLibro,
-        ...formLibroIzq,
-        ...formTextArea,
-      ].map(item => [item.key, item.value]));
-
-      const libroActualizado = {
-        id_book: data.id,
-        ...datosLibro,
-        precio: Number(datosLibro.precio),
-        stock: Number(datosLibro.stock),
-      };
-
       await put("libros", libroActualizado);
+
+      await cargarDatos();
+      onClick();
 
       showError({
         success: true,
         message: "Libro actualizado correctamente.",
       });
-
     } catch (error: any) {
-      console.log("Error al actualizar el libro: ", error);
+      console.error("Error al actualizar:", error);
+      console.error("Detalle:", error?.response?.data);
+
       showError({
         success: false,
-        message: "No se pudo actualizar el libro."
+        message: error?.response?.data?.detail || "No se pudo actualizar el libro.",
       });
+
     } finally {
       setLoading(false);
     }
@@ -283,14 +292,15 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
           }}
         >
           <button
-            className="botones"
+            type="button"
+            className="botones-admin"
             onClick={guardarCambios}
             disabled={loading || hayErrores}
           >
             Guardar Cambios
           </button>
           <button
-            className="botones"
+            className="botones-admin"
             onClick={() => borrar(data.id)}
             disabled={loading || hayErrores}
           >
@@ -319,7 +329,6 @@ export function CardLibroDetalleAdmin({ data, onClick, onDelete, CoverWidth, Cov
     </PopUp>
   );
 }
-
 
 export function CardNuevoLibroAdmin({ onClick, cargarDatos, CoverWidth, CoverHeigth, }: CardLibroNuevoProps & { cargarDatos: () => Promise<void> }) {
   const [loading, setLoading] = useState(false);
@@ -394,7 +403,7 @@ export function CardNuevoLibroAdmin({ onClick, cargarDatos, CoverWidth, CoverHei
       {
         key: "fecha_publicacion",
         label: "Fecha de publicación",
-        value: "",
+        value: new Date().toISOString().split("T")[0],
         type: "date",
         onValueChange: (v: string) =>
           actualizarCampo(setFormLibro, "fecha_publicacion", v),
@@ -514,13 +523,14 @@ export function CardNuevoLibroAdmin({ onClick, cargarDatos, CoverWidth, CoverHei
 
           <SelectBox
             item="Categoría"
+            value={String(categoria)}
             dataSource={categorias}
             onValueChange={(v) => setCategoria(Number(v))}
-            fontSize={"1.3rem"}
+            fontSize="1.3rem"
           />
 
           <button
-            className="botones"
+            className="botones-admin"
             onClick={agregarLibro}
             disabled={loading || hayErrores}
           >

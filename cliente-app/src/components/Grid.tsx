@@ -88,17 +88,21 @@ export default function GridUsuarios({ loading, usuarios, usuariosPagina, abrirE
             </th>
 
             <th>Correo electrónico</th>
-            <th>Password</th>
           </tr>
         </thead>
 
         <tbody>
-          {loading && usuarios?.length === 0 ?
-            (<LoadingSimple />)
-            : usuariosFiltrados?.length ?? 0 > 0 ? (
-              <TablaGrid loading={loading} usuariosFiltrados={usuariosFiltrados} abrirEditar={abrirEditar} eliminarUsuario={eliminarUsuario} />
-            ) : (<GridVacio />)
-          }
+          {loading && (usuarios?.length ?? 0) === 0 ? (
+            <tr>
+              <td colSpan={5} className="text-center p-4">
+                <LoadingSimple />
+              </td>
+            </tr>
+          ) : (usuariosFiltrados?.length ?? 0) > 0 ? (
+            <TablaGrid loading={loading} usuariosFiltrados={usuariosFiltrados} abrirEditar={abrirEditar} eliminarUsuario={eliminarUsuario} />
+          ) : (
+            <GridVacio />
+          )}
         </tbody>
       </Table>
     </div>
@@ -135,7 +139,7 @@ function TablaGrid({ loading, usuariosFiltrados, abrirEditar, eliminarUsuario }:
           </td>
 
           <td>{usuario.id_user}</td>
-          <td>{usuario.nombre_user}</td>
+          <td>{usuario.nombre}</td>
 
           <td>
             <span className={`usuario-rol rol-${usuario.rol}`}>
@@ -148,7 +152,6 @@ function TablaGrid({ loading, usuariosFiltrados, abrirEditar, eliminarUsuario }:
           </td>
 
           <td>{usuario.email}</td>
-          <td>{usuario.password}</td>
         </tr>
       ))}
     </>
@@ -158,7 +161,7 @@ function TablaGrid({ loading, usuariosFiltrados, abrirEditar, eliminarUsuario }:
 function GridVacio() {
   return (
     <tr>
-      <td colSpan={6} className="usuarios-vacio">
+      <td colSpan={5} className="usuarios-vacio">
         <i className="bi bi-people" />
         <p>No se encontraron usuarios.</p>
       </td>

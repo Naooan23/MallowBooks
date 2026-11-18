@@ -1,16 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
-/* ============================
-   GRID / CONTENEDOR
-   ============================ */
+
 .books-grid {
- /* flex: 1 1 0%;
-  min-width: 0;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0 1rem 1rem;
-  box-sizing: border-box;*/
-    height: 100vh;
+  height: 100vh;
   flex: 1 1 0%;
   min-height: 0;
   min-width: 0;
@@ -34,9 +25,6 @@
   padding: 1rem;
 }
 
-/* ============================
-   TARJETA (BookCard)
-   ============================ */
 .book-card {
   width: 13rem;
   display: flex;
@@ -44,7 +32,7 @@
   justify-content: space-between;
   background: #fff;
   border: 1px solid var(--color-borde);
-  border-radius: 1rem;                /* rounded-2xl */
+  border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 1px 2px rgba(0,0,0,.05);
   transition: all .3s ease;
@@ -59,9 +47,6 @@
               0 4px 6px -4px rgba(0,0,0,.10);
 }
 
-/* ============================
-   PORTADA
-   ============================ */
 .book-cover-container {
   position: relative;
   padding: 1rem 1rem .75rem;
@@ -93,7 +78,6 @@
   transform: scale(1.05);
 }
 
-/* Lomo del libro (gradiente lateral) */
 .book-cover::before {
   content: "";
   position: absolute;
@@ -107,7 +91,6 @@
   z-index: 2;
 }
 
-/* Portada en modo detalle */
 .book-cover.detalle {
   width: 11rem;
   min-height: 15rem;
@@ -123,9 +106,6 @@
 }
 .imagen-cargando { opacity: 0; }
 
-/* ============================
-   BOTÓN FLOTANTE "+" / carrito
-   ============================ */
 .cart-button {
   position: absolute;
   top: 8px;
@@ -163,9 +143,6 @@
   line-height: 1;
 }
 
-/* ============================
-   INFO / TIPOGRAFÍA
-   ============================ */
 .book-info {
   flex: 1;
   min-width: 0;
@@ -174,7 +151,6 @@
   flex-direction: column;
 }
 
-/* Precio — Roboto Slab */
 .book-info h2 {
   margin: 0;
   font-family: "Lora", Georgia, serif;
@@ -190,7 +166,7 @@
   color: var(--color-ink-3, #9E7D76);
   margin-left: 0.15rem;
 }
-/* Título — Libre Caslon, serif */
+
 .book-info h3 {
   margin: .35rem 0 0;
   font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
@@ -207,7 +183,6 @@
   color: var(--color-rosa-coral);
 }
 
-/* Autor */
 .book-info p {
   margin: .25rem 0 0;
   padding: 0;
@@ -219,12 +194,10 @@
   text-overflow: ellipsis;
 }
 
-/* Separador antes de la zona de precio/acciones (solo en tarjeta) */
 .book-card .book-info {
   border-top: 1px solid var(--color-sep);
 }
 
-/* Sinopsis en el detalle */
 .book-info textarea {
   width: 100%;
   height: 85%;
@@ -243,10 +216,6 @@
   border-radius: 10px;
 }
 
-
-/* ============================
-   BOTONES
-   ============================ */
 .button-cart {
   width: 100%;
   margin-top: 12px;
@@ -266,6 +235,7 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 12px rgba(74,46,40,.18);
 }
+
 .button-cart:active { transform: translateY(0); }
 
 .button-delete {
@@ -274,13 +244,14 @@
   padding: 10px 16px;
   border: none;
   border-radius: .75rem;
-  background-color: var(--color-emerald) !important;   /* verde "Agregado" */
+  background-color: var(--color-emerald) !important;
   color: #fff !important;
   font-size: .8rem;
   font-weight: 600;
   cursor: pointer;
   transition: all .2s ease;
 }
+
 .button-delete:hover {
   background-color: var(--color-emerald-hover) !important;
 }
@@ -298,7 +269,6 @@
   cursor: not-allowed;
 }
 
-/* Botones +/- cantidad */
 .botones {
   background-color: var(--color-cafe);
   color: var(--color-rosa);
@@ -309,15 +279,33 @@
   border-radius: .6rem;
   transition: all .15s ease;
 }
+
+.botones-admin{
+  background-color: var(--color-cafe);
+  color: var(--color-rosa);
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  font-weight: 700;
+  font-size: 1.1rem !important;
+  border-radius: 0.3rem;
+  border: none;
+  margin-top: 0.3rem;
+  width: 100%;
+}
+
 .botones:hover {
   background-color: var(--color-rosa);
   color: var(--color-cafe);
 }
+
 .botones:active {
   background-color: var(--color-rosa) !important;
   color: var(--color-rosa) !important;
   box-shadow: none !important;
 }
+
 .botones:disabled,
 .button-cart:disabled {
   opacity: .5;
@@ -333,29 +321,16 @@
   margin-top: .5rem;
 }
 
-/* ============================
-   DETALLE (PopUp)
-   ============================ 
-.data-book {
-  width: 40%;
-  justify-items: center;
-  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-}*/
-/* Actualiza la clase .data-book existente */
-/* ============================
-   POPUP DETALLE - ESCRITORIO
-   ============================ */
 .popup-detalle-wrapper {
   display: flex;
-  flex-direction: row; /* Lado a lado en PC */
+  flex-direction: row;
   gap: 2rem;
   width: 100%;
-  max-height: 75vh; /* Evita que el popup se salga de la pantalla */
-  overflow-y: auto; /* Scroll interno si el texto es muy largo */
+  max-height: 75vh;
+  overflow-y: auto;
   padding: 1rem;
 }
 
-/* El bloque de la portada y botones */
 .data-book {
   width: 40%;
   display: flex;
@@ -364,51 +339,41 @@
   font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 
-/* El bloque de la sinopsis */
 .book-info {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-/* ============================
-   POPUP DETALLE - MÓVIL
-   ============================ */
 @media (max-width: 768px) {
   
   .popup-detalle-wrapper {
-    flex-direction: column; /* Se apilan uno arriba del otro */
+    flex-direction: column;
     gap: 1.5rem;
     padding: 0.5rem;
     max-height: 65vh;
   }
 
-  /* Ambos ocupan el 100% del ancho */
   .data-book,
   .book-info {
     width: 100%;
   }
 
-  /* Ajustamos la portada para que no sea gigante en celular */
   .book-cover.detalle {
     width: 10rem;
     min-height: 14rem;
   }
 
-  /* Altura fija para el textarea en móviles */
   .book-info textarea {
     height: 120px;
     margin-top: 0.5rem;
   }
 
-  /* Evitar que los botones de cantidad se aplasten */
   .data-book > div {
     margin-bottom: 0.5rem;
   }
 }
 
-
-/*botones del taskcard*/
 .botones.btn.btn-primary{
   padding: 0.45rem 0.60rem;
   background-color: var(--color-cafe);

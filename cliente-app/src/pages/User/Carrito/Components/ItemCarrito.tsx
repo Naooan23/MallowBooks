@@ -123,12 +123,10 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
         />
       </div>
 
-      <BookCover width="11rem" height="14rem" portada_url={item.portada_url} titulo={item.titulo} />
+      <BookCover width="11rem" heigth="14rem" portada_url={item.portada_url} titulo={item.titulo} />
 
-      {/* Contenedor principal que se extiende y distribuye los elementos en filas/columnas */}
       <div className="Book-Info" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%", gap: "1rem" }}>
-        
-        {/* Columna Izquierda: Título, Autor y el botón de eliminar arriba */}
+
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%", flex: 1, minWidth: 0, gap: "1.5rem" }}>
           <div>
             <h3 className="book-title">{item.titulo}</h3>
@@ -137,7 +135,6 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
 
         </div>
 
-        {/* Columna Derecha: Precio y controles de cantidad alineados a la orilla derecha */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.75rem", flexShrink: 0, minWidth: "120px" }}>
           <div className="item-price-col" style={{ textAlign: "right" }}>
             <span className="item-total-price">${(item.precio * item.cantidad).toFixed(2)}</span>
@@ -145,7 +142,7 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
           </div>
 
           <div className="quantity-controls">
-            
+
             <button
               type="button"
               className="qty-btn"
@@ -173,16 +170,16 @@ export default function ItemCarrito({ item, setSeleccionados, librosCarrito, pro
             </button>
           </div>
         </div>
-          <button
-            type="button"
-            className="btn-icon"
-            onClick={() => eliminarLibro(item.id_book)}
-            disabled={procesandoId !== null}
-            title="Eliminar"
-            style={{ width: "fit-content", padding: 0 }}
-          >
-            <i className="bi bi-trash3-fill button" />
-          </button>
+        <button
+          type="button"
+          className="btn-icon"
+          onClick={() => eliminarLibro(item.id_book)}
+          disabled={procesandoId !== null}
+          title="Eliminar"
+          style={{ width: "fit-content", padding: 0 }}
+        >
+          <i className="bi bi-trash3-fill button" />
+        </button>
       </div>
     </Card>
   );

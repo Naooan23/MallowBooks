@@ -237,22 +237,13 @@ const TextArea = ({ items, styleComponent, onErrorChange, fontSize }: TextBoxPro
   );
 };
 
-const SelectBox = ({ item, dataSource, onValueChange, fontSize, labelSize }: SelectBoxProps) => {
-  const [value, setValue] = useState(dataSource[0]?.value ?? "");
-
+const SelectBox = ({ item, dataSource, value, onValueChange, fontSize, labelSize }: SelectBoxProps) => {
   const options = dataSource.map((opc) => ({
     value: opc.value,
     label: opc.label,
   }));
 
-  useEffect(() => {
-    if (dataSource.length > 0 && !value) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setValue(dataSource[0].value);
-      onValueChange(dataSource[0].value);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataSource]);
+  const valorSeleccionado = options.find(opc => opc.value == value) ?? null;
 
   return (
     <Form.Group className="selectbox-group">
@@ -299,7 +290,7 @@ const SelectBox = ({ item, dataSource, onValueChange, fontSize, labelSize }: Sel
               ? "0 0 0 3px var(--color-rosa-background)"
               : "none",
           }),
-          singleValue: (base) => ({
+          singleValue: base => ({
             ...base,
             fontSize,
           }),
@@ -314,12 +305,11 @@ const SelectBox = ({ item, dataSource, onValueChange, fontSize, labelSize }: Sel
             paddingRight: "1rem",
           })
         }}
-        value={options.find(opc => opc.value === value)}
+        value={valorSeleccionado}
         onChange={selected => {
-          if (!selected) return;
-
-          setValue(selected.value);
-          onValueChange(selected.value);
+          if (selected) {
+            onValueChange(selected.value);
+          }
         }}
       />
     </Form.Group>
@@ -336,7 +326,7 @@ const PopUp = ({ titulo, children, onClose, width, height }: PopUpProps) => (
         <button className="no-print" onClick={onClose} aria-label="Cerrar">×</button>
       </div>
 
-      <div className="detalle-content" style={{ width: width ?? "50vw", height: height ?? "80vh" }}>
+      <div className="detalle-content" style={{ width: width ?? "100%", height: height ?? "80vh" }}>
         {children}
       </div>
     </div>
@@ -353,9 +343,10 @@ const LoadingSimple = () => (
   <div className="loading-spinner" />
 );
 
-const Card = ({ classname, children, width, height, style, onClick }: CardProps) => {
+const Card = ({ ref, classname, children, width, height, style, onClick }: CardProps) => {
   return (
     <div
+      ref={ref}
       className={`card ${classname}`}
       style={{
         ...style,

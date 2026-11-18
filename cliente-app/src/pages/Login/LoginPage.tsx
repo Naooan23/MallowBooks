@@ -5,7 +5,7 @@ import { useAuth } from "../../services/useAuth.js";
 import { Navbar } from "../MainPage/NavBar.js";
 import "./Login.css";
 import { Login } from "./Login.js";
-import { hashPassword, type LoginPageFormDataProps } from "./LoginTypes.js";
+import type { LoginPageFormDataProps } from "./LoginTypes.js";
 import { Registro } from "./Registro.js";
 
 export default function LoginPage() {

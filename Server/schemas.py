@@ -1,11 +1,7 @@
 from datetime import date
 from decimal import Decimal
-from encodings import undefined
-import string
 from typing import Optional
-
-from pydantic import BaseModel, ConfigDict, Field
-from sqlalchemy import null
+from pydantic import BaseModel, ConfigDict, Field, EmailStr
 
 class CarritoBase(BaseModel):
     id_user: int
@@ -40,31 +36,55 @@ class CarritoDetalleResponse(BaseModel):
     id_book: int
     cantidad: int
 
+    model_config = ConfigDict(from_attributes=True)
+
 class CarritoDetalleBase(BaseModel):
-    id_carrito: Optional[int]
+    id_carrito: Optional[int] = None
     id_book: int
     cantidad: int
 
+    model_config = ConfigDict(from_attributes=True)
+
 class UsuarioBase(BaseModel):
     id_user: int | None = None
-    nombre_user: str
+    nombre: str
     email: str
     password: str
     rol: str
 
-class RegisterRequest(BaseModel):
+class UsuarioResponse(BaseModel):
+    id_user: int
     nombre: str
     email: str
-    password: str
+    rol: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+class UsuarioPublico(BaseModel):
+    id_user: int
+    nombre_user: str
+    email: str
+    rol: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+class RegisterRequest(BaseModel):
+    nombre: str = Field(min_length=2, max_length=100)
+    email: EmailStr
+    password: str = Field(min_length=4, max_length=100)
 
 class LoginRequest(BaseModel):
-    email: str
+    email: EmailStr
     password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    usuario: UsuarioResponse
 
 class LibroOrdenCreate(BaseModel):
     id_book: int
     cantidad: int = Field(gt=0)
-
 
 class OrdenCreate(BaseModel):
     id_user: int
@@ -72,9 +92,9 @@ class OrdenCreate(BaseModel):
 
 class PasswordData(BaseModel):
     id_user: int
-    new_Password: str
+    new_Password: str = Field(min_length=4)
 
 class UserData(BaseModel):
-    id_user:int
-    nombre:str
-    email:str
+    id_user: int
+    nombre: str
+    email: EmailStr
