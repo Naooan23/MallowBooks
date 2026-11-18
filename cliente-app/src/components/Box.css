@@ -123,10 +123,10 @@
 
 .card {
   display: flex;
-  background-color: #fff;
+  background-color: var(--color-blanco);
   border-radius: 16px;
   padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 8px var(--color-beige);
   box-sizing: border-box;
   gap: 0.5rem;
 }

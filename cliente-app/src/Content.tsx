@@ -11,15 +11,13 @@ interface ContentProps {
 }
 
 export default function Content({ route }: ContentProps) {
-  // Estados del catálogo
   const [searchCatalogo, setSearchCatalogo] = useState("");
   const [filterCatalogo, setFilterCatalogo] = useState(0);
 
-  // Estados de las órdenes
   const [searchOrdenes, setSearchOrdenes] = useState("");
   const [filterOrdenes, setFilterOrdenes] = useState("Todas");
 
-  const esOrdenes = route.path === "/ordenes";
+  const esOrdenes = route.path.includes("orden");
 
   const search = esOrdenes ? searchOrdenes : searchCatalogo;
   const setSearch = esOrdenes ? setSearchOrdenes : setSearchCatalogo;
@@ -40,6 +38,10 @@ export default function Content({ route }: ContentProps) {
             setSearch,
             filter,
             setFilter,
+            searchOrdenes,
+            setSearchOrdenes,
+            filterOrdenes,
+            setFilterOrdenes
           }}
         />
       )}

@@ -17,7 +17,7 @@ interface ResponseCategorias {
   nombre_categoria_es: string;
   icono: string;
 }
-// Encima del componente, junto a los otros tipos
+
 interface LibroMini {
   id: number;
   portada_url: string;
@@ -35,49 +35,45 @@ interface LibroAPI {
 }
 
 export function MainPage() {
-  // Categorías del backend (misma lógica que SearchFilter)
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loadingCategorias, setLoadingCategorias] = useState(true);
 
-  // Mini catálogo
   const [librosMini, setLibrosMini] = useState<LibroMini[]>([]);
   const [loadingLibros, setLoadingLibros] = useState(true);
 
   useEffect(() => {
     let mounted = true;
     const cargarLibros = async () => {
-  try {
-    const response = (await get("libros", null)) as LibroAPI[];
-    if (!mounted) return;
+      try {
+        const response = (await get("libros", undefined)) as LibroAPI[];
+        if (!mounted) return;
 
-    // Copiar y mezclar aleatoriamente los libros
-    const librosAleatorios = [...response];
+        const librosAleatorios = [...response];
 
-    for (let i = librosAleatorios.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+        for (let i = librosAleatorios.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
 
-      [librosAleatorios[i], librosAleatorios[j]] =
-        [librosAleatorios[j], librosAleatorios[i]];
-    }
+          [librosAleatorios[i], librosAleatorios[j]] =
+            [librosAleatorios[j], librosAleatorios[i]];
+        }
 
-    // Tomar únicamente 5 libros aleatorios
-    const primeros5 = librosAleatorios.slice(0, 5).map((x) => ({
-      id: x.id_book,
-      portada_url: x.portada_url,
-      titulo: x.titulo,
-      autor: x.autor,
-      precio: x.precio,
-    }));
+        const primeros5 = librosAleatorios.slice(0, 5).map((x) => ({
+          id: x.id_book,
+          portada_url: x.portada_url,
+          titulo: x.titulo,
+          autor: x.autor,
+          precio: x.precio,
+        }));
 
-    setLibrosMini(primeros5);
+        setLibrosMini(primeros5);
 
-  } finally {
-    if (mounted) setLoadingLibros(false);
-  }
-};
+      } finally {
+        if (mounted) setLoadingLibros(false);
+      }
+    };
     const cargarCategorias = async () => {
       try {
-        const response: ResponseCategorias[] = await get("categorias", null);
+        const response: ResponseCategorias[] = await get("categorias", undefined);
         if (!mounted) return;
 
         setCategorias([
@@ -123,7 +119,6 @@ export function MainPage() {
     <>
       <Navbar />
 
-      {/* Contenido de ejemplo */}
       <main id="inicio" className="mallow-main">
         <section className="mallow-hero">
           <span className="hero-label">TU PRÓXIMA HISTORIA COMIENZA AQUÍ</span>

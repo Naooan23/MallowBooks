@@ -64,7 +64,7 @@ export default function CatalogoEmpleado() {
             key={x.id}
             data={x}
             onClick={() => setDetalleCard(x)}
-            isReadOnly={true} // ACTIVA EL MODO EMPLEADO
+            isReadOnly={true}
             CoverHeigth="15rem"
             CoverWidth="9rem"
           />
@@ -75,7 +75,7 @@ export default function CatalogoEmpleado() {
         <CardLibroDetalle
           data={detalleCard}
           onClick={() => setDetalleCard(null)}
-          isReadOnly={true} // ACTIVA EL MODO EMPLEADO
+          isReadOnly={true}
           CoverHeigth="15rem"
           CoverWidth="9rem"
         />

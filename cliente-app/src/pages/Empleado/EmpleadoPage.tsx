@@ -1,7 +1,8 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom"; // 👈 Añadimos useNavigate
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Loading } from "../../components/Box";
+import { DashboardCard } from "../../components/Tarjetas/DashboardCards";
 import { get, put } from "../../config/api";
 import { OrdenCompra, OrdenResumen } from "../User/Carrito/Components/OrdenCompra";
 import type { OrdenCompraState } from "../User/Carrito/Types";
@@ -20,15 +21,58 @@ export function EmpleadoPage() {
   const [ordenSeleccionada, setOrdenSeleccionada] = useState<OrdenCompraState | null>(null);
   const [cargando, setCargando] = useState(true);
   const [actualizandoEstado, setActualizandoEstado] = useState<number | null>(null);
-  
+  const [dashboardCards, setDashboardCards] = useState<DashboardCard[]>([]);
+
   const { search, filter: filtroOriginal } = useOutletContext<SearchFilterContext>();
   const filter = typeof filtroOriginal === "string" ? filtroOriginal : "Todas";
-  const navigate = useNavigate(); // 👈 Para redirigir a la página completa
+  const navigate = useNavigate();
+
+  const estadisticas = () => {
+    const total = ordenes.length;
+    const pendientes = ordenes.filter(o => o.orden.status === "Pendiente").length;
+    const ventas = ordenes.reduce((acc, curr) => acc + Number(curr.totalPrecio || 0), 0);
+
+    setDashboardCards([
+      {
+        label: "Total Órdenes",
+        value: total.toString(),
+        icon: "bi bi-receipt",
+      },
+      {
+        label: "Pendientes",
+        value: pendientes.toString(),
+        icon: "bi bi-clock-history",
+        style: "warning",
+      },
+      {
+        label: "Ventas Totales",
+        value: ventas.toFixed(2),
+        icon: "bi bi-currency-dollar",
+        style: "success",
+      },
+    ])
+  };
+
+  const ordenesRecientes = useMemo(() => {
+    const busqueda = String(search ?? "").trim().toLowerCase();
+    const estadoSeleccionado = String(filter ?? "Todas");
+
+    const filtradas = ordenes.filter((item) => {
+      const orden = item.orden;
+      const estadoOrden = String(orden.status ?? "").toLowerCase();
+      const coincideEstado = estadoSeleccionado.toLowerCase() === "todas" || estadoOrden === estadoSeleccionado.toLowerCase();
+      const coincideBusqueda = !busqueda || String(orden.id_orden ?? "").toLowerCase().includes(busqueda) || item.libros?.some((libro) => String(libro.titulo ?? "").toLowerCase().includes(busqueda) || String(libro.autor ?? "").toLowerCase().includes(busqueda));
+
+      return coincideEstado && coincideBusqueda;
+    });
+
+    return filtradas.slice(0, 5);
+  }, [ordenes, search, filter]);
 
   const getTodasLasOrdenes = async () => {
     try {
       setCargando(true);
-      const listaOrdenes = await get("ordenes/todas", undefined); 
+      const listaOrdenes = await get("ordenes/todas", undefined);
       setOrdenes(listaOrdenes ?? []);
     } catch (error) {
       console.error("Error al obtener las órdenes:", error);
@@ -41,8 +85,8 @@ export function EmpleadoPage() {
   const handleCambiarEstado = async (id_orden: number, nuevoEstado: string) => {
     setActualizandoEstado(id_orden);
     try {
-      await put(`ordenes/${id_orden}/status`, { status: nuevoEstado }); 
-      
+      await put(`ordenes/${id_orden}/status`, { status: nuevoEstado });
+
       setOrdenes((prevOrdenes) =>
         prevOrdenes.map((item) =>
           item.orden.id_orden === id_orden
@@ -50,9 +94,9 @@ export function EmpleadoPage() {
             : item
         )
       );
-      
+
       if (ordenSeleccionada?.orden.id_orden === id_orden) {
-        setOrdenSeleccionada((prev) => 
+        setOrdenSeleccionada((prev) =>
           prev ? { ...prev, orden: { ...prev.orden, status: nuevoEstado } } : null
         );
       }
@@ -65,64 +109,19 @@ export function EmpleadoPage() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getTodasLasOrdenes();
   }, []);
 
-  // 👇 1. Calcular estadísticas para el Dashboard
-  const estadisticas = useMemo(() => {
-    const total = ordenes.length;
-    const pendientes = ordenes.filter(o => o.orden.status === "Pendiente").length;
-    const ventas = ordenes.reduce((acc, curr) => acc + Number(curr.totalPrecio || 0), 0);
-    
-    return { total, pendientes, ventas };
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    estadisticas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ordenes]);
-
-  // 👇 2. Filtrar y quedarnos solo con las últimas 5
-  const ordenesRecientes = useMemo(() => {
-    const busqueda = String(search ?? "").trim().toLowerCase();
-    const estadoSeleccionado = String(filter ?? "Todas");
-
-    const filtradas = ordenes.filter((item) => {
-      const orden = item.orden;
-      const estadoOrden = String(orden.status ?? "").toLowerCase();
-      const coincideEstado = estadoSeleccionado.toLowerCase() === "todas" || estadoOrden === estadoSeleccionado.toLowerCase();
-      const coincideBusqueda = !busqueda || String(orden.id_orden ?? "").toLowerCase().includes(busqueda) || item.libros?.some((libro) => String(libro.titulo ?? "").toLowerCase().includes(busqueda) || String(libro.autor ?? "").toLowerCase().includes(busqueda));
-      
-      return coincideEstado && coincideBusqueda;
-    });
-
-    return filtradas.slice(0, 5); // 👈 Cortamos para dejar solo las 5 más recientes
-  }, [ordenes, search, filter]);
 
   return (
     <div className="pagina-ordenes">
-      
-      {/* 👇 DASHBOARD DE ESTADÍSTICAS 👇 */}
-      <div className="dashboard-stats">
-        <div className="stat-card">
-          <div className="stat-icon"><i className="bi bi-receipt" /></div>
-          <div className="stat-info">
-            <span className="stat-label">Total Órdenes</span>
-            <span className="stat-value">{estadisticas.total}</span>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon warning"><i className="bi bi-clock-history" /></div>
-          <div className="stat-info">
-            <span className="stat-label">Pendientes</span>
-            <span className="stat-value">{estadisticas.pendientes}</span>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon success"><i className="bi bi-currency-dollar" /></div>
-          <div className="stat-info">
-            <span className="stat-label">Ventas Totales</span>
-            <span className="stat-value">${estadisticas.ventas.toFixed(2)}</span>
-          </div>
-        </div>
-      </div>
+      <DashboardCard data={dashboardCards} />
 
       <header className="ordenes-header" style={{ marginTop: "2rem" }}>
         <div>
@@ -130,7 +129,6 @@ export function EmpleadoPage() {
           <p>Los pedidos más recientes de todos los clientes.</p>
         </div>
 
-        {/* 👇 BOTÓN PARA IR A LA PÁGINA COMPLETA 👇 */}
         <button className="btn-ver-todas" onClick={() => navigate("/ordenes-empleado")}>
           Ver todas las órdenes <i className="bi bi-arrow-right" />
         </button>
@@ -142,14 +140,14 @@ export function EmpleadoPage() {
         <div className="ordenes-grid">
           {ordenesRecientes.map((item) => (
             <div key={item.orden.id_orden} className="ordenes-empleado-card">
-              
+
               <div className="estado-selector-container">
                 <label>Estado:</label>
                 <select
                   value={item.orden.status}
                   onChange={(e) => handleCambiarEstado(item.orden.id_orden, e.target.value)}
                   disabled={actualizandoEstado === item.orden.id_orden}
-                  className={`estado-select status-${item.orden.status?.toLowerCase()}`}
+                  className={`estado-select ${item.orden.status?.toLowerCase()}`}
                 >
                   {ESTADOS_ORDEN.map((estado) => (
                     <option key={estado} value={estado}>{estado}</option>
@@ -170,7 +168,7 @@ export function EmpleadoPage() {
                     fecha={item.fecha}
                     totalArticulo={item.totalArticulo}
                     totalPrecio={item.totalPrecio}
-                    width="100%" // Ajustado para que sea responsivo
+                    width="100%"
                     heigth="16rem"
                     scrollbar={false}
                   />

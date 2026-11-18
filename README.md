@@ -1,93 +1,97 @@
-# Mallow Books
+# Mallow Books - Plataforma Web de Comercio Electrónico de Libros
 
+![CI Pipeline](https://github.com/naooan1936/mallow-books/actions/workflows/ci.yml/badge.svg)
+![TecNM](https://img.shields.io/badge/TecNM-Programaci%C3%B3n%20Web-blue)
+![Stack](https://img.shields.io/badge/Stack-React%20%7C%20FastAPI%20%7C%20PostgreSQL-green)
+![Docker](https://img.shields.io/badge/Docker-Compose%20Ready-blue)
 
+Proyecto Integrador de la asignatura **Programación Web (AEB-1055)** - Semestre Agosto-Diciembre 2026.  
+**Docente:** Dr. Roberto Contreras.
 
-## Getting started
+---
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Descripción del Problema
+Mallow Books resuelve la necesidad de una plataforma moderna, ágil y segura para la comercialización, gestión de inventario y pedidos de libros, brindando una experiencia personalizada a lectores y herramientas administrativas a librerías independientes.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+---
 
-## Add your files
+## Integrantes y Roles
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+| Integrante | Rol Principal | Responsabilidad |
+| :--- | :--- | :--- |
+| **Naomi** | Full Stack & DevOps | Backend FastAPI, diseño del esquema PostgreSQL, autenticación JWT/Bcrypt, contenedores Docker y CI |
+| **Equipo Mallow Books** | Front End | Interfaz interactiva en React + TypeScript, componentes modulares, gestión de estado y consumo de APIs |
+
+---
+
+## Despliegue en la Nube
+- **URL Pública del Frontend:** *(Por desplegar en Vercel)*
+- **URL Pública del Backend:** *(Por desplegar en Render / Railway)*
+- **Base de Datos:** PostgreSQL en Neon Cloud
+
+---
+
+## Tecnologías y Arquitectura
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/naooan1936/mallow-books.git
-git branch -M main
-git push -uf origin main
+[ Navegador Cliente (React + Vite) ]
+                |  (HTTP/REST - JSON + JWT)
+                v
+       [ FastAPI (Python 3.11) ]  <---> [ API Externa: OpenLibrary ]
+                |  (SQLAlchemy ORM)
+                v
+    [ PostgreSQL (Base de Datos) ]
 ```
 
-## Integrate with your tools
+- **Frontend:** React 19, TypeScript, Vite, React Router DOM, Bootstrap Icons, Context API.
+- **Backend:** Python 3.11, FastAPI, Pydantic v2, SQLAlchemy ORM, Uvicorn, Passlib (Bcrypt), Python-Jose (JWT).
+- **Base de Datos:** PostgreSQL 15 con relaciones 1:N y N:M (`Libros`, `Usuarios`, `Categoria`, `Orden`, `Carrito`, `Detalleorden`, `Detallecarrito`).
+- **DevOps:** Docker, Docker Compose, GitHub Actions (CI).
 
-* [Set up project integrations](https://gitlab.com/naooan1936/mallow-books/-/settings/integrations)
+---
 
-## Collaborate with your team
+## Ejecución Rápida con Docker Compose (Plan B Local)
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+Para levantar todo el sistema (Base de Datos + Backend API + Frontend Web) en un solo comando:
 
-## Test and Deploy
+```bash
+# 1. Clonar el repositorio
+git clone <URL_DEL_REPOSITORIO>
+cd "Mallow Books"
 
-Use the built-in continuous integration in GitLab.
+# 2. Configurar variables de entorno
+cp .env.example .env
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+# 3. Levantar los 3 servicios con Docker Compose
+docker compose -f infra/docker-compose.yml up --build -d
+```
 
-***
+### Servicios Disponibles:
+- **Frontend Web:** [http://localhost:80](http://localhost:80)
+- **Backend API (Swagger Docs):** [http://localhost:8000/docs](http://localhost:8000/docs)
+- **PostgreSQL:** `localhost:5432` (Base de datos: `mallow_books`)
 
-# Editing this README
+---
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## Usuarios de Prueba para la Demo
 
-## Suggestions for a good README
+| Rol | Correo Electrónico | Contraseña | Permisos |
+| :--- | :--- | :--- | :--- |
+| **Administrador** | `admin@mallowbooks.com` | `admin123` | Control total del catálogo, usuarios, métricas e inventario |
+| **Empleado** | `empleado@mallowbooks.com` | `empleado123` | Gestión de órdenes y actualización de estados |
+| **Cliente / Usuario** | `usuario@mallowbooks.com` | `user123` | Exploración de catálogo, carrito y compras |
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+---
 
-## Name
-Choose a self-explaining name for your project.
+## Pruebas Automatizadas (Pytest)
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+```bash
+# Ejecutar la suite de pruebas del backend
+pytest Server/tests/
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+---
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## Documentación Adicional
+- **Declaración de IA:** [`AI_USAGE.md`](file:///c:/Git/Mallow%20Books/AI_USAGE.md)
+- **Autoevaluación de Rúbrica:** [`docs/AUTOEVALUACION.md`](file:///c:/Git/Mallow%20Books/docs/AUTOEVALUACION.md)
