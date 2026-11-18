@@ -558,7 +558,8 @@ def registrar_usuario( data: RegisterRequest, db: Session = Depends(get_db) ):
     usuario = Usuarios(
         nombre_user=data.nombre,
         email=data.email,
-        password=get_password_hash(data.password),
+        # password=get_password_hash(data.password), # En entorno local se utiliza hashing adicional con bcrypt.
+        password = data.password, # En Docker se guarda directamente el hash SHA-256 recibido desde el frontend.
         rol="user"
     )
 
