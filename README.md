@@ -25,9 +25,9 @@ Mallow Books resuelve la necesidad de una plataforma moderna, ágil y segura par
 ---
 
 ## Despliegue en la Nube
-- **URL Pública del Frontend:** *(Por desplegar en Vercel)*
-- **URL Pública del Backend:** *(Por desplegar en Render / Railway)*
-- **Base de Datos:** PostgreSQL en Neon Cloud
+- **URL Pública del Frontend:** *https://mallowbooks-p0ad.onrender.com*
+- **URL Pública del Backend:** *https://mallowbooks.onrender.com*
+- **Base de Datos:** PostgreSQL alojada en Render (Instancia: dpg-dc1r15pksfps739m8isg-a)
 
 ---
 
@@ -60,7 +60,7 @@ git clone <URL_DEL_REPOSITORIO>
 cd "Mallow Books"
 
 # 2. Configurar variables de entorno
-cp .env.example .env
+cp .env
 
 # 3. Levantar los 3 servicios con Docker Compose
 docker compose -f infra/docker-compose.yml up --build -d
