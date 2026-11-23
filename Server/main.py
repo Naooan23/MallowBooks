@@ -20,6 +20,7 @@ app.add_middleware(
         "http://localhost",
         "http://localhost:80",
         "http://localhost:5173",
+        "https://mallowbooks-jmk4.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
