@@ -16,7 +16,7 @@
 | **3** | **Frontend en React** | 14 | Excelente | 100% | 14.0 | `cliente-app/src/`, `CartProvider.tsx`, `CatalogoAdmin.tsx`, `App.tsx` (múltiples rutas, estados de carga y error). |
 | **4** | **Backend en FastAPI** | 14 | Excelente | 100% | 14.0 | `Server/main.py` (>15 endpoints REST), `Server/schemas.py`, `/docs` interactivo con Swagger. |
 | **5** | **Base de datos y acceso a datos** | 12 | Excelente | 100% | 12.0 | `Server/models.py`, `Consultas POSTGRE/Creacion Tablas.sql`, relaciones 1:N y N:M (`Detalleorden`, `Detallecarrito`). |
-| **6** | **Seguridad e interoperabilidad** | 10 | Excelente | 100% | 10.0 | `Server/auth.py` (hash Bcrypt, JWT Bearer tokens), sanitización de contraseñas, `.env.example`, consumo OpenLibrary API. |
+| **6** | **Seguridad e interoperabilidad** | 10 | Excelente | 100% | 10.0 | `Server/auth.py` (hash Bcrypt, JWT Bearer tokens), sanitización de contraseñas, `.cargarLibros.py`, consumo OpenLibrary API. |
 | **7** | **Contenedores y despliegue** | 10 | Excelente | 100% | 10.0 | `infra/docker-compose.yml`, `Server/Dockerfile`, `cliente-app/Dockerfile` (`docker compose up` levanta todo). |
 | **8** | **Calidad y flujo DevOps** | 8 | Excelente | 100% | 8.0 | `Server/tests/test_api.py` (suite de 8 pruebas pytest), `.github/workflows/ci.yml` (pipeline automático de CI). |
 | **9** | **Declaración de uso de IA** | 5 | Excelente | 100% | 5.0 | `AI_USAGE.md` con los 7 puntos obligatorios y bitácora de prompts completa. |
