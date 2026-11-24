@@ -65,18 +65,25 @@ export default function Catalogo() {
             classname="card-movement"
             data={x}
             onClick={() => setDetalleCard(x)}
-            CoverHeigth="15rem"
-            CoverWidth="9rem"
+            CoverHeigth="100%"
+            CoverWidth="100%"
           />
         ))}
       </div>
+
+      {!loading && librosFiltrados.length === 0 && (
+        <div className="empty-catalog-state">
+          <i className="bi bi-book" />
+          <p>No se encontraron libros disponibles</p>
+        </div>
+      )}
 
       {detalleCard !== null && (
         <CardLibroDetalle
           data={detalleCard}
           onClick={() => setDetalleCard(null)}
-          CoverHeigth="15rem"
-          CoverWidth="9rem"
+          CoverHeigth="100%"
+          CoverWidth="100%"
         />
       )}
 

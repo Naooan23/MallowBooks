@@ -65,8 +65,8 @@ export default function CatalogoEmpleado() {
             data={x}
             onClick={() => setDetalleCard(x)}
             isReadOnly={true}
-            CoverHeigth="15rem"
-            CoverWidth="9rem"
+            CoverHeigth="100%"
+            CoverWidth="100%"
           />
         ))}
       </div>
@@ -76,8 +76,8 @@ export default function CatalogoEmpleado() {
           data={detalleCard}
           onClick={() => setDetalleCard(null)}
           isReadOnly={true}
-          CoverHeigth="15rem"
-          CoverWidth="9rem"
+          CoverHeigth="100%"
+          CoverWidth="100%"
         />
       )}
 

@@ -388,3 +388,162 @@
   font-size: .85rem;
   color: var(--color-gris);
 }
+
+/* =========================================
+   RESPONSIVE PARA DASHBOARD DE CARTAS
+   ========================================= */
+
+/* Tablets y pantallas medianas (Menos de 992px) */
+@media (max-width: 992px) {
+  /* Apilar la gráfica de barras y el pastel */
+  .analisis-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* El separador vertical ahora será horizontal */
+  .separador {
+    width: 100%;
+    height: 1px;
+    background: #e9d6d6;
+    margin: 0.5rem 0;
+  }
+
+  /* La leyenda del pastel ocupa todo el ancho */
+  .leyenda {
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  /* Apilar el gráfico circular y su leyenda */
+  .grafico-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+/* Celulares y pantallas pequeñas (Menos de 576px) */
+@media (max-width: 576px) {
+  /* Reducir el padding de las tarjetas para ganar espacio */
+  .analisis-ventas-card,
+  .actividad-card,
+  .inventario-card,
+  .pedidos-recientes-card {
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+  /* Hacer la gráfica circular más pequeña */
+  .grafico-circular {
+    width: 160px;
+    height: 160px;
+  }
+
+  .grafico-centro {
+    width: 90px;
+    height: 90px;
+  }
+
+  /* Ajustar las barras de libros para que no se aplasten */
+  .libro-item {
+    grid-template-columns: 1fr 80px 30px; /* Reducimos el ancho de la barra y el número */
+    gap: 0.5rem;
+  }
+  
+  .title-libros {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Ajustar la tarjeta de actividad (iconos y textos) */
+  .actividad-info {
+    font-size: 1.5rem; /* Iconos más pequeños */
+    gap: 0.5rem;
+  }
+
+  .actividad-info span {
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+  }
+
+  .actividad-badge {
+    width: 35px;
+    height: 35px;
+    font-size: 0.85rem;
+  }
+
+  /* Evitar que la tarjeta de pedidos recientes se deforme por el alto fijo */
+  .pedidos-recientes-card {
+    height: auto !important; 
+    min-height: 320px;
+  }
+
+  /* Que el título y el botón de pedidos se acomoden si no caben */
+  .pedidos-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  /* Ajustar los ítems del inventario */
+  .inventario-item {
+    gap: 0.75rem;
+  }
+  
+  .inventario-titulo {
+    font-size: 0.9rem;
+  }
+  
+  .inventario-portada {
+    width: 35px;
+    height: 48px;
+  }
+}
+@media (max-width: 768px) {
+  /* 1. Forzar a que el contenedor de análisis y el gráfico se apilen */
+  .analisis-content,
+  .grafico-info {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  /* 2. Hacer que todas las columnas de Bootstrap adentro ocupen el 100% */
+  .analisis-content > .col-4,
+  .analisis-content > .col,
+  .grafico-info > .col-4,
+  .grafico-info > .col {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    margin-bottom: 1rem;
+  }
+
+  /* 3. Ocultar o ajustar el separador vertical para que sea horizontal */
+  .separador {
+    width: 100% !important;
+    height: 1px !important;
+    margin: 1rem 0;
+  }
+
+  /* 4. Ajustar las leyendas para que quepan bien */
+  .leyenda {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-bottom: 1rem;
+  }
+
+  /* 5. Ajustar la tarjeta de pedidos recientes para que no se corte */
+  .pedidos-recientes-card {
+    height: auto !important;
+    min-height: 320px;
+  }
+  
+  .pedido-item {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}

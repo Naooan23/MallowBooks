@@ -1,18 +1,25 @@
 .dashboard-container {
   padding: 2rem;
   width: 100%;
-  height: 100%;
-  min-height: 0;
+  /* height: 100%;  ELIMINA ESTO */
+  /* min-height: 0; ELIMINA ESTO */
   margin: 0 auto;
+  box-sizing: border-box;
+  padding-bottom: 4rem;
 }
 
 .dashboard-grid {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
+  align-items: flex-start; /* Evita que las columnas se estiren de forma extraña */
+}
 
-  height: 100%;
-  min-height: 0;
-  align-items: stretch;
+.dashboard-right-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Toma todo el espacio disponible */
+  min-width: 0; /* Evita que el flexbox se desborde */
+  gap: 1.5rem;
 }
 
 .section-title {
@@ -168,18 +175,58 @@
 
 .recomendaciones-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 180px);
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 👈 Se adapta al espacio */
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
   width: 100%;
-  height: fit-content;
-}
-.btn-icon{
-  color: var(--color-cafe);
-  margin: 0;
-  padding: 0;
+  padding: 0.5rem;
 }
 
-.btn-icon:hover{
+.btn-icon {
+  color: var(--color-cafe);
+  margin: 0;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover:not(:disabled) {
   color: var(--color-rosa);
+  transform: scale(1.1);
+}
+
+.btn-icon:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   RESPONSIVE (Celulares y Tablets)
+   ========================================= */
+@media (max-width: 992px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  .dashboard-grid {
+    flex-direction: column; /* 👈 Apila las tarjetas y la orden verticalmente */
+  }
+
+  /* Aseguramos que el contenedor de la orden no se salga de la pantalla */
+  .dashboard-grid > div:last-child { 
+    width: 100% !important;
+  }
+}
+.orden-container-dashboard {
+  width: 40rem; /* Tamaño fijo en PC */
+  max-width: 100%;
+}
+
+@media (max-width: 992px) {
+  .orden-container-dashboard {
+    width: 100%; /* Tamaño completo en móvil */
+  }
 }

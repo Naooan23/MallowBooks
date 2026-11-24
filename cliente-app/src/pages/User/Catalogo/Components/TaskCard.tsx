@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Col } from "react-bootstrap";
-import { Card, LoadingSimple, PopUp } from "../../../../components/Box.tsx";
+import { LoadingSimple, PopUp } from "../../../../components/Box.tsx";
 import { get, put } from "../../../../config/api.ts";
 import { useCart } from "../../../../services/CartContext.tsx";
 import type { LibroCarrito, LibrosCover } from "../../../../services/ServicesTypes.ts";
@@ -34,50 +34,49 @@ export function CardLibro({ data, classname, onClick, CoverWidth, CoverHeigth, i
 
   const actualizarStock = async (nuevoStock: number) => {
     const libro = await get("libros", data.id);
-
     libro.stock = nuevoStock;
-
     await put("libros", libro);
   };
 
+  const precioFormateado = Number(data.precio).toLocaleString("es-MX", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
   return (
-    <Card
-      classname={classname}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
-        padding: "0",
-        cursor: "pointer",
-        transition: "transform 0.25s ease",
-        backgroundColor: "transparent",
-        border: "none",
-      }}
+    <div
+      className={`book-card ${classname ?? ""}`}
       onClick={onClick}
-      width={"180px"}
     >
       <div className="book-cover-container">
-
         <BookCover
-          width={CoverWidth}
-          heigth={CoverHeigth}
+          width={CoverWidth ?? "100%"}
+          heigth={CoverHeigth ?? "100%"}
           portada_url={data.portada_url}
           titulo={data.titulo}
         />
 
         {!isReadOnly && (
           <div
-            className={`cart-button ${libroActual?.cantidad === 1
-              ? "added"
-              : (libroActual?.cantidad ?? 0) > 1
-                ? "disable added"
+            className={`cart-button ${
+              libroActual?.cantidad === 1
+                ? "added"
+                : (libroActual?.cantidad ?? 0) > 1
+                  ? "disable added"
+                  : sinStock
+                    ? "disable"
+                    : ""
+            }`}
+            title={
+              libroActual?.cantidad === 1
+                ? "En el carrito (clic para quitar)"
                 : sinStock
-                  ? "disable"
-                  : ""
-              }`}
+                  ? "Agotado"
+                  : "Agregar al carrito"
+            }
           >
             <i
-              className="bi bi-plus"
+              className={libroActual?.cantidad === 1 ? "bi bi-check-lg" : "bi bi-plus"}
               onClick={(event) => {
                 event.stopPropagation();
                 buttonClick();
@@ -85,23 +84,21 @@ export function CardLibro({ data, classname, onClick, CoverWidth, CoverHeigth, i
             />
           </div>
         )}
-
       </div>
 
       <div className="book-info">
-        <h2 style={{ fontSize: "1.6rem" }}>
-          ${data.precio}
+        <h2>
+          ${precioFormateado}
           <small> MXN</small>
         </h2>
 
-        <h3>{data.titulo}</h3>
+        <h3 title={data.titulo}>{data.titulo}</h3>
 
-        <p>{data.autor}</p>
+        <p title={data.autor}>{data.autor}</p>
       </div>
-    </Card >
+    </div>
   );
 }
-
 
 export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth, isReadOnly = false }: CardLibroProps) {
   const { librosCarrito, agregarAlCarrito, eliminarDelCarrito, cambiarCantidad } = useCart();
@@ -230,53 +227,61 @@ export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth, isRea
 
   useEffect(() => {
     if (libroActual) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCantidadSeleccionada(libroActual.cantidad);
     } else {
       setCantidadSeleccionada(0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [libroActual?.cantidad, data.id]);
 
   useEffect(() => {
     let activo = true;
-
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     cargarStock(activo);
 
     return () => {
       activo = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.id]);
+
+  const anioPublicacion = () => {
+    if (!data.fecha) return "No disponible";
+    const d = new Date(data.fecha);
+    return !isNaN(d.getTime()) ? d.getFullYear() : String(data.fecha);
+  };
+
+  const precioFormateado = Number(data.precio).toLocaleString("es-MX", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   return (
     <PopUp titulo={data.titulo} onClose={onClick}>
       <div className="popup-detalle-wrapper">
         <div className="data-book">
+          <div className="modal-cover-wrap">
+            <BookCover
+              width={CoverWidth ?? "100%"}
+              heigth={CoverHeigth ?? "100%"}
+              portada_url={data.portada_url}
+              titulo={data.titulo}
+            />
+          </div>
 
-          <BookCover
-            width={CoverWidth}
-            heigth={CoverHeigth}
-            portada_url={data.portada_url}
-            titulo={data.titulo}
-          />
-
-          <p style={{ marginBottom: "0.1rem" }}>
-            <strong>Precio:</strong> ${data.precio}
+          <p style={{ marginTop: "0.5rem" }}>
+            <strong>Precio:</strong> ${precioFormateado} MXN
           </p>
 
           <p>
             <strong>Stock:</strong>{" "}
-            {sinStock ? "Agotado" : stock}
+            {sinStock ? <span style={{ color: "var(--color-rojo)", fontWeight: 700 }}>Agotado</span> : stock}
           </p>
+
           {!isReadOnly && (
             <>
-              <div style={{ display: "flex", width: "100%", justifyContent: "center" }}>
-                <Col xs={3}><strong>Cantidad:</strong></Col>
-                <Col xs={9} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+              <div style={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
+                <Col xs={4}><strong>Cantidad:</strong></Col>
+                <Col xs={8} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
                   <button className="botones" onClick={() => modificarCantidad(false)} disabled={loading || cantidadActual <= 0}>−</button>
-                  <span style={{ textAlign: "center" }}>{cantidadActual}</span>
+                  <span style={{ textAlign: "center", minWidth: "24px", fontWeight: "700" }}>{cantidadActual}</span>
                   <button className="botones" onClick={() => modificarCantidad(true)} disabled={loading || stock <= 0}>+</button>
                 </Col>
               </div>
@@ -292,26 +297,25 @@ export function CardLibroDetalle({ data, onClick, CoverWidth, CoverHeigth, isRea
               </div>
             </>
           )}
-
         </div>
 
-        <div className="book-info">
+        <div className="popup-book-info">
           <p>
             <strong>Autor:</strong> {data.autor}
           </p>
 
           <p>
-            <strong>Fecha de Publicación:</strong>{" "}
-            {data.fecha.getFullYear()}
+            <strong>Fecha de Publicación:</strong> {anioPublicacion()}
           </p>
 
-          <p>
+          <p className="sinopsis-label">
             <strong>Sinopsis:</strong>
           </p>
 
-          <textarea disabled value={data.sinopsis} />
+          <textarea disabled value={data.sinopsis || "Sin sinopsis disponible."} />
         </div>
-        {loading && (<LoadingSimple />)}
+
+        {loading && <LoadingSimple />}
       </div>
     </PopUp>
   );
@@ -321,21 +325,12 @@ export function BookCover(data: LibrosCover) {
   const [loading, setLoading] = useState(true);
 
   return (
-    <Card
+    <div
+      className="book-cover"
       style={{
-        position: "relative",
-        padding: 0,
-        gap: 0,
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-        minHeight: "11rem",
-        overflow: "hidden",
-        borderRadius: "0.4rem",
-        backgroundColor: "var(--color-blanco)",
+        width: data.width ?? "100%",
+        height: data.heigth ?? "100%",
       }}
-      width={data.width}
-      height={data.heigth}
     >
       {loading && <LoadingSimple />}
 
@@ -345,18 +340,7 @@ export function BookCover(data: LibrosCover) {
         onLoad={() => setLoading(false)}
         onError={() => setLoading(false)}
         className={loading ? "imagen-cargando" : ""}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          objectFit: "cover",
-          display: "block",
-          borderRadius: "0.4rem",
-          transition: "opacity 0.2s ease",
-        }}
-        width="100%"
-        height="100%"
       />
-    </Card>
+    </div>
   );
 }
