@@ -81,13 +81,11 @@ export function AdminPage() {
     getUltimosPedidos();
   }, []);
 
-    return (
+  return (
     <div className="pagina-ordenes">
       <DashboardCard data={dashboardCards} />
 
-      {/* 👇 PRIMERA FILA: Análisis y Actividad 👇 */}
       <Row className="mb-4">
-        {/* En celular ocupa 12 (100%), en PC ocupa 8 (aprox 70%) */}
         <Col xs={12} lg={8} className="mb-3 mb-lg-0">
           <LibrosMasVendidosCard
             totalVentas={librosMasVendidos?.totalVentas ?? 0}
@@ -96,7 +94,6 @@ export function AdminPage() {
           />
         </Col>
 
-        {/* En celular ocupa 12 (100%), en PC ocupa 4 (aprox 30%) */}
         <Col xs={12} lg={4}>
           <ActividadTiendaCard
             pendientes={actividadTienda.pendientes}
@@ -106,9 +103,7 @@ export function AdminPage() {
         </Col>
       </Row>
 
-      {/* 👇 SEGUNDA FILA: Inventario y Pedidos 👇 */}
       <Row>
-        {/* En celular ocupa 12 (100%), en PC ocupa 6 (50%) */}
         <Col xs={12} md={6} className="mb-3 mb-md-0">
           <InventarioBajoCard data={inventarioBajo} />
         </Col>
