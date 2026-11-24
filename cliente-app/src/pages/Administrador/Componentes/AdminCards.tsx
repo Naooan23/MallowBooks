@@ -6,18 +6,9 @@ import "./AdminCards.css";
 import type { ActividadTiendaProps, InventarioBajoProps, LegendProps, LibrosMasVendidosProps, PedidosRecientesProps, VerTodoButtonProps } from "./ComponentesTypes";
 
 const LibrosMasVendidosCard = ({ totalVentas, librosMasVendidos, categorias }: LibrosMasVendidosProps) => {
-  const maxVentas = Math.max(
-    ...librosMasVendidos.map((x) => x.vendidos),
-    1
-  );
-
-  const totalCategorias = categorias.reduce(
-    (acc, curr) => acc + curr.cantidad,
-    0
-  );
-
+  const maxVentas = Math.max(...librosMasVendidos.map((x) => x.vendidos), 1);
+  const totalCategorias = categorias.reduce((acc, curr) => acc + curr.cantidad, 0);
   const mitad = Math.ceil(categorias.length / 2);
-
   const categoriasIzquierda = categorias.slice(0, mitad);
   const categoriasDerecha = categorias.slice(mitad);
 
@@ -30,68 +21,52 @@ const LibrosMasVendidosCard = ({ totalVentas, librosMasVendidos, categorias }: L
         </div>
       </div>
 
-      <div className="analisis-content">
-        <Col className="analisis-libros" xs={4}>
+      {/* 👇 CAMBIAMOS EL DIV POR UN ROW 👇 */}
+      <Row className="analisis-content">
+        <Col className="analisis-libros" xs={12} md={4}>
           <h6>Libros más vendidos</h6>
 
           {librosMasVendidos.map((libro) => (
             <div key={libro.titulo} className="libro-item">
               <span className="title-libros">{libro.titulo}</span>
-
               <div className="barra-container">
-                <div
-                  className="barra"
-                  style={{ width: `${(libro.vendidos / maxVentas) * 100}%` }}
-                />
+                <div className="barra" style={{ width: `${(libro.vendidos / maxVentas) * 100}%` }} />
               </div>
-
               <span className="cantidad">{libro.vendidos}</span>
             </div>
           ))}
         </Col>
 
-        <div className="separador" />
+        {/* Separador (oculto en móvil, visible en PC) */}
+        <div className="separador d-none d-md-block" />
 
-        <Col>
+        <Col xs={12} md={7} className="mt-4 mt-md-0">
           <h6>Ingresos por pedidos</h6>
-
-          <Row className="grafico-info">
-            <Col xs={4}>
+          <Row className="grafico-info align-items-center justify-content-center">
+            
+            <Col xs={12} md={5} className="d-flex justify-content-center">
               <div className="grafico-circular">
                 <div className="grafico-centro">
-                  <strong>
-                    $
-                    {totalVentas.toLocaleString("es-MX", { minimumFractionDigits: 2 })}
-                  </strong>
+                  <strong>${totalVentas.toLocaleString("es-MX", { minimumFractionDigits: 2 })}</strong>
                   <span>MXN</span>
                 </div>
               </div>
             </Col>
 
-            <Col className="leyenda" style={{ padding: "0px" }}>
+            <Col className="leyenda" xs={12} md={7}>
               {categoriasIzquierda.map((categoria, index) => (
-                <LegendCategorias
-                  key={categoria.nombre}
-                  categoria={categoria}
-                  index={index}
-                  totalCategorias={totalCategorias}
-                />
+                <LegendCategorias key={categoria.nombre} categoria={categoria} index={index} totalCategorias={totalCategorias} />
               ))}
             </Col>
 
-            <Col className="leyenda" style={{ padding: "0px" }}>
+            <Col className="leyenda" xs={12} md={7}>
               {categoriasDerecha.map((categoria, index) => (
-                <LegendCategorias
-                  key={categoria.nombre}
-                  categoria={categoria}
-                  index={index + categoriasIzquierda.length}
-                  totalCategorias={totalCategorias}
-                />
+                <LegendCategorias key={categoria.nombre} categoria={categoria} index={index + categoriasIzquierda.length} totalCategorias={totalCategorias} />
               ))}
             </Col>
           </Row>
         </Col>
-      </div>
+      </Row>
     </Card>
   );
 }
@@ -236,13 +211,13 @@ const UltimosPedidos = ({ data }: PedidosRecientesProps) => {
             key={pedido.num}
             className="pedido-item align-items-center"
           >
-            <Col className="pedido-num" style={{ fontWeight: "700" }} xs={1}>#{pedido.num}</Col>
+            <Col className="pedido-num" style={{ fontWeight: "700" }} xs={2} md={1}>#{pedido.num}</Col>
 
-            <Col className="pedido-usuario" xs={5}>{pedido.usuario}</Col>
+            <Col className="pedido-usuario" xs={12} md={5}>{pedido.usuario}</Col>
 
-            <Col className="pedido-fecha" xs={2}>{new Date(pedido.fecha).toLocaleDateString()}</Col>
+            <Col className="pedido-fecha" xs={6} md={2}>{new Date(pedido.fecha).toLocaleDateString()}</Col>
 
-            <Col className="text-end" xs={3}>
+            <Col className="text-end" xs={6} md={3}>
               <span
                 className={`orden-estado 
                   ${estados.find((x) => x.value === pedido.status)?.value.toLowerCase() ?? pedido.status.toLowerCase()}

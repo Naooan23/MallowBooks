@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import type { Libros } from "../../../services/ServicesTypes";
 import { CardLibro } from "../Catalogo/Components/TaskCard";
 
@@ -33,31 +33,54 @@ export default function RecomendacionesCarrusel({ data, onSelectLibro }: Recomen
   );
 }
 
-function Carrusel<T>({ titulo, data, renderItem, itemsPorPagina = Math.max(1, Math.floor((window.innerWidth - (40 * 16)) / 200)) }: CarruselProps<T>) {
+function Carrusel<T>({ titulo, data, renderItem, itemsPorPagina }: CarruselProps<T>) {
   const [pagina, setPagina] = useState(0);
+  
+  // 👇 ESTADO PARA CALCULAR CUÁNTOS ELEMENTOS CABEN
+  const [itemsPerPage, setItemsPerPage] = useState(itemsPorPagina || 3);
 
-  const totalPaginas = Math.ceil(data.length / itemsPorPagina);
+  useEffect(() => {
+    // Función que calcula cuántos libros caben según el ancho de la pantalla
+    const calcularItems = () => {
+      if (itemsPorPagina) return; // Si se pasa por prop, lo respetamos
+      
+      const anchoPantalla = window.innerWidth;
+      // 200px aprox por tarjeta + márgenes
+      if (anchoPantalla < 600) setItemsPerPage(1);       // Celular
+      else if (anchoPantalla < 900) setItemsPerPage(2);  // Tablet
+      else if (anchoPantalla < 1200) setItemsPerPage(3); // Laptop
+      else setItemsPerPage(4);                           // PC Grande
+    };
+
+    calcularItems();
+    window.addEventListener("resize", calcularItems);
+    return () => window.removeEventListener("resize", calcularItems);
+  }, [itemsPorPagina]);
+
+  const totalPaginas = Math.ceil(data.length / itemsPerPage);
 
   const elementosPagina = data.slice(
-    pagina * itemsPorPagina,
-    (pagina + 1) * itemsPorPagina
+    pagina * itemsPerPage,
+    (pagina + 1) * itemsPerPage
   );
 
   const cambiarPagina = (direccion: "left" | "right") => {
     setPagina((actual) => {
-      if (direccion === "left") {
-        return Math.max(0, actual - 1);
-      }
-
+      if (direccion === "left") return Math.max(0, actual - 1);
       return Math.min(totalPaginas - 1, actual + 1);
     });
   };
 
+  // Si cambia la cantidad de items, reseteamos la página para evitar bugs
+  useEffect(() => {
+    setPagina(0);
+  }, [itemsPerPage]);
+
   return (
-    <>
+    <div style={{ width: "100%", overflow: "hidden" }}>
       <h3 className="section-title mb-3">{titulo}</h3>
 
-      <div className="d-flex align-items-center justify-content-center">
+      <div style={{ display: "flex", alignItems: "center", width: "100%", gap: "0.5rem" }}>
         <button
           type="button"
           onClick={() => cambiarPagina("left")}
@@ -67,7 +90,7 @@ function Carrusel<T>({ titulo, data, renderItem, itemsPorPagina = Math.max(1, Ma
           ◀
         </button>
 
-        <div className="recomendaciones-container">
+        <div className="recomendaciones-container" style={{ flex: 1 }}>
           {elementosPagina.map(renderItem)}
         </div>
 
@@ -81,9 +104,9 @@ function Carrusel<T>({ titulo, data, renderItem, itemsPorPagina = Math.max(1, Ma
         </button>
       </div>
 
-      <div className="text-center mt-2">
+      <div className="text-center mt-2" style={{ color: "var(--color-gris)", fontSize: "0.9rem" }}>
         {totalPaginas > 0 ? `${pagina + 1} / ${totalPaginas}` : "0 / 0"}
       </div>
-    </>
+    </div>
   );
 }

@@ -84,17 +84,20 @@ export default function DashBoard() {
           </Card>
         </div>
 
-        {ordenCompra && (
-          <OrdenDocumento
-            orden={ordenCompra.orden}
-            fecha={ordenCompra.fecha}
-            cliente={ordenCompra.cliente}
-            email={ordenCompra.email}
-            libros={ordenCompra.libros}
-            width="40rem"
-            scrollbar={true}
-          />
-        )}
+        {/* Envolvemos la orden en un div para que tome el 100% en móvil */}
+        <div className="orden-container-dashboard" style={{ flexShrink: 0 }}>
+          {ordenCompra && (
+            <OrdenDocumento
+              orden={ordenCompra.orden}
+              fecha={ordenCompra.fecha}
+              cliente={ordenCompra.cliente}
+              email={ordenCompra.email}
+              libros={ordenCompra.libros}
+              width="100%" // 👈 Mejor usar 100% y controlar el ancho desde CSS
+              scrollbar={true}
+            />
+          )}
+        </div>
 
       </div>
     </div>

@@ -435,6 +435,7 @@ export function CardNuevoLibroAdmin({ onClick, cargarDatos, CoverWidth, CoverHei
         label: "Sinopsis",
         value: "",
         type: "textarea",
+        height: "10rem",
         onValueChange: (v: string) =>
           actualizarCampo(setFormTextArea, "sinopsis", v),
       },

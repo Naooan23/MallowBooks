@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { DashboardCard } from "../../components/Tarjetas/DashboardCards";
 import { get } from "../../config/api";
 import "../User/OrdenesCompra/OrdenesCompra.css";
@@ -81,34 +81,41 @@ export function AdminPage() {
     getUltimosPedidos();
   }, []);
 
-  return (
+    return (
     <div className="pagina-ordenes">
       <DashboardCard data={dashboardCards} />
 
-      <Row style={{ display: "flex" }}>
-        <div style={{ width: "70%" }}>
+      {/* 👇 PRIMERA FILA: Análisis y Actividad 👇 */}
+      <Row className="mb-4">
+        {/* En celular ocupa 12 (100%), en PC ocupa 8 (aprox 70%) */}
+        <Col xs={12} lg={8} className="mb-3 mb-lg-0">
           <LibrosMasVendidosCard
             totalVentas={librosMasVendidos?.totalVentas ?? 0}
             librosMasVendidos={librosMasVendidos?.librosMasVendidos ?? []}
             categorias={librosMasVendidos?.categorias ?? []}
           />
-        </div>
-        <div style={{ width: "30%" }}>
+        </Col>
+
+        {/* En celular ocupa 12 (100%), en PC ocupa 4 (aprox 30%) */}
+        <Col xs={12} lg={4}>
           <ActividadTiendaCard
             pendientes={actividadTienda.pendientes}
             completados={actividadTienda.completados}
             cancelados={actividadTienda.cancelados}
           />
-        </div>
+        </Col>
       </Row>
 
-      <Row style={{ display: "flex" }}>
-        <div style={{ width: "50%" }}>
+      {/* 👇 SEGUNDA FILA: Inventario y Pedidos 👇 */}
+      <Row>
+        {/* En celular ocupa 12 (100%), en PC ocupa 6 (50%) */}
+        <Col xs={12} md={6} className="mb-3 mb-md-0">
           <InventarioBajoCard data={inventarioBajo} />
-        </div>
-        <div style={{ width: "50%" }}>
+        </Col>
+
+        <Col xs={12} md={6}>
           <UltimosPedidos data={ultimosPedidos} />
-        </div>
+        </Col>
       </Row>
     </div>
   );

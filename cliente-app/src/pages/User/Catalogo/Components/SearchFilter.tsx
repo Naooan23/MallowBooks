@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Col } from "react-bootstrap";
 import type { SearchFilterProps } from "../../../../components/menu/SideBar/TypesSideBar";
 import { get } from "../../../../config/api";
 import "./SearchFilter.css";
@@ -56,33 +55,23 @@ const SearchFilter = ({ search, setSearch, filter, setFilter }: SearchFilterProp
       </div>
 
       <div className="categories-container">
-
-        <Col className="filter-group-label" xs={2}>
-          <label>Categorías:</label>
-        </Col>
+        <div className="filter-group-label">Categorías</div>
 
         <div className="filter-group">
           <div className="filter-buttons">
             {filter != null && setFilter != null && (categorias?.map((x) => (
               <button
                 key={x.id}
-                style={{
-                  display: "flex", alignItems: "center"
-                }}
+                type="button"
                 className={`filter-btn ${filter === x.id ? "active" : ""}`}
                 onClick={() => setFilter(x.id)}
               >
-                <Col xs={3}>
-                  <i className={x.icon} style={{ height: "2rem" }} />
-                </Col>
-                <Col xs={9} style={{ textAlign: "left" }}>
-                  <span>{x.label}</span>
-                </Col>
+                <i className={x.icon} />
+                <span>{x.label}</span>
               </button>
             )))}
           </div>
         </div>
-
       </div>
 
     </>
