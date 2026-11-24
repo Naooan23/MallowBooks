@@ -21,7 +21,6 @@ const LibrosMasVendidosCard = ({ totalVentas, librosMasVendidos, categorias }: L
         </div>
       </div>
 
-      {/* 👇 CAMBIAMOS EL DIV POR UN ROW 👇 */}
       <Row className="analisis-content">
         <Col className="analisis-libros" xs={12} md={4}>
           <h6>Libros más vendidos</h6>
@@ -37,13 +36,12 @@ const LibrosMasVendidosCard = ({ totalVentas, librosMasVendidos, categorias }: L
           ))}
         </Col>
 
-        {/* Separador (oculto en móvil, visible en PC) */}
         <div className="separador d-none d-md-block" />
 
         <Col xs={12} md={7} className="mt-4 mt-md-0">
           <h6>Ingresos por pedidos</h6>
           <Row className="grafico-info align-items-center justify-content-center">
-            
+
             <Col xs={12} md={5} className="d-flex justify-content-center">
               <div className="grafico-circular">
                 <div className="grafico-centro">

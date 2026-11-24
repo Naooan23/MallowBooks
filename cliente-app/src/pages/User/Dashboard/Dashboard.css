@@ -1,8 +1,6 @@
 .dashboard-container {
   padding: 2rem;
   width: 100%;
-  /* height: 100%;  ELIMINA ESTO */
-  /* min-height: 0; ELIMINA ESTO */
   margin: 0 auto;
   box-sizing: border-box;
   padding-bottom: 4rem;
@@ -11,14 +9,14 @@
 .dashboard-grid {
   display: flex;
   gap: 1.5rem;
-  align-items: flex-start; /* Evita que las columnas se estiren de forma extraña */
+  align-items: flex-start;
 }
 
 .dashboard-right-column {
   display: flex;
   flex-direction: column;
-  flex: 1; /* Toma todo el espacio disponible */
-  min-width: 0; /* Evita que el flexbox se desborde */
+  flex: 1;
+  min-width: 0;
   gap: 1.5rem;
 }
 
@@ -175,7 +173,7 @@
 
 .recomendaciones-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 👈 Se adapta al espacio */
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   justify-content: center;
   gap: 1rem;
   width: 100%;
@@ -212,21 +210,20 @@
   }
   
   .dashboard-grid {
-    flex-direction: column; /* 👈 Apila las tarjetas y la orden verticalmente */
+    flex-direction: column;
   }
 
-  /* Aseguramos que el contenedor de la orden no se salga de la pantalla */
   .dashboard-grid > div:last-child { 
     width: 100% !important;
   }
 }
 .orden-container-dashboard {
-  width: 40rem; /* Tamaño fijo en PC */
+  width: 40rem;
   max-width: 100%;
 }
 
 @media (max-width: 992px) {
   .orden-container-dashboard {
-    width: 100%; /* Tamaño completo en móvil */
+    width: 100%;
   }
 }

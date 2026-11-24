@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { Libros } from "../../../services/ServicesTypes";
 import { CardLibro } from "../Catalogo/Components/TaskCard";
 
@@ -35,21 +35,18 @@ export default function RecomendacionesCarrusel({ data, onSelectLibro }: Recomen
 
 function Carrusel<T>({ titulo, data, renderItem, itemsPorPagina }: CarruselProps<T>) {
   const [pagina, setPagina] = useState(0);
-  
-  // 👇 ESTADO PARA CALCULAR CUÁNTOS ELEMENTOS CABEN
+
   const [itemsPerPage, setItemsPerPage] = useState(itemsPorPagina || 3);
 
   useEffect(() => {
-    // Función que calcula cuántos libros caben según el ancho de la pantalla
     const calcularItems = () => {
-      if (itemsPorPagina) return; // Si se pasa por prop, lo respetamos
-      
+      if (itemsPorPagina) return;
+
       const anchoPantalla = window.innerWidth;
-      // 200px aprox por tarjeta + márgenes
-      if (anchoPantalla < 600) setItemsPerPage(1);       // Celular
-      else if (anchoPantalla < 900) setItemsPerPage(2);  // Tablet
-      else if (anchoPantalla < 1200) setItemsPerPage(3); // Laptop
-      else setItemsPerPage(4);                           // PC Grande
+      if (anchoPantalla < 600) setItemsPerPage(1);
+      else if (anchoPantalla < 900) setItemsPerPage(2);
+      else if (anchoPantalla < 1200) setItemsPerPage(3);
+      else setItemsPerPage(4);
     };
 
     calcularItems();
@@ -71,7 +68,6 @@ function Carrusel<T>({ titulo, data, renderItem, itemsPorPagina }: CarruselProps
     });
   };
 
-  // Si cambia la cantidad de items, reseteamos la página para evitar bugs
   useEffect(() => {
     setPagina(0);
   }, [itemsPerPage]);

@@ -84,7 +84,6 @@ export default function DashBoard() {
           </Card>
         </div>
 
-        {/* Envolvemos la orden en un div para que tome el 100% en móvil */}
         <div className="orden-container-dashboard" style={{ flexShrink: 0 }}>
           {ordenCompra && (
             <OrdenDocumento

@@ -11,28 +11,6 @@
     z-index: 1000;
 }
 
-/* .detalle-modal {
-    max-width: 90%;
-    max-height: 90vh;
-
-    background: var(--color-beige-background);
-    border-radius: 15px;
-
-    overflow: hidden;
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 15px 20px;
-
-    background-color: rgb(53, 15, 4);
-} */
-
 .modal-header h2 {
     margin: 0;
     color: var(--color-rosa);
@@ -55,17 +33,6 @@
 .modal-header button:hover {
     opacity: 0.8;
 }
-
-/* .detalle-content {
-    display: flex;
-    gap: 1rem;
-    padding: 2rem;
-    box-sizing: border-box;
-    height: auto;
-    min-height: 0;
-    max-width: 100%;
-} */
-
 
 .loading-overlay {
     position: fixed;
@@ -155,15 +122,14 @@
     white-space: normal;
   }
 }
-/* 1. Ajustar el contenedor principal del modal */
+
 .detalle-modal {
-    width: 100%; /* Asegura que no se desborde */
-    max-width: 900px; /* Ancho máximo ideal para PC */
+    width: 100%;
+    max-width: 900px;
     max-height: 90vh;
     background: var(--color-beige-background);
     border-radius: 15px;
     
-    /* 👇 Usamos Flexbox para separar el Header del Contenido */
     display: flex;
     flex-direction: column; 
     overflow: hidden; 
@@ -171,25 +137,23 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
-/* 2. Evitar que el header se encoja */
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
     background-color: rgb(53, 15, 4);
-    flex-shrink: 0; /* 👈 Importante: evita que el header desaparezca si hay mucho texto */
+    flex-shrink: 0;
 }
 
-/* 3. Hacer que el contenido tenga scroll interno si es necesario */
 .detalle-content {
     display: flex;
-    flex-direction: row; /* Lado a lado en PC */
+    flex-direction: row;
     gap: 1rem;
     padding: 2rem;
     box-sizing: border-box;
     
-    overflow-y: auto; /* 👈 Permite hacer scroll dentro del modal si el contenido es muy largo */
+    overflow-y: auto;
     flex: 1; 
 }
 
@@ -198,14 +162,14 @@
    ========================================= */
 @media (max-width: 768px) {
     .detalle-modal {
-        width: 95%; /* Un poco más ancho en celular */
-        max-height: 85vh; /* Deja un pequeño margen arriba y abajo */
+        width: 95%;
+        max-height: 85vh;
         border-radius: 12px;
     }
 
     .detalle-content {
-        flex-direction: column; /* 👈 Hace que los elementos se apilen (Imagen arriba, texto abajo) */
-        padding: 1rem; /* Reducimos el padding para ganar espacio */
+        flex-direction: column;
+        padding: 1rem;
         gap: 1rem;
     }
 
@@ -214,7 +178,6 @@
     }
 
     .modal-header h2 {
-        font-size: 1.1rem; /* Letra más pequeña en celular */
+        font-size: 1.1rem;
     }
-    .form-control{}
 }
