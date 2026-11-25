@@ -22,7 +22,7 @@ const LibrosMasVendidosCard = ({ totalVentas, librosMasVendidos, categorias }: L
       </div>
 
       <Row className="analisis-content">
-        <Col className="analisis-libros" xs={12} md={4}>
+        <Col xs={12} md={6} lg={6} xl={5} style={{ padding: "0", margin: "0" }}>
           <h6>Libros más vendidos</h6>
 
           {librosMasVendidos.map((libro) => (
@@ -36,13 +36,11 @@ const LibrosMasVendidosCard = ({ totalVentas, librosMasVendidos, categorias }: L
           ))}
         </Col>
 
-        <div className="separador d-none d-md-block" />
-
-        <Col xs={12} md={7} className="mt-4 mt-md-0">
+        <Col style={{ justifyContent: "center", padding: "0", margin: "0" }}>
           <h6>Ingresos por pedidos</h6>
           <Row className="grafico-info align-items-center justify-content-center">
 
-            <Col xs={12} md={5} className="d-flex justify-content-center">
+            <Col xs={12} md={7} lg={6} className="d-flex justify-content-center">
               <div className="grafico-circular">
                 <div className="grafico-centro">
                   <strong>${totalVentas.toLocaleString("es-MX", { minimumFractionDigits: 2 })}</strong>
@@ -50,17 +48,18 @@ const LibrosMasVendidosCard = ({ totalVentas, librosMasVendidos, categorias }: L
                 </div>
               </div>
             </Col>
+            <Col>
+              <Col className="leyenda" xs={12}>
+                {categoriasIzquierda.map((categoria, index) => (
+                  <LegendCategorias key={categoria.nombre} categoria={categoria} index={index} totalCategorias={totalCategorias} />
+                ))}
+              </Col>
 
-            <Col className="leyenda" xs={12} md={7}>
-              {categoriasIzquierda.map((categoria, index) => (
-                <LegendCategorias key={categoria.nombre} categoria={categoria} index={index} totalCategorias={totalCategorias} />
-              ))}
-            </Col>
-
-            <Col className="leyenda" xs={12} md={7}>
-              {categoriasDerecha.map((categoria, index) => (
-                <LegendCategorias key={categoria.nombre} categoria={categoria} index={index + categoriasIzquierda.length} totalCategorias={totalCategorias} />
-              ))}
+              <Col className="leyenda" xs={12}>
+                {categoriasDerecha.map((categoria, index) => (
+                  <LegendCategorias key={categoria.nombre} categoria={categoria} index={index + categoriasIzquierda.length} totalCategorias={totalCategorias} />
+                ))}
+              </Col>
             </Col>
           </Row>
         </Col>

@@ -23,15 +23,11 @@
 }
 
 .analisis-content {
+  width: 100%;
   display: flex;
   gap: 0.5rem;
 }
 
-
-.separador {
-  width: 1px;
-  background: #e9d6d6;
-}
 
 .libro-item {
   display: grid;
@@ -108,7 +104,6 @@
   flex-direction: column;
   gap: 0.3rem;
   margin-left: 1rem;
-  width: 55%;
   height: stretch;
 }
 
@@ -394,18 +389,6 @@
    ========================================= */
 
 @media (max-width: 992px) {
-  .analisis-content {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .separador {
-    width: 100%;
-    height: 1px;
-    background: #e9d6d6;
-    margin: 0.5rem 0;
-  }
-
   .leyenda {
     width: 100%;
     margin-left: 0;
@@ -490,12 +473,12 @@
   }
 }
 @media (max-width: 768px) {
-  .analisis-content,
+  /* .analisis-content,
   .grafico-info {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
-  }
+  } */
 
   .analisis-content > .col-4,
   .analisis-content > .col,
@@ -505,12 +488,6 @@
     max-width: 100% !important;
     flex: 0 0 100% !important;
     margin-bottom: 1rem;
-  }
-
-  .separador {
-    width: 100% !important;
-    height: 1px !important;
-    margin: 1rem 0;
   }
 
   .leyenda {
