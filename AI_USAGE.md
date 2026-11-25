@@ -7,7 +7,7 @@ En cumplimiento con la política de autoría de la ACM y los requerimientos del 
 ## 1. Herramientas y Modelos Utilizados
 - **Herramienta:** Asistente IA Antigravity / Claude Sonnet & Opus.
 - **Modo de uso:** Agente de codificación y análisis estático integrado en terminal y editor de código.
-- **Integrantes que lo utilizaron:** Naomi y equipo de desarrollo de Mallow Books.
+- **Integrantes que lo utilizaron:** Naomi.
 
 ---
 

@@ -473,12 +473,6 @@
   }
 }
 @media (max-width: 768px) {
-  /* .analisis-content,
-  .grafico-info {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-  } */
 
   .analisis-content > .col-4,
   .analisis-content > .col,

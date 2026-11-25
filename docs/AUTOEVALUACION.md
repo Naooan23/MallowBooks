@@ -3,7 +3,7 @@
 **Materia:** Programación Web (AEB-1055)  
 **Semestre:** Agosto - Diciembre 2026  
 **Docente:** Dr. Roberto Contreras  
-**Equipo:** Mallow Books (Naomi y equipo)  
+**Equipo:** Mallow Books (Naomi)  
 
 ---
 
